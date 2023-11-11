@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- bottom_nav_menu.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:title="Chats"
+        />
+
+    <item
+        android:id="@+id/nav_gallery"
+        android:title="Events"
+         />
+
+    <item
+        android:id="@+id/nav_search"
+        android:title="TO DO"
+         />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:title="Split-wise"
+         />
+
+</menu>
