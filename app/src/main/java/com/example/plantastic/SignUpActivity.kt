@@ -1,9 +1,14 @@
 package com.example.plantastic
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 
 class SignUpActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -20,17 +25,18 @@ class SignUpActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString()
             val confirmPassword = confirmPasswordEditText.text.toString()
 
-            // Validate sign-up credentials (replace with your actual sign-up logic)
             if (isValidSignUp(username, email, password, confirmPassword)) {
+                // If sign-up is successful, navigate to the main activity
                 navigateToMainActivity()
             } else {
+
                 Toast.makeText(this, "Invalid sign-up credentials", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun isValidSignUp(username: String, email: String, password: String, confirmPassword: String): Boolean {
-        // TO DO: Implement validation logic
+        // Implement sign-up validation logic
         return username.isNotBlank() && email.isNotBlank() && password.isNotBlank() && password == confirmPassword
     }
 
@@ -38,7 +44,5 @@ class SignUpActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
-    }
-}
     }
 }
