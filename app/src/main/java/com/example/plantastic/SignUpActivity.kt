@@ -6,8 +6,14 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.google.firebase.Firebase
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.database
+
 
 class SignUpActivity : AppCompatActivity() {
+
+    private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +24,8 @@ class SignUpActivity : AppCompatActivity() {
         val passwordEditText: EditText = findViewById(R.id.editTextPassword)
         val confirmPasswordEditText: EditText = findViewById(R.id.editTextConfirmPassword)
         val signUpButton: Button = findViewById(R.id.buttonSubmitSignUp)
+
+        database = Firebase.database.reference
 
         signUpButton.setOnClickListener {
             val username = usernameEditText.text.toString()
