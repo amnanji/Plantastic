@@ -16,6 +16,7 @@ class LoginActivity : AppCompatActivity() {
         val loginIdEditText: EditText = findViewById(R.id.editTextLoginId)
         val passwordEditText: EditText = findViewById(R.id.editTextPassword)
         val submitButton: Button = findViewById(R.id.buttonSubmit)
+        val signUpButton: Button = findViewById(R.id.buttonSignUp)
 
         submitButton.setOnClickListener {
             // Perform login logic here
@@ -25,7 +26,17 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 // Handle unsuccessful login
             }
+
         }
+        signUpButton.setOnClickListener {
+            navigateToSignUpActivity()
+        }
+    }
+
+    private fun navigateToSignUpActivity() {
+        val intent = Intent(this, SignUpActivity::class.java)
+        startActivity(intent)
+
     }
 
     private fun performLogin(loginId: String, password: String): Boolean {
