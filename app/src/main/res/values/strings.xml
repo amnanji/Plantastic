@@ -10,4 +10,8 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="error_blank">Field cannot be blank</string>
+    <string name="error_email_invalid">Email is invalid</string>
+    <string name="error_password_mismatch">Passwords don\'t match</string>
+    <string name="error_password_length">Password should be at least 6 characters long</string>
 </resources>
