@@ -15,25 +15,8 @@ import kotlinx.coroutines.runBlocking
 class UsersRepository {
     private var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
     private var usersReference: DatabaseReference = firebaseDatabase.getReference(FirebaseNodes.USERS_NODE)
-    private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    fun createNewAuthUser(firstName: String, lastName: String, username: String, email: String, password: String, onComplete: (Boolean) -> Unit){
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    createNewUser(firstName, lastName, username, email) {isSuccessful ->
-                        onComplete(isSuccessful)
-                    }
-                } else {
-                    onComplete(false)
-                }
-            }
-            .addOnFailureListener {
-                onComplete(false)
-            }
-    }
-
-    private fun createNewUser(firstName: String, lastName: String, username: String, email: String, onComplete: (Boolean) -> Unit) {
+    fun createNewUser(firstName: String, lastName: String, username: String, email: String, onComplete: (Boolean) -> Unit) {
 
         val user = Users(firstName, lastName, username, email)
         val userKey = usersReference.push().key
@@ -62,12 +45,4 @@ class UsersRepository {
         })
         return runBlocking { deferred.await() }
     }
-
-    fun loginUser(email: String, password: String, onComplete: (Boolean) -> Unit){
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-               onComplete(task.isSuccessful)
-            }
-    }
-
 }

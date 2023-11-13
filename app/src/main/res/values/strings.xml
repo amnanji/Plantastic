@@ -17,4 +17,5 @@
     <string name="error_duplicate_email">Email is already in use</string>
     <string name="error_duplicate_username">Username is already in use</string>
     <string name="error_unexpected">An unexpected error occurred. Try again later!</string>
+    <string name="error_incorrect_email_password">Incorrect email or password</string>
 </resources>
