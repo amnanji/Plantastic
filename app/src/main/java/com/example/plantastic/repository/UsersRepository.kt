@@ -1,5 +1,6 @@
 package com.example.plantastic.repository
 
+import android.content.Context
 import com.example.plantastic.FirebaseNodes
 import com.example.plantastic.models.Users
 import com.google.firebase.auth.FirebaseAuth
@@ -60,6 +61,13 @@ class UsersRepository {
             }
         })
         return runBlocking { deferred.await() }
+    }
+
+    fun loginUser(email: String, password: String, onComplete: (Boolean) -> Unit){
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+               onComplete(task.isSuccessful)
+            }
     }
 
 }

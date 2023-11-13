@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import com.example.plantastic.repository.UsersRepository
 
 
 class LoginActivity : AppCompatActivity() {
@@ -13,6 +15,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var submitButton: Button
     private lateinit var signUpButton: Button
+
+    private lateinit var usersRepository: UsersRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,9 +27,18 @@ class LoginActivity : AppCompatActivity() {
         submitButton = findViewById(R.id.buttonSubmit)
         signUpButton = findViewById(R.id.buttonSignUp)
 
+        usersRepository = UsersRepository()
+
         submitButton.setOnClickListener {
             if (isValidData()){
-                navigateToMainActivity()
+                usersRepository.loginUser(emailEditText.text.toString(), passwordEditText.text.toString()){ isSuccessful ->
+                    if(isSuccessful){
+                        navigateToMainActivity()
+                    }
+                    else {
+                        Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
 
         }

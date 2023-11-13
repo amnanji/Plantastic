@@ -51,7 +51,7 @@ class SignUpActivity : AppCompatActivity() {
                 if (isValidSignUp()){
                     usersRepository.createNewAuthUser(firstName, lastName, username, email, password) { isSuccessful ->
                         if (isSuccessful){
-                            navigateToMainActivity()
+                            navigateToLoginActivity()
                         }
                         else{
                             Toast.makeText(this@SignUpActivity, getString(R.string.error_unexpected), Toast.LENGTH_SHORT).show()
@@ -149,8 +149,8 @@ class SignUpActivity : AppCompatActivity() {
         return flag
     }
 
-    private fun navigateToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
+    private fun navigateToLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
