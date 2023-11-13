@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.plantastic.models.Users
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -24,6 +25,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var usersReference: DatabaseReference
+    private lateinit var firebaseAuth: FirebaseAuth
 
     private lateinit var firstNameEditText: EditText
     private lateinit var lastNameEditText: EditText
@@ -47,14 +49,32 @@ class SignUpActivity : AppCompatActivity() {
 
         firebaseDatabase = FirebaseDatabase.getInstance()
         usersReference = firebaseDatabase.getReference(FirebaseNodes.USERS_NODE)
+        firebaseAuth = FirebaseAuth.getInstance()
 
         signUpButton.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 if (isValidSignUp()){
-                    writeNewUser()
+                    createNewAuthUser()
                 }
             }
         }
+    }
+
+    private fun createNewAuthUser(){
+        val email = emailEditText.text.toString()
+        val password = passwordEditText.text.toString()
+
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    writeNewUser()
+                } else {
+                    Toast.makeText(this, getString(R.string.error_unexpected), Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener(){
+                Toast.makeText(this, getString(R.string.error_unexpected), Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun writeNewUser() {
@@ -131,31 +151,30 @@ class SignUpActivity : AppCompatActivity() {
 
         // checking if passwords match
         if (password != confirmPassword){
-            confirmPasswordEditText.error = getString(R.string.error_password_mismatch)
-            passwordEditText.error = getString((R.string.error_password_mismatch))
+            withContext(Dispatchers.Main){
+                confirmPasswordEditText.error = getString(R.string.error_password_mismatch)
+                passwordEditText.error = getString((R.string.error_password_mismatch))
+            }
             flag = false
         }
 
         // checking password length requirements
         if (password.length < 6){
-            confirmPasswordEditText.error = getString(R.string.error_password_length)
-            passwordEditText.error = getString((R.string.error_password_length))
+            withContext(Dispatchers.Main){
+                confirmPasswordEditText.error = getString(R.string.error_password_length)
+                passwordEditText.error = getString((R.string.error_password_length))
+            }
             flag = false
         }
 
-        // early return so blank strings are not queried against
-        if (!flag){
-            return false
-        }
-
-        if (isFieldUnique(FirebaseNodes.EMAIL_NODE, email)) {
+        if (email.isNotBlank() && !isFieldUnique(FirebaseNodes.EMAIL_NODE, email)) {
             withContext(Dispatchers.Main){
                 emailEditText.error = getString(R.string.error_duplicate_email)
             }
             flag = false
         }
 
-        if(isFieldUnique(FirebaseNodes.USERNAME_NODE, username)){
+        if(username.isNotBlank() && !isFieldUnique(FirebaseNodes.USERNAME_NODE, username)){
             withContext(Dispatchers.Main){
                 usernameEditText.error = getString(R.string.error_duplicate_username)
             }
@@ -176,8 +195,7 @@ class SignUpActivity : AppCompatActivity() {
         usersReference.orderByChild(nodeName).equalTo(value).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val isUnique = snapshot.exists()
-                deferred.complete(isUnique)
+                deferred.complete(!snapshot.exists())
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -187,10 +205,14 @@ class SignUpActivity : AppCompatActivity() {
         return runBlocking { deferred.await() }
     }
 
-    private fun setEmailInvalidError(editText: EditText) {
-        editText.error = getString(R.string.error_email_invalid)
+    private suspend fun setEmailInvalidError(editText: EditText) {
+        withContext(Dispatchers.Main){
+            editText.error = getString(R.string.error_email_invalid)
+        }
     }
-    private fun setNotBlankError(editText: EditText){
-        editText.error = getString(R.string.error_blank)
+    private suspend fun setNotBlankError(editText: EditText){
+        withContext(Dispatchers.Main){
+            editText.error = getString(R.string.error_blank)
+        }
     }
 }
