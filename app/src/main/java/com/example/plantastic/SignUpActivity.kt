@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import com.example.plantastic.models.Users
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -24,8 +23,10 @@ import kotlinx.coroutines.withContext
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var usersRef: DatabaseReference
+    private lateinit var usersReference: DatabaseReference
 
+    private lateinit var firstNameEditText: EditText
+    private lateinit var lastNameEditText: EditText
     private lateinit var usernameEditText: EditText
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
@@ -36,6 +37,8 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
+        firstNameEditText = findViewById(R.id.editTextFirstName)
+        lastNameEditText = findViewById(R.id.editTextLastName)
         usernameEditText = findViewById(R.id.editTextUsername)
         emailEditText = findViewById(R.id.editTextEmail)
         passwordEditText = findViewById(R.id.editTextPassword)
@@ -43,41 +46,60 @@ class SignUpActivity : AppCompatActivity() {
         signUpButton = findViewById(R.id.buttonSubmitSignUp)
 
         firebaseDatabase = FirebaseDatabase.getInstance()
-        usersRef = firebaseDatabase.getReference("users")
+        usersReference = firebaseDatabase.getReference(FirebaseNodes.USERS_NODE)
 
         signUpButton.setOnClickListener {
-            val username = usernameEditText.text.toString()
-            val email = emailEditText.text.toString()
-            val password = passwordEditText.text.toString()
-            val confirmPassword = confirmPasswordEditText.text.toString()
-
             CoroutineScope(Dispatchers.IO).launch {
-                if (isValidSignUp(username, email, password, confirmPassword)){
-                    writeNewUser(username, email, password)
+                if (isValidSignUp()){
+                    writeNewUser()
                 }
             }
         }
     }
 
-    private fun writeNewUser(username: String, email: String, password: String) {
-        val user = Users(username, email, password)
-        val userKey = usersRef.push().key
+    private fun writeNewUser() {
+
+        val firstName = firstNameEditText.text.toString()
+        val lastName = lastNameEditText.text.toString()
+        val username = usernameEditText.text.toString()
+        val email = emailEditText.text.toString()
+        val password = passwordEditText.text.toString()
+
+        val user = Users(firstName, lastName, username, email, password)
+        val userKey = usersReference.push().key
         userKey?.let {
-            usersRef.child(it).setValue(user)
+            usersReference.child(it).setValue(user)
                 .addOnSuccessListener {
                     navigateToMainActivity()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "An unexpected error occurred. Try again later!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.error_unexpected), Toast.LENGTH_SHORT).show()
                 }
         }
     }
 
-    private suspend fun isValidSignUp(username: String, email: String, password: String, confirmPassword: String): Boolean {
+    private suspend fun isValidSignUp(): Boolean {
+
+        val firstName = firstNameEditText.text.toString()
+        val lastName = lastNameEditText.text.toString()
+        val username = usernameEditText.text.toString()
+        val email = emailEditText.text.toString()
+        val password = passwordEditText.text.toString()
+        val confirmPassword = confirmPasswordEditText.text.toString()
 
         var flag = true
 
         // checking if all edit texts have been filled
+        if (firstName.isBlank()){
+            setNotBlankError(firstNameEditText)
+            flag = false
+        }
+
+        if (lastName.isBlank()){
+            setNotBlankError(lastNameEditText)
+            flag = false
+        }
+
         if (username.isBlank()){
             setNotBlankError(usernameEditText)
             flag = false
@@ -121,21 +143,21 @@ class SignUpActivity : AppCompatActivity() {
             flag = false
         }
 
-        // early return so blank strings are no queried against
+        // early return so blank strings are not queried against
         if (!flag){
             return false
         }
 
-        if (isFieldUnique("email", email)) {
+        if (isFieldUnique(FirebaseNodes.EMAIL_NODE, email)) {
             withContext(Dispatchers.Main){
-                emailEditText.error = "Email is already in use"
+                emailEditText.error = getString(R.string.error_duplicate_email)
             }
             flag = false
         }
 
-        if(isFieldUnique("username", username)){
+        if(isFieldUnique(FirebaseNodes.USERNAME_NODE, username)){
             withContext(Dispatchers.Main){
-                usernameEditText.error = "Username is already in use"
+                usernameEditText.error = getString(R.string.error_duplicate_username)
             }
             flag = false
         }
@@ -151,7 +173,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun isFieldUnique(nodeName: String, value: String): Boolean {
         val deferred =  CompletableDeferred<Boolean>()
-        usersRef.orderByChild(nodeName).equalTo(value).addListenerForSingleValueEvent(object :
+        usersReference.orderByChild(nodeName).equalTo(value).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val isUnique = snapshot.exists()

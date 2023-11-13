@@ -9,25 +9,27 @@ import android.widget.EditText
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var emailEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var submitButton: Button
+    private lateinit var signUpButton: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val loginIdEditText: EditText = findViewById(R.id.editTextLoginId)
-        val passwordEditText: EditText = findViewById(R.id.editTextPassword)
-        val submitButton: Button = findViewById(R.id.buttonSubmit)
-        val signUpButton: Button = findViewById(R.id.buttonSignUp)
+        emailEditText = findViewById(R.id.editTextLoginId)
+        passwordEditText = findViewById(R.id.editTextPassword)
+        submitButton = findViewById(R.id.buttonSubmit)
+        signUpButton = findViewById(R.id.buttonSignUp)
 
         submitButton.setOnClickListener {
-            // Perform login logic here
-            if (performLogin(loginIdEditText.text.toString(), passwordEditText.text.toString())) {
-                // If login is successful, navigate to the main activity
+            if (isValidData()){
                 navigateToMainActivity()
-            } else {
-                // Handle unsuccessful login
             }
 
         }
+
         signUpButton.setOnClickListener {
             navigateToSignUpActivity()
         }
@@ -50,5 +52,38 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun isValidData(): Boolean {
+        val email = emailEditText.text.toString()
+        val password = passwordEditText.text.toString()
+        var flag = true
+
+        if(email.isBlank()){
+            setNotBlankError(emailEditText)
+            flag = false
+        }
+
+        if(password.isBlank()){
+            setNotBlankError(passwordEditText)
+            flag = false
+        }
+
+        //checking validity of an email
+        //help from https://stackoverflow.com/questions/1819142/how-should-i-validate-an-e-mail-address
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            setEmailInvalidError(emailEditText)
+            flag = false
+        }
+
+        return flag
+    }
+
+    private fun setEmailInvalidError(editText: EditText) {
+        editText.error = getString(R.string.error_email_invalid)
+    }
+
+    private fun setNotBlankError(editText: EditText){
+        editText.error = getString(R.string.error_blank)
     }
 }

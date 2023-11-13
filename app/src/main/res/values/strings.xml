@@ -14,4 +14,7 @@
     <string name="error_email_invalid">Email is invalid</string>
     <string name="error_password_mismatch">Passwords don\'t match</string>
     <string name="error_password_length">Password should be at least 6 characters long</string>
+    <string name="error_duplicate_email">Email is already in use</string>
+    <string name="error_duplicate_username">Username is already in use</string>
+    <string name="error_unexpected">An unexpected error occurred. Try again later!</string>
 </resources>
