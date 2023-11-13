@@ -10,4 +10,8 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="chats">Chats</string>
+    <string name="events">Events</string>
+    <string name="to_do">TO DO</string>
+    <string name="split_wise">Split-wise</string>
 </resources>
