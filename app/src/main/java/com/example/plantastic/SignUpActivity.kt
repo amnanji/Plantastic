@@ -3,20 +3,16 @@ package com.example.plantastic
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import com.example.plantastic.models.Users
-import com.google.firebase.Firebase
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.database
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +25,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var usersRef: DatabaseReference
+
     private lateinit var usernameEditText: EditText
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
@@ -57,7 +54,6 @@ class SignUpActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 if (isValidSignUp(username, email, password, confirmPassword)){
                     writeNewUser(username, email, password)
-                    navigateToMainActivity()
                 }
             }
         }
@@ -69,12 +65,10 @@ class SignUpActivity : AppCompatActivity() {
         userKey?.let {
             usersRef.child(it).setValue(user)
                 .addOnSuccessListener {
-                    // User added successfully
-                    // Add additional actions or callbacks here
+                    navigateToMainActivity()
                 }
                 .addOnFailureListener {
-                    // Failed to add user
-                    // Handle the error as needed
+                    Toast.makeText(this, "An unexpected error occurred. Try again later!", Toast.LENGTH_SHORT).show()
                 }
         }
     }
