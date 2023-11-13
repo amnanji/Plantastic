@@ -1,10 +1,13 @@
-package com.example.plantastic
+package com.example.plantastic.login
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import com.example.plantastic.MainActivity
+import com.example.plantastic.R
+import com.example.plantastic.signup.SignUpActivity
 
 
 class LoginActivity : AppCompatActivity() {
