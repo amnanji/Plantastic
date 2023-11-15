@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="Pastel_red">#EB5552</color>
-    <color name="Red">#b3201f</color>
-    <color name="Yellow">#eba152</color>
-    <color name="Yellow_var">#c55932</color>
+    <color name="pastel_red">#EB5552</color>
+    <color name="red">#b3201f</color>
+    <color name="yellow">#eba152</color>
+    <color name="yellow_var">#c55932</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>

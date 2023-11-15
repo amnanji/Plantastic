@@ -1,17 +1,17 @@
-package com.example.plantastic.ui.calendar
+package com.example.plantastic.ui.toDo
 
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.plantastic.databinding.FragmentCalendarBinding
+import com.example.plantastic.databinding.FragmentToDoBinding
 
-class CalendarFragment : Fragment() {
+class ToDoFragment : Fragment() {
 
-    private var _binding: FragmentCalendarBinding? = null
+    private var _binding: FragmentToDoBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class CalendarFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val calendarViewModel =
-            ViewModelProvider(this).get(CalendarViewModel::class.java)
+        val toDoViewModel =
+            ViewModelProvider(this).get(ToDoViewModel::class.java)
 
-        _binding = FragmentCalendarBinding.inflate(inflater, container, false)
+        _binding = FragmentToDoBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textCalendar
-        calendarViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.toDoFragmentText
+        toDoViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

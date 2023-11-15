@@ -1,4 +1,4 @@
-package com.example.plantastic.signup
+package com.example.plantastic.ui.signup
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
