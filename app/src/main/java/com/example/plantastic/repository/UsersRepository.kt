@@ -1,6 +1,6 @@
 package com.example.plantastic.repository
 
-import com.example.plantastic.FirebaseNodes
+import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.models.Users
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

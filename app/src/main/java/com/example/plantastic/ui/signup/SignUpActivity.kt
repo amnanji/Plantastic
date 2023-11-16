@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.example.plantastic.FirebaseNodes
+import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.R
 import com.example.plantastic.ui.login.LoginActivity
 
