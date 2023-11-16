@@ -6,8 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.example.plantastic.repository.UserAuthRepository
-import com.example.plantastic.repository.UsersRepository
+import com.example.plantastic.repository.UsersAuthRepository
 import com.google.firebase.FirebaseApp
 
 
@@ -18,11 +17,11 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var submitButton: Button
     private lateinit var signUpButton: Button
 
-    private var userAuthRepository: UserAuthRepository = UserAuthRepository()
+    private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
 
     override fun onStart() {
         super.onStart()
-        val currentUser = userAuthRepository.getCurrentUser()
+        val currentUser = usersAuthRepository.getCurrentUser()
         if (currentUser != null) {
             navigateToMainActivity()
         }
@@ -39,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
 
         submitButton.setOnClickListener {
             if (isValidData()){
-                userAuthRepository.loginUser(emailEditText.text.toString(), passwordEditText.text.toString()){ isSuccessful ->
+                usersAuthRepository.loginUser(emailEditText.text.toString(), passwordEditText.text.toString()){ isSuccessful ->
                     if(isSuccessful){
                         navigateToMainActivity()
                     }

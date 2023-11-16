@@ -4,7 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 // Help from - https://firebase.google.com/docs/auth/android/password-auth
-class UserAuthRepository {
+class UsersAuthRepository {
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private var usersRepository: UsersRepository = UsersRepository()
 

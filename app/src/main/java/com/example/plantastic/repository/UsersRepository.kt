@@ -1,9 +1,7 @@
 package com.example.plantastic.repository
 
-import android.content.Context
 import com.example.plantastic.FirebaseNodes
 import com.example.plantastic.models.Users
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -12,22 +10,21 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.runBlocking
 
+// Help from - https://firebase.google.com/docs/database/android/read-and-write
 class UsersRepository {
     private var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
     private var usersReference: DatabaseReference = firebaseDatabase.getReference(FirebaseNodes.USERS_NODE)
 
-    fun createNewUser(userKey: String, firstName: String, lastName: String, username: String, email: String, onComplete: (Boolean) -> Unit) {
+    fun createNewUser(userId: String, firstName: String, lastName: String, username: String, email: String, onComplete: (Boolean) -> Unit) {
 
         val user = Users(firstName, lastName, username, email)
-        userKey?.let {
-            usersReference.child(it).setValue(user)
-                .addOnSuccessListener {
-                    onComplete(true)
-                }
-                .addOnFailureListener {
-                    onComplete(false)
-                }
-        }
+        usersReference.child(userId).setValue(user)
+            .addOnSuccessListener {
+                onComplete(true)
+            }
+            .addOnFailureListener {
+                onComplete(false)
+            }
     }
 
     fun isFieldUnique(nodeName: String, value: String): Boolean {

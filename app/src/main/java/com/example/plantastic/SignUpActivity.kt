@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.example.plantastic.repository.UserAuthRepository
+import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 class SignUpActivity : AppCompatActivity() {
 
 
-    private var userAuthRepository: UserAuthRepository = UserAuthRepository()
+    private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
     private var usersRepository: UsersRepository = UsersRepository()
 
     private lateinit var firstNameEditText: EditText
@@ -50,7 +50,7 @@ class SignUpActivity : AppCompatActivity() {
 
             CoroutineScope(Dispatchers.IO).launch {
                 if (isValidSignUp()){
-                    userAuthRepository.createNewAuthUser(firstName, lastName, username, email, password) { isSuccessful ->
+                    usersAuthRepository.createNewAuthUser(firstName, lastName, username, email, password) { isSuccessful ->
                         if (isSuccessful){
                             navigateToLoginActivity()
                         }

@@ -14,13 +14,13 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.plantastic.databinding.ActivityMainBinding
-import com.example.plantastic.repository.UserAuthRepository
+import com.example.plantastic.repository.UsersAuthRepository
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private var userAuthRepository: UserAuthRepository = UserAuthRepository()
+    private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,10 +48,10 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        // Help from - https://stackoverflow.com/questions/31265530/how-can-i-get-menu-item-in-navigationview
         val logOutMenuItem: MenuItem = navView.menu.findItem(R.id.nav_logout)
-
         logOutMenuItem.setOnMenuItemClickListener {
-            userAuthRepository.logOutUser()
+            usersAuthRepository.logOutUser()
             navigateToLoginActivity()
             true
         }
