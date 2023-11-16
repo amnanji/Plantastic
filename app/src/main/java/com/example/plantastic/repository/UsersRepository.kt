@@ -16,10 +16,9 @@ class UsersRepository {
     private var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
     private var usersReference: DatabaseReference = firebaseDatabase.getReference(FirebaseNodes.USERS_NODE)
 
-    fun createNewUser(firstName: String, lastName: String, username: String, email: String, onComplete: (Boolean) -> Unit) {
+    fun createNewUser(userKey: String, firstName: String, lastName: String, username: String, email: String, onComplete: (Boolean) -> Unit) {
 
         val user = Users(firstName, lastName, username, email)
-        val userKey = usersReference.push().key
         userKey?.let {
             usersReference.child(it).setValue(user)
                 .addOnSuccessListener {

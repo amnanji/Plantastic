@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.plantastic.repository.UserAuthRepository
 import com.example.plantastic.repository.UsersRepository
+import com.google.firebase.FirebaseApp
 
 
 class LoginActivity : AppCompatActivity() {
@@ -19,6 +20,14 @@ class LoginActivity : AppCompatActivity() {
 
     private var userAuthRepository: UserAuthRepository = UserAuthRepository()
 
+    override fun onStart() {
+        super.onStart()
+        val currentUser = userAuthRepository.getCurrentUser()
+        if (currentUser != null) {
+            navigateToMainActivity()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -27,7 +36,6 @@ class LoginActivity : AppCompatActivity() {
         passwordEditText = findViewById(R.id.editTextPassword)
         submitButton = findViewById(R.id.buttonSubmit)
         signUpButton = findViewById(R.id.buttonSignUp)
-
 
         submitButton.setOnClickListener {
             if (isValidData()){
@@ -47,18 +55,13 @@ class LoginActivity : AppCompatActivity() {
         signUpButton.setOnClickListener {
             navigateToSignUpActivity()
         }
+
+        FirebaseApp.initializeApp(this)
     }
 
     private fun navigateToSignUpActivity() {
         val intent = Intent(this, SignUpActivity::class.java)
         startActivity(intent)
-
-    }
-
-    private fun performLogin(loginId: String, password: String): Boolean {
-
-       // return (loginId == "your_username" && password == "your_password")
-        return true
 
     }
 

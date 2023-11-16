@@ -18,7 +18,7 @@ class SignUpActivity : AppCompatActivity() {
 
 
     private var userAuthRepository: UserAuthRepository = UserAuthRepository()
-    private var usersRepository: UsersRepository = userAuthRepository.usersRepository
+    private var usersRepository: UsersRepository = UsersRepository()
 
     private lateinit var firstNameEditText: EditText
     private lateinit var lastNameEditText: EditText
