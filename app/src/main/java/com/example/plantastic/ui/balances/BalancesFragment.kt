@@ -1,17 +1,17 @@
-package com.example.plantastic.ui.gallery
+package com.example.plantastic.ui.balances
 
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.plantastic.databinding.FragmentGalleryBinding
+import com.example.plantastic.databinding.FragmentBalancesBinding
 
-class GalleryFragment : Fragment() {
+class BalancesFragment : Fragment() {
 
-    private var _binding: FragmentGalleryBinding? = null
+    private var _binding: FragmentBalancesBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class GalleryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val galleryViewModel =
-            ViewModelProvider(this).get(GalleryViewModel::class.java)
+        val balancesViewModel =
+            ViewModelProvider(this).get(BalancesViewModel::class.java)
 
-        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        _binding = FragmentBalancesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textGallery
-        galleryViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.balancesFragmentText
+        balancesViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

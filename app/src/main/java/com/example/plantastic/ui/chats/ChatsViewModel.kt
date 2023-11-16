@@ -1,13 +1,13 @@
-package com.example.plantastic.ui.slideshow
+package com.example.plantastic.ui.chats
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SlideshowViewModel : ViewModel() {
+class ChatsViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is slideshow Fragment"
+        value = "This is chats Fragment"
     }
     val text: LiveData<String> = _text
 }
