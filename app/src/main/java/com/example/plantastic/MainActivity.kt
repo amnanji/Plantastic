@@ -1,6 +1,8 @@
 package com.example.plantastic
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -9,11 +11,15 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.plantastic.databinding.ActivityMainBinding
+import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.ui.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +46,15 @@ class MainActivity : AppCompatActivity() {
         navDrawer.setupWithNavController(navController)
         navBottomBar.setupWithNavController(navController)
 
+        // Help from - https://stackoverflow.com/questions/31265530/how-can-i-get-menu-item-in-navigationview
+        // Help from - https://developer.android.com/reference/android/view/MenuItem.OnMenuItemClickListener
+        val logOutMenuItem: MenuItem = navDrawer.menu.findItem(R.id.nav_logout)
+        logOutMenuItem.setOnMenuItemClickListener {
+            usersAuthRepository.logOutUser()
+            navigateToLoginActivity()
+            true
+        }
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if(destination.id == R.id.nav_calendar || destination.id == R.id.nav_settings) {
                 navBottomBar.visibility = View.GONE
@@ -47,11 +62,16 @@ class MainActivity : AppCompatActivity() {
                 navBottomBar.visibility = View.VISIBLE
             }
         }
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    private fun navigateToLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
