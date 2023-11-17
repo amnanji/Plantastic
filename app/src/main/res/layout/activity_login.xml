@@ -1,7 +1,6 @@
 <!-- activity_login.xml -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
@@ -11,29 +10,35 @@
         android:id="@+id/editTextLoginId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:maxWidth="480dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="300dp"
         android:layout_marginEnd="16dp"
-        android:hint="Login ID"
+        android:hint="@string/email_address"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:autofillHints="emailAddress"/>
 
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:maxWidth="480dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextLoginId"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:autofillHints="password"/>
 
 <!--    TODO: make drawable for rounded button-->
     <Button
@@ -42,12 +47,11 @@
         android:layout_height="56dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="Submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
-        android:backgroundTint="#eba152"/>
+        android:backgroundTint="#eba152"
+        android:text="@string/submit"
+        app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
+        app:layout_constraintStart_toStartOf="@+id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
     <Button
         android:id="@+id/buttonSignUp"
@@ -55,8 +59,9 @@
         android:layout_height="51dp"
         android:layout_below="@id/buttonSubmit"
         android:backgroundTint="#eba152"
-        android:text="Sign Up"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSubmit"
-        tools:layout_editor_absoluteX="104dp" />
+        android:text="@string/sign_up"
+        app:layout_constraintEnd_toEndOf="@+id/buttonSubmit"
+        app:layout_constraintStart_toStartOf="@+id/buttonSubmit"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSubmit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
