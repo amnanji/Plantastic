@@ -18,7 +18,6 @@ import com.example.plantastic.ui.login.LoginActivity
 
 class SignUpActivity : AppCompatActivity() {
 
-
     private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
     private var usersRepository: UsersRepository = UsersRepository()
 
@@ -52,19 +51,29 @@ class SignUpActivity : AppCompatActivity() {
 
             CoroutineScope(Dispatchers.IO).launch {
                 if (isValidSignUp()){
-                    usersAuthRepository.createNewAuthUser(firstName, lastName, username, email, password) { isSuccessful ->
-                        if (isSuccessful){
-                            navigateToLoginActivity()
-                        }
-                        else{
-                            Toast.makeText(this@SignUpActivity, getString(R.string.error_unexpected), Toast.LENGTH_SHORT).show()
+                    usersAuthRepository.createNewAuthUser(email, password) { isSuccessful ->
+                        if (isSuccessful) {
+                            // Cannot be null because task was successful
+                            // Help from - https://stackoverflow.com/questions/70283293/why-does-firebase-realtime-database-user-id-not-match-with-the-firebase-authenti
+                            val currUserUid = usersAuthRepository.getCurrentUser()!!.uid
+                            usersRepository.createNewUser(
+                                currUserUid,
+                                firstName,
+                                lastName,
+                                username,
+                                email
+                            ) { isSuccessful ->
+                                if (isSuccessful) {
+                                    navigateToLoginActivity()
+                                }
+                            }
                         }
                     }
                 }
+                makeSignUpErrorToast()
             }
         }
     }
-
 
     private suspend fun isValidSignUp(): Boolean {
 
@@ -166,6 +175,15 @@ class SignUpActivity : AppCompatActivity() {
     private suspend fun setNotBlankError(editText: EditText){
         withContext(Dispatchers.Main){
             editText.error = getString(R.string.error_blank)
+        }
+    }
+
+    private suspend fun makeSignUpErrorToast(){
+        withContext(Dispatchers.Main){
+            Toast.makeText(this@SignUpActivity, getString(R.string.error_unexpected), Toast.LENGTH_SHORT).show()
+            if(usersAuthRepository.getCurrentUser() == null){
+                usersAuthRepository.logOutUser()
+            }
         }
     }
 }
