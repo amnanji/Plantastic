@@ -28,10 +28,11 @@ class SettingsFragment : Fragment() {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textSettings
-        galleryViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        val foodTextView: TextView = binding.foodPreferencesList
+        galleryViewModel.foodPreferences.observe(viewLifecycleOwner){
+            foodTextView.text = it
         }
+
         return root
     }
 

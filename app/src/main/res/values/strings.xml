@@ -33,4 +33,9 @@
     <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="your_current_food_preferences">Your current food preferences:</string>
+    <string name="food_preference_hint">Enter each preference separated by a comma</string>
+    <string name="your_current_dietary_restrictions">Your current dietary restrictions:</string>
+    <string name="your_current_activity_preferences">Your current activity preferences:</string>
+    <string name="your_availability">Your availability:</string>
 </resources>
