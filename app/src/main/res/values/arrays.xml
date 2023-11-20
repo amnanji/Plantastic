@@ -1,3 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <array name="dietary_options">
+        <item>No Restrictions</item>
+        <item>Halal</item>
+        <item>Kosher</item>
+        <item>Pescatarian</item>
+        <item>Vegetarian</item>
+        <item>Vegan</item>
+    </array>
 </resources>
