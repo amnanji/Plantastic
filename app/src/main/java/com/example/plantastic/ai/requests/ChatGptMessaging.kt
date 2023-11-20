@@ -11,7 +11,7 @@ import kotlin.time.Duration.Companion.seconds
 
 //Code referenced from the openai-kotlin api: https://github.com/aallam/openai-kotlin/blob/main/guides/GettingStarted.md#chat
 class ChatGptMessaging {
-    private val apiKey = "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"
+    private val apiKey = "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"
     private lateinit var chatMessages: ArrayList<ChatMessage>
 
     private fun setPreferences(preferences: ArrayList<String>){
@@ -41,7 +41,7 @@ class ChatGptMessaging {
         )
         val response = openAi.chatCompletion(chatCompletionRequest).choices.first().message.content
         if (response != null) {
-            Log.d("Kobe1", response)
+            Log.d("ChatGPT", response)
         }
     }
 
