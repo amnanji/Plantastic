@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Plantastic"
         tools:targetApi="31">
         <activity
+            android:name=".ui.conversation.ConversationActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.signup.SignUpActivity"
             android:exported="false" />
         <activity
