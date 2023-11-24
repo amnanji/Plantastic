@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -11,6 +12,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.core.view.GravityCompat
 import com.example.plantastic.databinding.ActivityMainBinding
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val navBottomBar = binding.appBarMain.bottomNavigationView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         val headerView = navDrawer.getHeaderView(0)
+        val navHeaderLinearLayout = headerView.findViewById<LinearLayout>(R.id.navViewHeader)
         val currUserEmail = headerView.findViewById<TextView>(R.id.currUserEmail_textView)
         val currUserName = headerView.findViewById<TextView>(R.id.currUserName_textView)
 
@@ -44,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_calendar, R.id.nav_settings, R.id.nav_chats, R.id.nav_events, R.id.nav_to_do, R.id.nav_balance
+                R.id.nav_calendar, R.id.nav_settings, R.id.nav_chats, R.id.nav_events, R.id.nav_to_do, R.id.nav_balance, R.id.nav_profile
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -63,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.nav_calendar || destination.id == R.id.nav_settings) {
+            if(destination.id == R.id.nav_calendar || destination.id == R.id.nav_settings || destination.id == R.id.nav_profile) {
                 navBottomBar.visibility = View.GONE
             } else {
                 navBottomBar.visibility = View.VISIBLE
@@ -76,10 +79,19 @@ class MainActivity : AppCompatActivity() {
         }
         currUserEmail.text = currUser!!.email
 
-        usersRepository.getCurrentUser(currUser!!.uid) { user ->
-            if (user != null) {
-                currUserName.text = user.firstName + " " + user.lastName
+        usersRepository.getCurrentUser(currUser.uid) {
+            if (it != null) {
+                currUserName.text = buildString {
+                    append(it.firstName)
+                    append(" ")
+                    append(it.lastName)
+                }
             }
+        }
+
+        navHeaderLinearLayout.setOnClickListener{
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            navController.navigate(R.id.nav_profile)
         }
     }
 
