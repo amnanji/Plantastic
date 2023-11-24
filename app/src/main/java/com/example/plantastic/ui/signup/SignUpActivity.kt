@@ -66,11 +66,11 @@ class SignUpActivity : AppCompatActivity() {
                                 if (isSuccessful) {
                                     navigateToLoginActivity()
                                 }
+
                             }
                         }
                     }
                 }
-                makeSignUpErrorToast()
             }
         }
     }

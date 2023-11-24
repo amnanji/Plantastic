@@ -41,4 +41,20 @@ class UsersRepository {
         })
         return runBlocking { deferred.await() }
     }
+
+    fun getCurrentUser(id: String, callback: (Users?) -> Unit) {
+        val reference = usersReference.child(id)
+
+        reference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val user = dataSnapshot.getValue(Users::class.java)
+                callback(user)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle error
+                callback(null)
+            }
+        })
+    }
 }
