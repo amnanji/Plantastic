@@ -13,11 +13,7 @@ import com.example.plantastic.databinding.FragmentBalancesBinding
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.ui.login.LoginActivity
-import com.example.plantastic.utilities.FirebaseNodes
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-
 class BalancesFragment : Fragment(){
 
     private var _binding: FragmentBalancesBinding? = null
