@@ -7,7 +7,14 @@ import androidx.lifecycle.ViewModel
 class BalancesViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is Balances Fragment"
+        value = "This is balances Fragment"
     }
     val text: LiveData<String> = _text
+
+    // Dummy data for testing
+    val balancesList: List<BalancesItem> = listOf(
+        BalancesItem("John Doe", "You owe:", 50.0),
+        BalancesItem("Jane Doe", "You are owed:", 25.0)
+
+    )
 }
