@@ -32,7 +32,7 @@
                 app:srcCompat="@drawable/ic_launcher_background" />
 
             <TextView
-                android:id="@+id/balancesUserName"
+                android:id="@+id/balancesGroupName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -41,14 +41,14 @@
                 android:layout_marginBottom="8dp"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/balanacesOweStatus"
+                app:layout_constraintBottom_toTopOf="@+id/balanacesOwedByOthers"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/balancesImageView"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="FirstName LastName" />
+                tools:text="Group Name" />
 
             <TextView
-                android:id="@+id/balanacesOweStatus"
+                android:id="@+id/balanacesOwedByOthers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -56,15 +56,15 @@
                 android:layout_marginEnd="8dp"
                 android:textColor="@color/pastel_red"
                 android:textSize="18sp"
+                android:text="You are owed: "
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/balancesImageView"
-                app:layout_constraintTop_toBottomOf="@+id/balancesUserName"
-                tools:text="You are owed: " />
+                app:layout_constraintTop_toBottomOf="@+id/balancesGroupName"/>
 
             <TextView
-                android:id="@+id/balancesAmount"
+                android:id="@+id/balancesAmountOwedByOthers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -74,11 +74,42 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/balanacesOweStatus"
-                app:layout_constraintTop_toBottomOf="@+id/balancesUserName"
+                app:layout_constraintStart_toEndOf="@+id/balanacesOwedByOthers"
+                app:layout_constraintTop_toBottomOf="@+id/balancesGroupName"
                 app:layout_constraintVertical_bias="0.566"
                 tools:text="25 " />
 
+            <TextView
+                android:id="@+id/balanacesOwedByYou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/pastel_red"
+                android:textSize="18sp"
+                android:text="You owe: "
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/balancesImageView"
+                app:layout_constraintTop_toBottomOf="@+id/balanacesOwedByOthers"/>
+
+            <TextView
+                android:id="@+id/balancesAmountOwedByYou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/balanacesOwedByYou"
+                app:layout_constraintTop_toBottomOf="@+id/balanacesOwedByOthers"
+                app:layout_constraintVertical_bias="0.566"
+                tools:text="25 " />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

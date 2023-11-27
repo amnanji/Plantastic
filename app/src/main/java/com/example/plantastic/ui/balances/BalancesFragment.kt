@@ -55,8 +55,7 @@ class BalancesFragment : Fragment() {
 
         var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
         var groupsReference: DatabaseReference = firebaseDatabase.getReference("groups")
-        val groupsQuery = groupsReference.orderByChild("balances/2TuuhzF4QFNVFRed3Wd3RsME1003")
-
+        val groupsQuery = groupsReference.orderByChild("balances/${currUser!!.uid}")
         val options = FirebaseRecyclerOptions.Builder<Groups>().setQuery(groupsQuery, Groups::class.java).build()
 
         // Set up RecyclerView

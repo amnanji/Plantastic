@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         }
         currUserEmail.text = currUser!!.email
 
-        usersRepository.getCurrentUser(currUser.uid) {
+        usersRepository.getUserById(currUser.uid) {
             if (it != null) {
                 currUserName.text = buildString {
                     append(it.firstName)

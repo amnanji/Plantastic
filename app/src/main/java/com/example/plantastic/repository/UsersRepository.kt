@@ -42,7 +42,7 @@ class UsersRepository {
         return runBlocking { deferred.await() }
     }
 
-    fun getCurrentUser(id: String, callback: (Users?) -> Unit) {
+    fun getUserById(id: String, callback: (Users?) -> Unit) {
         val reference = usersReference.child(id)
 
         reference.addListenerForSingleValueEvent(object : ValueEventListener {
