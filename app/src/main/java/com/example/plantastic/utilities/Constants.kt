@@ -5,5 +5,5 @@ object FirebaseNodes {
     const val EMAIL_NODE = "email"
     const val USERNAME_NODE = "username"
     const val GROUPS_NODE = "groups"
-
+    const val GROUPS_PARTICIPANTS_NODE = "participants"
 }

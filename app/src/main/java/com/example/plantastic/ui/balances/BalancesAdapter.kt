@@ -1,18 +1,24 @@
 package com.example.plantastic.ui.balances
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.UsersRepository
+import com.example.plantastic.ui.transactions.TransactionsActivity
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import java.lang.Math.abs
 
-class BalancesAdapter(private val options: FirebaseRecyclerOptions<Groups>,
-                      private val userId: String) :
+class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
+                      private val userId: String
+) :
     FirebaseRecyclerAdapter<Groups, BalancesAdapter.BalancesViewHolder>(options) {
 
     private var usersRepository = UsersRepository()
@@ -37,8 +43,8 @@ class BalancesAdapter(private val options: FirebaseRecyclerOptions<Groups>,
                 amountOwedByOthers += value
             }
         }
-        amountOwedByMe *= -1.0
-        if(model.groupType == "Individual"){
+        amountOwedByMe = kotlin.math.abs(amountOwedByMe)
+        if(model.groupType == "individual"){
             var participants = model.participants
             participants?.forEach { (key, _) ->
                 if (key != userId){
@@ -53,11 +59,21 @@ class BalancesAdapter(private val options: FirebaseRecyclerOptions<Groups>,
         }
         holder.balanceOwedByYou.text = amountOwedByMe.toString()
         holder.balanceOwedByOthers.text = amountOwedByOthers.toString()
+
+        holder.itemView.setOnClickListener{
+            navigateToTransactionsActivity(holder.itemView.context)
+        }
     }
 
     inner class BalancesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val groupName: TextView = itemView.findViewById(R.id.balancesGroupName)
         val balanceOwedByYou: TextView = itemView.findViewById(R.id.balancesAmountOwedByYou)
         val balanceOwedByOthers: TextView = itemView.findViewById(R.id.balancesAmountOwedByOthers)
+    }
+
+    private fun navigateToTransactionsActivity(context: Context){
+        val intent = Intent(context, TransactionsActivity::class.java)
+        context.startActivity(intent)
+
     }
 }

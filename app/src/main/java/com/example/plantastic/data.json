@@ -1,44 +1,5 @@
 {
   "groups": {
-    "c8b07dc2-8d6e-11ee-b9d1-0242ac120002": {
-      "balances": {
-        "am2iF1032zfTfqeC1gpCxbwBZRq2": {
-          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -50.25,
-          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": 10,
-          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 20
-        },
-        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": {
-          "am2iF1032zfTfqeC1gpCxbwBZRq2": 50.25,
-          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": 15,
-          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 23
-        },
-        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": {
-          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -15,
-          "am2iF1032zfTfqeC1gpCxbwBZRq2": -10,
-          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 12.45
-        },
-        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": {
-          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -23,
-          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": -12.45,
-          "am2iF1032zfTfqeC1gpCxbwBZRq2": -20
-        }
-      },
-      "groupType": "group",
-      "id": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
-      "latestMessage": {
-        "content": "Just checking in!",
-        "messageType": "text",
-        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
-        "timestamp": 1700292100000
-      },
-      "name": "CMPT 362",
-      "participants": {
-        "2TuuhzF4QFNVFRed3Wd3RsME1003": true,
-        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true,
-        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true,
-        "am2iF1032zfTfqeC1gpCxbwBZRq2": true
-      }
-    },
     "4fad1c55-8c3b-457c-b04a-8d20dbd356e0": {
       "balances": {
         "ExxalHuGF6VbA3bqGiblJseYg1q1": {
@@ -89,6 +50,97 @@
         "2TuuhzF4QFNVFRed3Wd3RsME1003": true,
         "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true,
         "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true
+      }
+    },
+    "c8b07dc2-8d6e-11ee-b9d1-0242ac120002": {
+      "balances": {
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": {
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 23,
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": 50.25,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": 15
+        },
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -23,
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": -20,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": -12.45
+        },
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -50.25,
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 20,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": 10
+        },
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -15,
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 12.45,
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": -10
+        }
+      },
+      "groupType": "group",
+      "id": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
+      "latestMessage": {
+        "content": "Just checking in!",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1700292100000
+      },
+      "name": "CMPT 362",
+      "participants": {
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true,
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": true,
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true,
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true
+      }
+    },
+    "e6040596-8d79-11ee-b9d1-0242ac120002": {
+      "balances": {
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": {
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": -20,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": -12.45
+        },
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": {
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 20,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": 10
+        },
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": {
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 12.45,
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": -10
+        }
+      },
+      "groupType": "group",
+      "id": "e6040596-8d79-11ee-b9d1-0242ac120002",
+      "latestMessage": {
+        "content": "Just checking in!",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1700292100000
+      },
+      "name": "Birthday",
+      "participants": {
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": true,
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true,
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true
+      }
+    },
+    "f055f81a-8d79-11ee-b9d1-0242ac120002": {
+      "balances": {
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": {
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": -20
+        },
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": {
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 20
+        }
+      },
+      "groupType": "individual",
+      "id": "f055f81a-8d79-11ee-b9d1-0242ac120002",
+      "latestMessage": {
+        "content": "Just checking in!",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1700292100000
+      },
+      "participants": {
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": true,
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true
       }
     },
     "f72e3d3f-c39f-42d2-b261-71848e95837c": {

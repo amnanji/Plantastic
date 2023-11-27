@@ -20,11 +20,10 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class BalancesFragment : Fragment() {
+class BalancesFragment : Fragment(){
 
     private var _binding: FragmentBalancesBinding? = null
     private lateinit var balancesViewModel: BalancesViewModel
-    private lateinit var balancesAdapter: BalancesAdapter
 
     private val binding get() = _binding!!
 
@@ -48,10 +47,10 @@ class BalancesFragment : Fragment() {
         if(currUser == null){
             navigateToLoginActivity()
         }
-        Log.d("hfhfh", "${currUser!!.uid}")
+
         var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
-        var groupsReference: DatabaseReference = firebaseDatabase.getReference("groups")
-        val groupsQuery = groupsReference.orderByChild("participants/${currUser!!.uid}").equalTo(true)
+        var groupsReference: DatabaseReference = firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
+        val groupsQuery = groupsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/${currUser!!.uid}").equalTo(true)
         val options = FirebaseRecyclerOptions.Builder<Groups>().setQuery(groupsQuery, Groups::class.java).build()
 
         // Set up RecyclerView
@@ -59,6 +58,8 @@ class BalancesFragment : Fragment() {
         binding.balancesRecyclerView.adapter = adapter
         val manager = LinearLayoutManager(requireContext())
         binding.balancesRecyclerView.layoutManager = manager
+
+        adapter.startListening()
 
         return root
     }
@@ -68,14 +69,19 @@ class BalancesFragment : Fragment() {
         _binding = null
     }
 
-    override fun onPause() {
+    override fun onDestroy() {
+        super.onDestroy()
         adapter.stopListening()
-        super.onPause()
     }
 
-    override fun onResume() {
-        super.onResume()
-        adapter.startListening()
+    override fun onStop() {
+        super.onStop()
+        adapter.stopListening()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        adapter.stopListening()
     }
 
     private fun navigateToLoginActivity() {
