@@ -38,7 +38,19 @@ class BalancesAdapter(private val options: FirebaseRecyclerOptions<Groups>,
             }
         }
         amountOwedByMe *= -1.0
-        holder.groupName.text = model.name
+        if(model.groupType == "Individual"){
+            var participants = model.participants
+            participants?.forEach { (key, _) ->
+                if (key != userId){
+                    usersRepository.getUserById(key){
+                        holder.groupName.text = it?.username
+                    }
+                }
+            }
+        }
+        else{
+            holder.groupName.text = model.name
+        }
         holder.balanceOwedByYou.text = amountOwedByMe.toString()
         holder.balanceOwedByOthers.text = amountOwedByOthers.toString()
     }
@@ -48,5 +60,4 @@ class BalancesAdapter(private val options: FirebaseRecyclerOptions<Groups>,
         val balanceOwedByYou: TextView = itemView.findViewById(R.id.balancesAmountOwedByYou)
         val balanceOwedByOthers: TextView = itemView.findViewById(R.id.balancesAmountOwedByOthers)
     }
-
 }
