@@ -1,13 +1,28 @@
 package com.example.plantastic.ui.balances
 
+import android.content.Intent
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import android.widget.TextView
+import com.example.plantastic.models.Groups
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.plantastic.databinding.FragmentBalancesBinding
+import com.example.plantastic.repository.GroupsRepository
+import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.ui.login.LoginActivity
+import com.example.plantastic.utilities.FirebaseNodes
+import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 
 class BalancesFragment : Fragment() {
 
@@ -16,6 +31,10 @@ class BalancesFragment : Fragment() {
     private lateinit var balancesAdapter: BalancesAdapter
 
     private val binding get() = _binding!!
+
+    private lateinit var groupsRepository: GroupsRepository
+    private lateinit var usersAuthRepository: UsersAuthRepository
+    private lateinit var adapter: BalancesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,21 +47,45 @@ class BalancesFragment : Fragment() {
         balancesViewModel =
             ViewModelProvider(this)[BalancesViewModel::class.java]
 
-        // Set up RecyclerView
-        val recyclerView = binding.balancesRecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        balancesAdapter = BalancesAdapter(balancesViewModel.balancesList)
-        recyclerView.adapter = balancesAdapter
-
-        // val textView: TextView = binding.balancesFragmentText
-        balancesViewModel.text.observe(viewLifecycleOwner) {
-            // textView.text = it
+        usersAuthRepository = UsersAuthRepository()
+        val currUser = usersAuthRepository.getCurrentUser()
+        if(currUser == null){
+            navigateToLoginActivity()
         }
+
+        var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
+        var groupsReference: DatabaseReference = firebaseDatabase.getReference("groups")
+        val groupsQuery = groupsReference.orderByChild("balances/2TuuhzF4QFNVFRed3Wd3RsME1003")
+
+        val options = FirebaseRecyclerOptions.Builder<Groups>().setQuery(groupsQuery, Groups::class.java).build()
+
+        // Set up RecyclerView
+        adapter = BalancesAdapter(options, currUser!!.uid)
+        binding.balancesRecyclerView.adapter = adapter
+        val manager = LinearLayoutManager(requireContext())
+        binding.balancesRecyclerView.layoutManager = manager
+
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onPause() {
+        adapter.stopListening()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.startListening()
+    }
+
+    private fun navigateToLoginActivity() {
+        val intent = Intent(requireActivity(), LoginActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 }
