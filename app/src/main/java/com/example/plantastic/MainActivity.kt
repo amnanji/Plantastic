@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
 
     private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
 
+    val x = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
