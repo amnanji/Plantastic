@@ -1,6 +1,7 @@
 package com.example.plantastic.ui.chats
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import com.example.plantastic.R
 import com.example.plantastic.databinding.ChatGroupBinding
 import com.example.plantastic.databinding.ChatIndividualBinding
 import com.example.plantastic.models.Groups
+import com.example.plantastic.repository.UsersRepository
+import com.example.plantastic.ui.conversation.ConversationActivity
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
@@ -19,6 +22,7 @@ class ChatsAdapter (
     private val options: FirebaseRecyclerOptions<Groups>,
     private val userId: String
 ) : FirebaseRecyclerAdapter<Groups, RecyclerView.ViewHolder>(options){
+    val usersRepository = UsersRepository()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == VIEW_TYPE_GROUP){
@@ -46,12 +50,24 @@ class ChatsAdapter (
             binding.chatName.text = item.name
             if (item.latestMessage != null){
                 binding.lastMsgContent.text = item.latestMessage.content
-                binding.lastMsgSender.text = "${item.latestMessage.senderId}: "
+
+                usersRepository.getUserById(item.latestMessage.senderId!!){
+                    if (it != null) {
+                        binding.lastMsgSender.text = "${it.firstName} ${it.lastName}: "
+                    }
+                }
+
 
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = item.latestMessage.timestamp!!
                 val date: String = DateFormat.format("MMM dd, yyyy", calendar).toString()
                 binding.lastMsgTimestamp.text = date
+            }
+
+            itemView.setOnClickListener{
+                val intent = Intent(itemView.context, ConversationActivity::class.java)
+                intent.putExtra(ConversationActivity.KEY_GROUP_ID, item.id)
+                itemView.context.startActivity(intent)
             }
         }
     }
@@ -61,8 +77,11 @@ class ChatsAdapter (
             Log.i(TAG,"Curr chat item ref --> $ref")
             val participants = item.participants!!.keys.toList()
             val otherParticipantId = if (participants[0] == userId) participants[1] else participants[0]
-//            val otherParticipant = UsersRepository().getUserById(otherParticipantId)
-//            binding.chatName.text = "${otherParticipant?.firstName} ${otherParticipant?.lastName}"
+            usersRepository.getUserById(otherParticipantId){
+                if (it != null) {
+                    binding.chatName.text = "${it.firstName} ${it.lastName}"
+                }
+            }
 
             if (item.latestMessage != null) {
                 binding.lastMsgContent.text = item.latestMessage.content
@@ -71,6 +90,12 @@ class ChatsAdapter (
                 calendar.timeInMillis = item.latestMessage.timestamp!!
                 val date: String = DateFormat.format("MMM dd, yyyy", calendar).toString()
                 binding.lastMsgTimestamp.text = date
+            }
+
+            itemView.setOnClickListener{
+                val intent = Intent(itemView.context, ConversationActivity::class.java)
+                intent.putExtra(ConversationActivity.KEY_GROUP_ID, item.id)
+                itemView.context.startActivity(intent)
             }
         }
     }

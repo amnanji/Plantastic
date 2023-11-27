@@ -10,5 +10,6 @@ data class Groups(
     val eventIds:HashMap<String, Boolean>? = null,
     val name: String? = null,
     val admins: ArrayList<String>? = null,
-    val latestMessage: Message? = null
+    val latestMessage: Message? = null,
+    var balances:HashMap<String, HashMap<String, Int>>? = null
 )

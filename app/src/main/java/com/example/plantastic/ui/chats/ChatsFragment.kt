@@ -11,10 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.plantastic.databinding.FragmentChatsBinding
 import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.repository.UsersRepository
+import com.example.plantastic.ui.conversation.ConversationActivity
 import com.example.plantastic.utilities.FirebaseNodes
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ChatsFragment : Fragment() {
     private lateinit var adapter: ChatsAdapter
@@ -50,7 +55,7 @@ class ChatsFragment : Fragment() {
         val manager = LinearLayoutManager(requireContext())
         binding.chatsRecyclerView.layoutManager = manager
 
-
+        adapter.startListening()
         return root
     }
 
@@ -59,14 +64,19 @@ class ChatsFragment : Fragment() {
         _binding = null
     }
 
-    public override fun onPause() {
+    override fun onPause() {
         adapter.stopListening()
         super.onPause()
     }
 
-    public override fun onResume() {
-        super.onResume()
-        adapter.startListening()
+    override fun onDestroy() {
+        super.onDestroy()
+        adapter.stopListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        adapter.stopListening()
     }
 
     companion object {

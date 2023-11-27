@@ -1,5 +1,6 @@
 package com.example.plantastic.repository
 
+import android.util.Log
 import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.models.Users
 import com.google.firebase.database.DataSnapshot
@@ -14,10 +15,18 @@ import kotlinx.coroutines.runBlocking
 
 // Help from - https://firebase.google.com/docs/database/android/read-and-write
 class UsersRepository {
-    private var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
-    private var usersReference: DatabaseReference = firebaseDatabase.getReference(FirebaseNodes.USERS_NODE)
+    private var firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
+    private var usersReference: DatabaseReference =
+        firebaseDatabase.getReference(FirebaseNodes.USERS_NODE)
 
-    fun createNewUser(userId: String, firstName: String, lastName: String, username: String, email: String, onComplete: (Boolean) -> Unit) {
+    fun createNewUser(
+        userId: String,
+        firstName: String,
+        lastName: String,
+        username: String,
+        email: String,
+        onComplete: (Boolean) -> Unit
+    ) {
 
         val user = Users(firstName, lastName, username, email)
         usersReference.child(userId).setValue(user)
@@ -30,7 +39,7 @@ class UsersRepository {
     }
 
     fun isFieldUnique(nodeName: String, value: String): Boolean {
-        val deferred =  CompletableDeferred<Boolean>()
+        val deferred = CompletableDeferred<Boolean>()
         usersReference.orderByChild(nodeName).equalTo(value).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -44,18 +53,50 @@ class UsersRepository {
         return runBlocking { deferred.await() }
     }
 
-    fun getUserById(userId: String): Users? {
-        val deferred =  CompletableDeferred<Users?>()
-        usersReference.child(userId).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                deferred.complete(snapshot.value as Users?)
+    fun getUserById(id: String, callback: (Users?) -> Unit) {
+        val reference = usersReference.child(id)
+
+        reference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val user = dataSnapshot.getValue(Users::class.java)
+                callback(user)
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                deferred.completeExceptionally(error.toException())
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle error
+                callback(null)
             }
         })
-        return runBlocking { deferred.await() }
     }
+
+    fun getUsersById(ids: ArrayList<String>): ArrayList<Users> {
+        val ret = ArrayList<Users>()
+
+        for (id in ids) {
+            val reference = usersReference.child(id)
+            val deferred = CompletableDeferred<Users?>()
+
+            reference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d("Pln", "Received user --> $snapshot")
+                    deferred.complete(snapshot.getValue(Users::class.java))
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    deferred.completeExceptionally(error.toException())
+                }
+            })
+            runBlocking { deferred.await() }?.let { ret.add(it) }
+        }
+        return ret
+    }
+
+//    reference.get()
+//    .addOnSuccessListener {
+//        Log.d("Pln", "Received user --> $it")
+//        deferred.complete(it.getValue(Users::class.java))
+//    }.addOnFailureListener {
+//        deferred.completeExceptionally(it)
+//    }
+//    runBlocking { deferred.await() }?.let { ret.add(it) }
 }
