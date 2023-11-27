@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.plantastic.databinding.FragmentBalancesBinding
+import com.example.plantastic.repository.GroupsRepository
+import com.google.firebase.database.DatabaseReference
 
 class BalancesFragment : Fragment() {
 
@@ -16,6 +18,8 @@ class BalancesFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private lateinit var groupsRepository: GroupsRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +31,8 @@ class BalancesFragment : Fragment() {
 
         _binding = FragmentBalancesBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        groupsRepository
 
         val textView: TextView = binding.balancesFragmentText
         balancesViewModel.text.observe(viewLifecycleOwner) {

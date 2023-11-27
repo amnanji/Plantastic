@@ -1,0 +1,298 @@
+{
+  "chats": {
+    "a74394cb-802f-4321-b1af-3083c3d1dc09": {
+      "name": "besties",
+      "chatType": "group",
+      "latestMessage": {
+		"messageType": "text",
+		"content": "Just checking in!",
+		"senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+		"timestamp": 1700292100
+      }
+    },
+    "4fad1c55-8c3b-457c-b04a-8d20dbd356e0": {
+      "name": "cmpt362",
+      "chatType": "group",
+      "latestMessage": {
+        "messageType": "text",
+		"content": "Just finished a great chapter!",
+		"senderId": "ExxalHuGF6VbA3bqGiblJseYg1q1",
+		"timestamp": 1700292400
+      }
+    },
+    "f72e3d3f-c39f-42d2-b261-71848e95837c": {
+      "name": "cmpt100",
+      "chatType": "group",
+      "latestMessage": {
+        "messageType": "text",
+		"content": "Just booked my flight!",
+		"senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+		"timestamp": 1700292700
+      }
+    }
+  },
+  "groups": {
+    "a74394cb-802f-4321-b1af-3083c3d1dc09": {
+		"id":"a74394cb-802f-4321-b1af-3083c3d1dc09",
+      "participants": {
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true,
+        "2TuuhzF4QFNVFRed3Wd3RsME1003": true
+      },
+      "eventIds": {},
+      "balances": {
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": {
+          "2TuuhzF4QFNVFRed3Wd3RsME1003": 5
+        },
+        "2TuuhzF4QFNVFRed3Wd3RsME1003": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -5
+        }
+      }
+    },
+    "4fad1c55-8c3b-457c-b04a-8d20dbd356e0": {
+		"id":"4fad1c55-8c3b-457c-b04a-8d20dbd356e0",
+      "participants": {
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true,
+        "ExxalHuGF6VbA3bqGiblJseYg1q1": true
+      },
+      "eventIds": {},
+      "balances": {
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": {
+          "ExxalHuGF6VbA3bqGiblJseYg1q1": 5
+        },
+        "ExxalHuGF6VbA3bqGiblJseYg1q1": {
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": -5
+        }
+      }
+    },
+    "f72e3d3f-c39f-42d2-b261-71848e95837c": {
+	  "id":"f72e3d3f-c39f-42d2-b261-71848e95837c",
+      "participants": {
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true,
+        "2TuuhzF4QFNVFRed3Wd3RsME1003": true
+      },
+      "eventIds": {},
+      "balances": {
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": {
+          "2TuuhzF4QFNVFRed3Wd3RsME1003": 5
+        },
+        "2TuuhzF4QFNVFRed3Wd3RsME1003": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -5
+        }
+      }
+    }
+  },
+  "messages": {
+	"a74394cb-802f-4321-b1af-3083c3d1dc09": {
+		"msg01": {
+		  "messageType": "text",
+		  "content": "Hello Group One!",
+		  "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+		  "timestamp": 1700291966
+		},
+		"msg02": {
+		  "messageType": "text",
+		  "content": "How's everyone doing?",
+		  "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+		  "timestamp": 1700291975
+		},
+		"msg03": {
+		  "messageType": "text",
+		  "content": "Let's plan an event!",
+		  "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+		  "timestamp": 1700292002
+		},
+		"msg04": {
+		  "messageType": "text",
+		  "content": "Any movie suggestions?",
+		  "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+		  "timestamp": 1700292010
+		},
+		"msg05": {
+		  "messageType": "text",
+		  "content": "Happy weekend!",
+		  "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+		  "timestamp": 1700292055
+		},
+		"msg06": {
+		  "messageType": "text",
+		  "content": "Just checking in!",
+		  "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+		  "timestamp": 1700292100
+		}
+	},
+	"4fad1c55-8c3b-457c-b04a-8d20dbd356e0": {
+		"msg07": {
+		  "messageType": "text",
+		  "content": "Hey Group Two!",
+		  "senderId": "WanfT73gsZQ7x9n6IMHwmNxc3nu2",
+		  "timestamp": 1700292200
+		},
+		"msg08": {
+		  "messageType": "text",
+		  "content": "What are your plans for the day?",
+		  "senderId": "ExxalHuGF6VbA3bqGiblJseYg1q1",
+		  "timestamp": 1700292215
+		},
+		"msg09": {
+		  "messageType": "text",
+		  "content": "Let's organize a study session!",
+		  "senderId": "WanfT73gsZQ7x9n6IMHwmNxc3nu2",
+		  "timestamp": 1700292230
+		},
+		"msg10": {
+		  "messageType": "text",
+		  "content": "Any book recommendations?",
+		  "senderId": "ExxalHuGF6VbA3bqGiblJseYg1q1",
+		  "timestamp": 1700292300
+		},
+		"msg11": {
+		  "messageType": "text",
+		  "content": "Happy reading!",
+		  "senderId": "WanfT73gsZQ7x9n6IMHwmNxc3nu2",
+		  "timestamp": 1700292350
+		},
+		"msg12": {
+		  "messageType": "text",
+		  "content": "Just finished a great chapter!",
+		  "senderId": "ExxalHuGF6VbA3bqGiblJseYg1q1",
+		  "timestamp": 1700292400
+		}
+	},
+	"f72e3d3f-c39f-42d2-b261-71848e95837c": {
+		"msg13": {
+		  "messageType": "text",
+		  "content": "Greetings Group Three!",
+		  "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+		  "timestamp": 1700292500
+		},
+		"msg14": {
+		  "messageType": "text",
+		  "content": "What's on the agenda today?",
+		  "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+		  "timestamp": 1700292515
+		},
+		"msg15": {
+		  "messageType": "text",
+		  "content": "Let's plan a weekend trip!",
+		  "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+		  "timestamp": 1700292530
+		},
+		"msg16": {
+		  "messageType": "text",
+		  "content": "Any travel enthusiasts here?",
+		  "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+		  "timestamp": 1700292600
+		},
+		"msg17": {
+		  "messageType": "text",
+		  "content": "Happy exploring!",
+		  "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+		  "timestamp": 1700292650
+		},
+		"msg18": {
+		  "messageType": "text",
+		  "content": "Just booked my flight!",
+		  "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+		  "timestamp": 1700292700
+		}
+	}
+  },
+  "users": {
+    "2TuuhzF4QFNVFRed3Wd3RsME1003": {
+      "email": "h@h.com",
+      "firstName": "fjjsjs",
+      "lastName": "zjnsn",
+      "username": "jsjsjs"
+    },
+    "5jNzVJH8lmfVpgLQsT9iF3zuDK02": {
+      "email": "hdhd@a.com",
+      "firstName": "djjdjd",
+      "lastName": "sjdjdn",
+      "username": "disksk"
+    },
+    "72FygfkVmUe5LjtTYuEEAJ73yxm2": {
+      "email": "a@a.com",
+      "firstName": "jdjks",
+      "lastName": "siskms",
+      "username": "jsnsmsm"
+    },
+    "9kSNqPiEO9cyIbq2PgeLReBLbXd2": {
+      "email": "rheaunni01@gmail.com",
+      "firstName": "Rhea",
+      "lastName": "Unni",
+      "username": "rheaa"
+    },
+    "CFUWlYhRYYV3eVewATPwfRsJIlQ2": {
+      "email": "b@b.com",
+      "firstName": "yhjj",
+      "lastName": "fnmm",
+      "username": "ndjdndn"
+    },
+    "EXYDmvFrfsOIrRV7IMjSZBgpmyi1": {
+      "email": "s@s.com",
+      "firstName": "jdjdnnd",
+      "lastName": "jsjjsns",
+      "username": "smodaka"
+    },
+    "ExxalHuGF6VbA3bqGiblJseYg1q1": {
+      "email": "smodak@a.com",
+      "firstName": "nsndjdn",
+      "lastName": "snsnsm",
+      "username": "smodak"
+    },
+    "Ijzd4tnU3De18AHvaA4s1wb9gNN2": {
+      "email": "amnamn2012@gmail.com",
+      "firstName": "Ali",
+      "lastName": "Nanji",
+      "username": "amnanji"
+    },
+    "O6U1fJUWaKfBAHJNPPY5gKRnmiG2": {
+      "email": "def@def.com",
+      "firstName": "abc",
+      "lastName": "fbdj",
+      "username": "dusjdnd"
+    },
+    "R1rzpgEWc5autAwdIY1ZhHPwWok1": {
+      "email": "c@c.com",
+      "firstName": "hzjska",
+      "lastName": "shjsjs",
+      "username": "hdjskakdn"
+    },
+    "SgleSw2twENN4cWNrcQFMxBkHSi2": {
+      "email": "sidjnd@sndn.com",
+      "firstName": "fjdjjdjd",
+      "lastName": "didjjdnd",
+      "username": "dijdjdk"
+    },
+    "WanfT73gsZQ7x9n6IMHwmNxc3nu2": {
+      "email": "jsmithgmail@gmail.com",
+      "firstName": "joe",
+      "lastName": "smith",
+      "username": "jsmith"
+    },
+    "am2iF1032zfTfqeC1gpCxbwBZRq2": {
+      "email": "shaneil1024@gmail.com",
+      "firstName": "Shaneil",
+      "lastName": "Kapadia",
+      "username": "shaneilk"
+    },
+    "g6CgR7rSbFXxygy7EB2cXfRE9hD3": {
+      "email": "jain.revika@gmail.com",
+      "firstName": "revika ",
+      "lastName": "jain",
+      "username": "revikaj"
+    },
+    "uYeImUAMUMWmnxsWK85HOPndb4M2": {
+      "email": "s@s.coma",
+      "firstName": "dhhdjdn",
+      "lastName": "dujdjd",
+      "username": "shsnnd"
+    },
+    "vkEEbh6VWkTVYq4fzjX0xSP77LS2": {
+      "email": "r@r.com",
+      "firstName": "jsnsns",
+      "lastName": "brnd",
+      "username": "rr"
+    }
+  }
+}
