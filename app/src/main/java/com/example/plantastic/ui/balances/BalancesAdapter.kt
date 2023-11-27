@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.Groups
@@ -14,7 +13,6 @@ import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.transactions.TransactionsActivity
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import java.lang.Math.abs
 
 class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
                       private val userId: String
@@ -22,7 +20,6 @@ class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
     FirebaseRecyclerAdapter<Groups, BalancesAdapter.BalancesViewHolder>(options) {
 
     private var usersRepository = UsersRepository()
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):  BalancesViewHolder {
         val inflater = LayoutInflater.from(parent.context)

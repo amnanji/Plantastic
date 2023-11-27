@@ -3,12 +3,10 @@ package com.example.plantastic.ui.balances
 import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.example.plantastic.models.Groups
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.plantastic.databinding.FragmentBalancesBinding
@@ -48,9 +46,9 @@ class BalancesFragment : Fragment(){
             navigateToLoginActivity()
         }
 
-        var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
-        var groupsReference: DatabaseReference = firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
-        val groupsQuery = groupsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/${currUser!!.uid}").equalTo(true)
+        groupsRepository = GroupsRepository()
+
+        val groupsQuery = groupsRepository.getAllGroupsQueryForUser(currUser!!.uid)
         val options = FirebaseRecyclerOptions.Builder<Groups>().setQuery(groupsQuery, Groups::class.java).build()
 
         // Set up RecyclerView
