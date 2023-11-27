@@ -17,12 +17,8 @@ import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.ui.login.LoginActivity
 import com.example.plantastic.utilities.FirebaseNodes
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.getValue
 
 class BalancesFragment : Fragment() {
 
@@ -52,10 +48,10 @@ class BalancesFragment : Fragment() {
         if(currUser == null){
             navigateToLoginActivity()
         }
-
+        Log.d("hfhfh", "${currUser!!.uid}")
         var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
         var groupsReference: DatabaseReference = firebaseDatabase.getReference("groups")
-        val groupsQuery = groupsReference.orderByChild("balances/${currUser!!.uid}")
+        val groupsQuery = groupsReference.orderByChild("participants/${currUser!!.uid}").equalTo(true)
         val options = FirebaseRecyclerOptions.Builder<Groups>().setQuery(groupsQuery, Groups::class.java).build()
 
         // Set up RecyclerView
