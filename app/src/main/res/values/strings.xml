@@ -38,4 +38,7 @@
     <string name="your_current_dietary_restrictions">Your current dietary restrictions:</string>
     <string name="your_current_activity_preferences">Your current activity preferences:</string>
     <string name="your_availability">Your availability:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nav_profile">Profile</string>
 </resources>

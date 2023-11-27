@@ -4,14 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.core.view.GravityCompat
 import com.example.plantastic.databinding.ActivityMainBinding
 import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
+    private var usersRepository: UsersRepository = UsersRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +38,11 @@ class MainActivity : AppCompatActivity() {
         val navDrawer = binding.navDrawer
         val navBottomBar = binding.appBarMain.bottomNavigationView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
+        val headerView = navDrawer.getHeaderView(0)
+        val navHeaderLinearLayout = headerView.findViewById<LinearLayout>(R.id.navViewHeader)
+        val currUserEmail = headerView.findViewById<TextView>(R.id.currUserEmail_textView)
+        val currUserName = headerView.findViewById<TextView>(R.id.currUserName_textView)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
@@ -56,11 +66,32 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.nav_calendar || destination.id == R.id.nav_settings) {
+            if(destination.id == R.id.nav_calendar || destination.id == R.id.nav_settings || destination.id == R.id.nav_profile) {
                 navBottomBar.visibility = View.GONE
             } else {
                 navBottomBar.visibility = View.VISIBLE
             }
+        }
+
+        val currUser = usersAuthRepository.getCurrentUser()
+        if (currUser == null){
+            navigateToLoginActivity()
+        }
+        currUserEmail.text = currUser!!.email
+
+        usersRepository.getCurrentUser(currUser.uid) {
+            if (it != null) {
+                currUserName.text = buildString {
+                    append(it.firstName)
+                    append(" ")
+                    append(it.lastName)
+                }
+            }
+        }
+
+        navHeaderLinearLayout.setOnClickListener{
+            drawerLayout.closeDrawer(GravityCompat.START)
+            navController.navigate(R.id.nav_profile)
         }
     }
 

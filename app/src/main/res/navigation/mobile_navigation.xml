@@ -40,4 +40,10 @@
         android:name="com.example.plantastic.ui.toDo.ToDoFragment"
         android:label="@string/to_do"
         tools:layout="@layout/fragment_to_do" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.plantastic.ui.profile.ProfileFragment"
+        android:label="@string/nav_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
