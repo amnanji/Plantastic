@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/rounded_borders"
+    android:background="@drawable/rounded_borders_15dp"
     android:backgroundTint="@color/card_background"
     android:layout_margin="10dp"
     android:padding="5dp">

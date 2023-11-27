@@ -7,4 +7,6 @@
     <color name="curr_user_msg">#FF9800</color>
     <color name="other_user_msg">#2B2B2B</color>
     <color name="ai_msg">#EB5552</color>
+    <color name="text_on_background">#FFFFFF</color>
+    <color name="write_msg_background">#1F1F21</color>
 </resources>

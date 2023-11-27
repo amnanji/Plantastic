@@ -7,7 +7,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.values
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 // Help from - https://firebase.google.com/docs/database/android/read-and-write
@@ -33,6 +35,21 @@ class UsersRepository {
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 deferred.complete(!snapshot.exists())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                deferred.completeExceptionally(error.toException())
+            }
+        })
+        return runBlocking { deferred.await() }
+    }
+
+    fun getUserById(userId: String): Users? {
+        val deferred =  CompletableDeferred<Users?>()
+        usersReference.child(userId).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                deferred.complete(snapshot.value as Users?)
             }
 
             override fun onCancelled(error: DatabaseError) {

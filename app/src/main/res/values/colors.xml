@@ -14,4 +14,6 @@
     <color name="curr_user_msg">#F2D5C3</color>
     <color name="other_user_msg">#C1C1C1</color>
     <color name="ai_msg">#EB5552</color>
+    <color name="text_on_background">#FF000000</color>
+    <color name="write_msg_background">#DFDFDF</color>
 </resources>

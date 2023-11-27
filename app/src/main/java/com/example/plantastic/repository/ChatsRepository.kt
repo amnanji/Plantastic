@@ -6,7 +6,7 @@ import com.google.firebase.database.FirebaseDatabase
 
 class ChatsRepository {
     private var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
-    private var chatsReference: DatabaseReference = firebaseDatabase.getReference(FirebaseNodes.CHATS_NODE)
+    private var groupsReference: DatabaseReference = firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
 
 //    fun getConversations(userId: String): ArrayList<Chat>{
 //        conversationsReference.orderByChild("participants/$userId").equalTo(true)

@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.plantastic.databinding.FragmentChatsBinding
-import com.example.plantastic.models.Chat
+import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.utilities.FirebaseNodes
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -37,15 +37,15 @@ class ChatsFragment : Fragment() {
         val root: View = binding.root
 
         val currUser = UsersAuthRepository().getCurrentUser()
-        val userId = currUser?.uid
+        val userId = currUser!!.uid
         Log.d(TAG, "Curr user id --> $userId")
 
         val firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
-        val chatsReference: DatabaseReference = firebaseDatabase.getReference(FirebaseNodes.CHATS_NODE)
-        val groupsQuery = chatsReference.orderByChild("participants/$userId").equalTo(true)
+        val groupsReference: DatabaseReference = firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
+        val groupsQuery = groupsReference.orderByChild("participants/$userId").equalTo(true)
 
-        val options = FirebaseRecyclerOptions.Builder<Chat>().setQuery(groupsQuery, Chat::class.java).build()
-        adapter = ChatsAdapter(options, currUser!!.displayName)
+        val options = FirebaseRecyclerOptions.Builder<Groups>().setQuery(groupsQuery, Groups::class.java).build()
+        adapter = ChatsAdapter(options, userId)
         binding.chatsRecyclerView.adapter = adapter
         val manager = LinearLayoutManager(requireContext())
         binding.chatsRecyclerView.layoutManager = manager

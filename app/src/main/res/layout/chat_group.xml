@@ -16,6 +16,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         app:layout_constraintStart_toEndOf="@id/messengerImageView"
         app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/text_on_background"
         tools:text="Group xyz" />
 
     <TextView

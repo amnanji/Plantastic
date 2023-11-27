@@ -31,22 +31,34 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ececec"
+        android:background="@drawable/rounded_borders"
+        android:backgroundTint="@color/write_msg_background"
         android:orientation="horizontal"
         android:paddingHorizontal="10dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/add"/>
 
         <EditText
             android:id="@+id/messageEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:hint="Say something..."
+            android:background="@android:color/transparent"
+            android:hint="Message..."
             android:inputType="text"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:padding="10dp" />
 
         <ImageView
