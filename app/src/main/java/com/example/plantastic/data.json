@@ -1,0 +1,383 @@
+{
+  "groups": {
+    "4fad1c55-8c3b-457c-b04a-8d20dbd356e0": {
+      "balances": {
+        "ExxalHuGF6VbA3bqGiblJseYg1q1": {
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": -5
+        },
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": {
+          "ExxalHuGF6VbA3bqGiblJseYg1q1": 5
+        }
+      },
+      "groupType": "individual",
+      "id": "4fad1c55-8c3b-457c-b04a-8d20dbd356e0",
+      "latestMessage": {
+        "content": "Just finished a great chapter!",
+        "messageType": "text",
+        "senderId": "ExxalHuGF6VbA3bqGiblJseYg1q1",
+        "timestamp": 1700292400000
+      },
+      "participants": {
+        "ExxalHuGF6VbA3bqGiblJseYg1q1": true,
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true
+      }
+    },
+    "a74394cb-802f-4321-b1af-3083c3d1dc09": {
+      "balances": {
+        "2TuuhzF4QFNVFRed3Wd3RsME1003": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -5,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": 0
+        },
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": {
+          "2TuuhzF4QFNVFRed3Wd3RsME1003": 5,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": 0
+        },
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": {
+          "2TuuhzF4QFNVFRed3Wd3RsME1003": 0,
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": 0
+        }
+      },
+      "groupType": "group",
+      "id": "a74394cb-802f-4321-b1af-3083c3d1dc09",
+      "latestMessage": {
+        "content": "Just checking in!",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1700292100000
+      },
+      "name": "besties",
+      "participants": {
+        "2TuuhzF4QFNVFRed3Wd3RsME1003": true,
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true,
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true
+      }
+    },
+    "c8b07dc2-8d6e-11ee-b9d1-0242ac120002": {
+      "balances": {
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": {
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 23,
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": 50.25,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": 15
+        },
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -23,
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": -20,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": -12.45
+        },
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -50.25,
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 20,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": 10
+        },
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -15,
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 12.45,
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": -10
+        }
+      },
+      "groupType": "group",
+      "id": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
+      "latestMessage": {
+        "content": "Just checking in!",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1700292100000
+      },
+      "name": "CMPT 362",
+      "participants": {
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true,
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": true,
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true,
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true
+      }
+    },
+    "e6040596-8d79-11ee-b9d1-0242ac120002": {
+      "balances": {
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": {
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": -20,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": -12.45
+        },
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": {
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 20,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": 10
+        },
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": {
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 12.45,
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": -10
+        }
+      },
+      "groupType": "group",
+      "id": "e6040596-8d79-11ee-b9d1-0242ac120002",
+      "latestMessage": {
+        "content": "Just checking in!",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1700292100000
+      },
+      "name": "Birthday",
+      "participants": {
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": true,
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true,
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true
+      }
+    },
+    "f055f81a-8d79-11ee-b9d1-0242ac120002": {
+      "balances": {
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": {
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": -20
+        },
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": {
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 20
+        }
+      },
+      "groupType": "individual",
+      "id": "f055f81a-8d79-11ee-b9d1-0242ac120002",
+      "latestMessage": {
+        "content": "Just checking in!",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1700292100000
+      },
+      "participants": {
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": true,
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true
+      }
+    },
+    "f72e3d3f-c39f-42d2-b261-71848e95837c": {
+      "balances": {
+        "2TuuhzF4QFNVFRed3Wd3RsME1003": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -5
+        },
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": {
+          "2TuuhzF4QFNVFRed3Wd3RsME1003": 5
+        }
+      },
+      "groupType": "individual",
+      "id": "f72e3d3f-c39f-42d2-b261-71848e95837c",
+      "latestMessage": {
+        "content": "Just booked my flight!",
+        "messageType": "text",
+        "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+        "timestamp": 1700292700000
+      },
+      "participants": {
+        "2TuuhzF4QFNVFRed3Wd3RsME1003": true,
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true
+      }
+    }
+  },
+  "messages": {
+    "4fad1c55-8c3b-457c-b04a-8d20dbd356e0": {
+      "msg07": {
+        "content": "Hey Group Two!",
+        "messageType": "text",
+        "senderId": "WanfT73gsZQ7x9n6IMHwmNxc3nu2",
+        "timestamp": 1700292200000
+      },
+      "msg08": {
+        "content": "What are your plans for the day?",
+        "messageType": "text",
+        "senderId": "ExxalHuGF6VbA3bqGiblJseYg1q1",
+        "timestamp": 1700292215000
+      },
+      "msg09": {
+        "content": "Let's organize a study session!",
+        "messageType": "text",
+        "senderId": "WanfT73gsZQ7x9n6IMHwmNxc3nu2",
+        "timestamp": 1700292230000
+      },
+      "msg10": {
+        "content": "Any book recommendations?",
+        "messageType": "text",
+        "senderId": "ExxalHuGF6VbA3bqGiblJseYg1q1",
+        "timestamp": 1700292300000
+      },
+      "msg11": {
+        "content": "Happy reading!",
+        "messageType": "text",
+        "senderId": "WanfT73gsZQ7x9n6IMHwmNxc3nu2",
+        "timestamp": 1700292350000
+      },
+      "msg12": {
+        "content": "Just finished a great chapter!",
+        "messageType": "text",
+        "senderId": "ExxalHuGF6VbA3bqGiblJseYg1q1",
+        "timestamp": 1700292400000
+      }
+    },
+    "a74394cb-802f-4321-b1af-3083c3d1dc09": {
+      "msg01": {
+        "content": "Hello Group One!",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1700291966000
+      },
+      "msg02": {
+        "content": "How's everyone doing?",
+        "messageType": "text",
+        "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+        "timestamp": 1700291975000
+      },
+      "msg03": {
+        "content": "Let's plan an event!",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1700292002000
+      },
+      "msg04": {
+        "content": "Any movie suggestions?",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1700292010000
+      },
+      "msg05": {
+        "content": "Happy weekend!",
+        "messageType": "text",
+        "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+        "timestamp": 1700292055000
+      },
+      "msg06": {
+        "content": "Just checking in!",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1700292100000
+      }
+    },
+    "f72e3d3f-c39f-42d2-b261-71848e95837c": {
+      "msg13": {
+        "content": "Greetings Group Three!",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1700292500000
+      },
+      "msg14": {
+        "content": "What's on the agenda today?",
+        "messageType": "text",
+        "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+        "timestamp": 1700292515000
+      },
+      "msg15": {
+        "content": "Let's plan a weekend trip!",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1700292530000
+      },
+      "msg16": {
+        "content": "Any travel enthusiasts here?",
+        "messageType": "text",
+        "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+        "timestamp": 1700292600000
+      },
+      "msg17": {
+        "content": "Happy exploring!",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1700292650000
+      },
+      "msg18": {
+        "content": "Just booked my flight!",
+        "messageType": "text",
+        "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+        "timestamp": 1700292700000
+      }
+    }
+  },
+  "users": {
+    "2TuuhzF4QFNVFRed3Wd3RsME1003": {
+      "email": "h@h.com",
+      "firstName": "fjjsjs",
+      "lastName": "zjnsn",
+      "username": "jsjsjs"
+    },
+    "5jNzVJH8lmfVpgLQsT9iF3zuDK02": {
+      "email": "hdhd@a.com",
+      "firstName": "djjdjd",
+      "lastName": "sjdjdn",
+      "username": "disksk"
+    },
+    "72FygfkVmUe5LjtTYuEEAJ73yxm2": {
+      "email": "a@a.com",
+      "firstName": "jdjks",
+      "lastName": "siskms",
+      "username": "jsnsmsm"
+    },
+    "9kSNqPiEO9cyIbq2PgeLReBLbXd2": {
+      "email": "rheaunni01@gmail.com",
+      "firstName": "Rhea",
+      "lastName": "Unni",
+      "username": "rheaa"
+    },
+    "CFUWlYhRYYV3eVewATPwfRsJIlQ2": {
+      "email": "b@b.com",
+      "firstName": "yhjj",
+      "lastName": "fnmm",
+      "username": "ndjdndn"
+    },
+    "EXYDmvFrfsOIrRV7IMjSZBgpmyi1": {
+      "email": "s@s.com",
+      "firstName": "jdjdnnd",
+      "lastName": "jsjjsns",
+      "username": "smodaka"
+    },
+    "ExxalHuGF6VbA3bqGiblJseYg1q1": {
+      "email": "smodak@a.com",
+      "firstName": "nsndjdn",
+      "lastName": "snsnsm",
+      "username": "smodak"
+    },
+    "Ijzd4tnU3De18AHvaA4s1wb9gNN2": {
+      "email": "amnamn2012@gmail.com",
+      "firstName": "Ali",
+      "lastName": "Nanji",
+      "username": "amnanji"
+    },
+    "O6U1fJUWaKfBAHJNPPY5gKRnmiG2": {
+      "email": "def@def.com",
+      "firstName": "abc",
+      "lastName": "fbdj",
+      "username": "dusjdnd"
+    },
+    "R1rzpgEWc5autAwdIY1ZhHPwWok1": {
+      "email": "c@c.com",
+      "firstName": "hzjska",
+      "lastName": "shjsjs",
+      "username": "hdjskakdn"
+    },
+    "SgleSw2twENN4cWNrcQFMxBkHSi2": {
+      "email": "sidjnd@sndn.com",
+      "firstName": "fjdjjdjd",
+      "lastName": "didjjdnd",
+      "username": "dijdjdk"
+    },
+    "WanfT73gsZQ7x9n6IMHwmNxc3nu2": {
+      "email": "jsmithgmail@gmail.com",
+      "firstName": "joe",
+      "lastName": "smith",
+      "username": "jsmith"
+    },
+    "am2iF1032zfTfqeC1gpCxbwBZRq2": {
+      "email": "shaneil1024@gmail.com",
+      "firstName": "Shaneil",
+      "lastName": "Kapadia",
+      "username": "shaneilk"
+    },
+    "g6CgR7rSbFXxygy7EB2cXfRE9hD3": {
+      "email": "jain.revika@gmail.com",
+      "firstName": "revika ",
+      "lastName": "jain",
+      "username": "revikaj"
+    },
+    "uYeImUAMUMWmnxsWK85HOPndb4M2": {
+      "email": "s@s.coma",
+      "firstName": "dhhdjdn",
+      "lastName": "dujdjd",
+      "username": "shsnnd"
+    },
+    "vkEEbh6VWkTVYq4fzjX0xSP77LS2": {
+      "email": "r@r.com",
+      "firstName": "jsnsns",
+      "lastName": "brnd",
+      "username": "rr"
+    }
+  }
+}

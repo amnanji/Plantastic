@@ -6,4 +6,5 @@ object FirebaseNodes {
     const val USERNAME_NODE = "username"
     const val GROUPS_NODE = "groups"
     const val MESSAGES_NODE = "messages"
+    const val GROUPS_PARTICIPANTS_NODE = "participants"
 }

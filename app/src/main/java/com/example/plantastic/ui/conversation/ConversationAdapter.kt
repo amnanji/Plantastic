@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.databinding.MessageGroupBinding
 import com.example.plantastic.databinding.MessageIndividualBinding
-import com.example.plantastic.models.Groups
 import com.example.plantastic.models.Message
 import com.example.plantastic.repository.UsersRepository
 import com.firebase.ui.database.FirebaseRecyclerAdapter

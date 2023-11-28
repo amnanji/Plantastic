@@ -1,20 +1,32 @@
 package com.example.plantastic.ui.toDo
-
-import androidx.lifecycle.ViewModelProvider
+// ToDoFragment.kt
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.databinding.FragmentToDoBinding
+import com.example.plantastic.ui.toDo.ToDoAdapter
+import com.example.plantastic.ui.toDo.ToDoViewModel
+
+import com.example.plantastic.ui.toDo.ToDoItem
 
 class ToDoFragment : Fragment() {
 
     private var _binding: FragmentToDoBinding? = null
+    private lateinit var toDoViewModel: ToDoViewModel
+    private lateinit var recyclerView: RecyclerView
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private val dummyTodoList = listOf(
+        ToDoItem("Task 1", "Description 1"),
+        ToDoItem("Task 2", "Description 2"),
+        ToDoItem("Task 3", "Description 3")
+    )
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -22,16 +34,21 @@ class ToDoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val toDoViewModel =
-            ViewModelProvider(this).get(ToDoViewModel::class.java)
-
         _binding = FragmentToDoBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.toDoFragmentText
-        toDoViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        toDoViewModel =
+            ViewModelProvider(this)[ToDoViewModel::class.java]
+
+        //val textView = binding.toDoFragmentText
+        toDoViewModel.text.observe(viewLifecycleOwner, Observer {
+            //textView.text = it
+        })
+
+        recyclerView = binding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = ToDoAdapter(dummyTodoList)
+
         return root
     }
 
