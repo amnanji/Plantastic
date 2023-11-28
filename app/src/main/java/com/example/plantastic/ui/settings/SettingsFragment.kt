@@ -1,12 +1,43 @@
 package com.example.plantastic.ui.settings
 
 import android.os.Bundle
-import androidx.preference.PreferenceFragmentCompat
-import com.example.plantastic.R
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.example.plantastic.databinding.FragmentSettingsBinding
 
-class SettingsFragment : PreferenceFragmentCompat() {
+class SettingsFragment : Fragment() {
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.root_preferences, rootKey)
+    private var _binding: FragmentSettingsBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val galleryViewModel =
+            ViewModelProvider(this).get(SettingsViewModel::class.java)
+
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+
+        val foodTextView: TextView = binding.foodPreferencesList
+        galleryViewModel.foodPreferences.observe(viewLifecycleOwner){
+            foodTextView.text = it
+        }
+
+        return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
