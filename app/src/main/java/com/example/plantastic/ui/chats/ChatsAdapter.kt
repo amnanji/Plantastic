@@ -1,6 +1,5 @@
 package com.example.plantastic.ui.chats
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.text.format.DateFormat
 import android.util.Log
@@ -18,14 +17,14 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import java.util.Calendar
 
-class ChatsAdapter (
+class ChatsAdapter(
     private val options: FirebaseRecyclerOptions<Groups>,
     private val userId: String
-) : FirebaseRecyclerAdapter<Groups, RecyclerView.ViewHolder>(options){
+) : FirebaseRecyclerAdapter<Groups, RecyclerView.ViewHolder>(options) {
     val usersRepository = UsersRepository()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return if (viewType == VIEW_TYPE_GROUP){
+        return if (viewType == VIEW_TYPE_GROUP) {
             val view = inflater.inflate(R.layout.chat_group, parent, false)
             val binding = ChatGroupBinding.bind(view)
             GroupChatViewHolder(binding)
@@ -37,21 +36,26 @@ class ChatsAdapter (
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, model: Groups) {
-        if (model.groupType == "individual"){
+        if (model.groupType == "individual") {
             (holder as IndividualChatViewHolder).bind(model, getRef(position))
         } else {
             (holder as GroupChatViewHolder).bind(model, getRef(position))
         }
     }
 
-    inner class GroupChatViewHolder(private val binding: ChatGroupBinding) : RecyclerView.ViewHolder(binding.root) {
+    override fun getItemViewType(position: Int): Int {
+        return if (options.snapshots[position].groupType == "group") VIEW_TYPE_GROUP else VIEW_TYPE_INDIVIDUAL
+    }
+
+    inner class GroupChatViewHolder(private val binding: ChatGroupBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Groups, ref: DatabaseReference) {
-            Log.i(TAG,"Curr chat item ref --> $ref")
+            Log.i(TAG, "Curr chat item ref --> $ref")
             binding.chatName.text = item.name
-            if (item.latestMessage != null){
+            if (item.latestMessage != null) {
                 binding.lastMsgContent.text = item.latestMessage.content
 
-                usersRepository.getUserById(item.latestMessage.senderId!!){
+                usersRepository.getUserById(item.latestMessage.senderId!!) {
                     if (it != null) {
                         binding.lastMsgSender.text = "${it.firstName} ${it.lastName}: "
                     }
@@ -64,22 +68,27 @@ class ChatsAdapter (
                 binding.lastMsgTimestamp.text = date
             }
 
-            itemView.setOnClickListener{
+            itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ConversationActivity::class.java)
                 intent.putExtra(ConversationActivity.KEY_GROUP_ID, item.id)
+                intent.putExtra(ConversationActivity.KEY_GROUP_NAME, item.name)
                 itemView.context.startActivity(intent)
             }
         }
     }
 
-    inner class IndividualChatViewHolder(private val binding: ChatIndividualBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class IndividualChatViewHolder(private val binding: ChatIndividualBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Groups, ref: DatabaseReference) {
-            Log.i(TAG,"Curr chat item ref --> $ref")
+            Log.i(TAG, "Curr chat item ref --> $ref")
             val participants = item.participants!!.keys.toList()
-            val otherParticipantId = if (participants[0] == userId) participants[1] else participants[0]
-            usersRepository.getUserById(otherParticipantId){
+            val otherParticipantId =
+                if (participants[0] == userId) participants[1] else participants[0]
+            var chatName = "Plantastic"
+            usersRepository.getUserById(otherParticipantId) {
                 if (it != null) {
-                    binding.chatName.text = "${it.firstName} ${it.lastName}"
+                    chatName = "${it.firstName} ${it.lastName}"
+                    binding.chatName.text = chatName
                 }
             }
 
@@ -92,16 +101,13 @@ class ChatsAdapter (
                 binding.lastMsgTimestamp.text = date
             }
 
-            itemView.setOnClickListener{
+            itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ConversationActivity::class.java)
                 intent.putExtra(ConversationActivity.KEY_GROUP_ID, item.id)
+                intent.putExtra(ConversationActivity.KEY_GROUP_NAME, chatName)
                 itemView.context.startActivity(intent)
             }
         }
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (options.snapshots[position].groupType == "group") VIEW_TYPE_GROUP else VIEW_TYPE_INDIVIDUAL
     }
 
     companion object {

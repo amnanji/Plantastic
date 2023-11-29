@@ -8,11 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.plantastic.models.Groups
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.plantastic.databinding.FragmentBalancesBinding
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.ui.login.LoginActivity
+import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 class BalancesFragment : Fragment(){
 
@@ -48,9 +48,9 @@ class BalancesFragment : Fragment(){
         val options = FirebaseRecyclerOptions.Builder<Groups>().setQuery(groupsQuery, Groups::class.java).build()
 
         // Set up RecyclerView
-        adapter = BalancesAdapter(options, currUser!!.uid)
+        adapter = BalancesAdapter(options, currUser.uid)
         binding.balancesRecyclerView.adapter = adapter
-        val manager = LinearLayoutManager(requireContext())
+        val manager = WrapContentLinearLayoutManager(requireContext())
         binding.balancesRecyclerView.layoutManager = manager
 
         adapter.startListening()
@@ -63,19 +63,14 @@ class BalancesFragment : Fragment(){
         _binding = null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        adapter.stopListening()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        adapter.stopListening()
-    }
-
     override fun onPause() {
         super.onPause()
         adapter.stopListening()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.startListening()
     }
 
     private fun navigateToLoginActivity() {

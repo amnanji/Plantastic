@@ -7,19 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.plantastic.databinding.FragmentChatsBinding
 import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.UsersAuthRepository
-import com.example.plantastic.repository.UsersRepository
-import com.example.plantastic.ui.conversation.ConversationActivity
 import com.example.plantastic.utilities.FirebaseNodes
+import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class ChatsFragment : Fragment() {
     private lateinit var adapter: ChatsAdapter
@@ -45,17 +40,19 @@ class ChatsFragment : Fragment() {
         val userId = currUser!!.uid
         Log.d(TAG, "Curr user id --> $userId")
 
-        val firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
-        val groupsReference: DatabaseReference = firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
+        val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
+        val groupsReference: DatabaseReference =
+            firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
         val groupsQuery = groupsReference.orderByChild("participants/$userId").equalTo(true)
 
-        val options = FirebaseRecyclerOptions.Builder<Groups>().setQuery(groupsQuery, Groups::class.java).build()
+        val options =
+            FirebaseRecyclerOptions.Builder<Groups>().setQuery(groupsQuery, Groups::class.java)
+                .build()
         adapter = ChatsAdapter(options, userId)
         binding.chatsRecyclerView.adapter = adapter
-        val manager = LinearLayoutManager(requireContext())
+        val manager = WrapContentLinearLayoutManager(requireContext())
         binding.chatsRecyclerView.layoutManager = manager
 
-        adapter.startListening()
         return root
     }
 
@@ -69,14 +66,9 @@ class ChatsFragment : Fragment() {
         super.onPause()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        adapter.stopListening()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        adapter.stopListening()
+    override fun onResume() {
+        super.onResume()
+        adapter.startListening()
     }
 
     companion object {

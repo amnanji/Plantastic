@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.conversation.ConversationActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_conversationActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:layout_marginBottom="15dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/conversationsRecyclerView"
         android:layout_width="match_parent"
@@ -25,49 +14,51 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_conversationActivity" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_borders"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="7dp"
+        android:background="@drawable/rounded_borders_50dp"
         android:backgroundTint="@color/write_msg_background"
         android:orientation="horizontal"
         android:paddingHorizontal="10dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginBottom="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/add"
+        <ImageButton
+            android:id="@+id/btnAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/add"/>
+            android:background="@android:color/transparent"
+            android:src="@drawable/add" />
 
         <EditText
             android:id="@+id/messageEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:hint="Message..."
-            android:inputType="text"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="@string/message_hint"
+            android:inputType="text"
             android:padding="10dp" />
 
-        <ImageView
-            android:id="@+id/sendButton"
+        <ImageButton
+            android:id="@+id/btnSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@android:color/transparent"
             android:enabled="false"
-            android:src="@drawable/send_arrow" />
+            android:src="@drawable/send_button_selector" />
 
     </LinearLayout>
 
