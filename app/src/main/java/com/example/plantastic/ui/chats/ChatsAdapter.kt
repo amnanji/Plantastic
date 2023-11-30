@@ -47,25 +47,28 @@ class ChatsAdapter(
         return if (options.snapshots[position].groupType == "group") VIEW_TYPE_GROUP else VIEW_TYPE_INDIVIDUAL
     }
 
+    private fun getDate(timestamp: Long): String {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = timestamp
+        return DateFormat.format("MMM dd, yyyy", calendar).toString()
+    }
+
     inner class GroupChatViewHolder(private val binding: ChatGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Groups, ref: DatabaseReference) {
-            Log.i(TAG, "Curr chat item ref --> $ref")
+            Log.i(TAG, "Curr chat item --> $item")
             binding.chatName.text = item.name
             if (item.latestMessage != null) {
                 binding.lastMsgContent.text = item.latestMessage.content
+                binding.lastMsgTimestamp.text = getDate(item.latestMessage.timestamp!!)
 
                 usersRepository.getUserById(item.latestMessage.senderId!!) {
                     if (it != null) {
                         binding.lastMsgSender.text = "${it.firstName} ${it.lastName}: "
                     }
                 }
-
-
-                val calendar = Calendar.getInstance()
-                calendar.timeInMillis = item.latestMessage.timestamp!!
-                val date: String = DateFormat.format("MMM dd, yyyy", calendar).toString()
-                binding.lastMsgTimestamp.text = date
+            } else {
+                binding.lastMsgTimestamp.text = item.timestampGroupCreated?.let { getDate(it) }
             }
 
             itemView.setOnClickListener {
@@ -94,11 +97,9 @@ class ChatsAdapter(
 
             if (item.latestMessage != null) {
                 binding.lastMsgContent.text = item.latestMessage.content
-
-                val calendar = Calendar.getInstance()
-                calendar.timeInMillis = item.latestMessage.timestamp!!
-                val date: String = DateFormat.format("MMM dd, yyyy", calendar).toString()
-                binding.lastMsgTimestamp.text = date
+                binding.lastMsgTimestamp.text = getDate(item.latestMessage.timestamp!!)
+            } else {
+                binding.lastMsgTimestamp.text = item.timestampGroupCreated?.let { getDate(it) }
             }
 
             itemView.setOnClickListener {
