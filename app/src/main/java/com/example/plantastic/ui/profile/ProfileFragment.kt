@@ -11,13 +11,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.plantastic.R
 import com.example.plantastic.databinding.FragmentProfileBinding
 import com.example.plantastic.models.Preferences.Preferences
 import com.example.plantastic.repository.PreferencesRepository
 import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.utilities.CustomAlertDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -72,7 +72,6 @@ class ProfileFragment : Fragment() {
             if (preferences != null) {
                 currentPreferences = preferences
                 currentAvailability = currentPreferences.availability!!
-                logList("Availability:64", currentAvailability)
                 currentDietaryRestrictionIndex = currentPreferences.dietaryRestrictionIndex!!
                 currentFoodPreferences = currentPreferences.foodPreferences!!
                 currentActivityPreferences = currentPreferences.activityPreferences!!
@@ -121,33 +120,26 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun logList(tag: String, arrayList: MutableList<Int>){
-        var string = "{"
-        for(item in arrayList){
-            string += item.toString()
-            string += ","
-        }
-        string = string.dropLast(1)
-        string += "}"
-        Log.d(tag, string)
-    }
-
     private fun setAndValidateAvailability(): Boolean {
         val weekArray = resources.getStringArray(R.array.days_of_week)
         var isValid = true
+        val alertDialog = CustomAlertDialog(requireContext())
+        var daysWithInvalidAvailability = getString(R.string.invalid_days_message)
         for(i in 0..< currentAvailability.size step 2){
             var startTime = currentAvailability[i]
             var endTime = currentAvailability[i+1]
             val currentDayIndex = i/2
             val currentDay = weekArray[currentDayIndex]
-            if(isBusy(startTime, endTime)){
+            if(isInvalidTime(startTime, endTime)){
+                daysWithInvalidAvailability += "$currentDay, "
                 isValid = false
-//                setAvailability(currentDayIndex, -1, -1,"Busy")
-                Toast.makeText(this.context,
-                    "The availability for $currentDay is invalid, start time:${minutesToTime(startTime)} end time: ${minutesToTime(endTime)}, please check start and end times",
-                    Toast.LENGTH_SHORT
-                ).show()
             }
+        }
+        daysWithInvalidAvailability = daysWithInvalidAvailability.dropLast(2)
+        daysWithInvalidAvailability += getString(R.string.please_correct_availability_message)
+        Log.d("Alert", daysWithInvalidAvailability)
+        if (!isValid){
+            alertDialog.showAlertDialog("Invalid availability entries", daysWithInvalidAvailability)
         }
         return isValid
     }
@@ -172,7 +164,7 @@ class ProfileFragment : Fragment() {
 
     }
 
-    private fun isBusy(startTime: Int, endTime: Int): Boolean{
+    private fun isInvalidTime(startTime: Int, endTime: Int): Boolean{
         return endTime <= startTime || startTime == -1 || endTime == -1
     }
 
@@ -221,12 +213,10 @@ class ProfileFragment : Fragment() {
             var currentStartButton = startButtonList[i]
             currentStartButton.setOnClickListener {
                 getTime(i, false)
-//                setAvailability(i)
             }
             var currentEndButton = endButtonList[i]
             currentEndButton.setOnClickListener {
                 getTime(i, true)
-//                setAvailability(i)
             }
             var currentBusyButton = busyButtonList[i]
             currentBusyButton.setOnClickListener {
@@ -245,7 +235,6 @@ class ProfileFragment : Fragment() {
                 var timeSelected = hourSelected*60 + minuteSelected
                 currentAvailability[dayIndex*2 + isEnd.toInt()] = timeSelected
                 setAvailability(dayIndex)
-                logList("After Get Time: 247", currentAvailability)
             },
             hour,
             minute,

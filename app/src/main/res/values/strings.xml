@@ -60,4 +60,6 @@
     <string name="end_button_text">End</string>
     <string name="busy_button_text">Busy</string>
     <string name="available_from_string">Available from: %1$s to %2$s</string>
+    <string name="invalid_days_message">"The following days have an invalid value for availability: "</string>
+    <string name="please_correct_availability_message">. Please correct availability to save preferences.</string>
 </resources>
