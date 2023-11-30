@@ -2,14 +2,11 @@ package com.example.plantastic.repository
 
 import com.example.plantastic.models.Preferences.Preferences
 import com.example.plantastic.utilities.FirebaseNodes
-import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.runBlocking
 
 class PreferencesRepository {
     private var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()

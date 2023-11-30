@@ -32,49 +32,23 @@ class ProfileFragment : Fragment() {
     private var preferencesRepository: PreferencesRepository = PreferencesRepository()
     private var profileViewModel: ProfileViewModel = ProfileViewModel()
 
-
     private lateinit var saveButton: Button
-    private lateinit var foodPreferencesList: TextView
     private lateinit var foodPreferencesEditText: EditText
     private lateinit var dietaryRestrictionsSpinner: Spinner
-    private lateinit var activityPreferenceList: TextView
     private lateinit var activityPreferencesEditText: EditText
 
-    private lateinit var mondayStartButton: Button
-    private lateinit var tuesdayStartButton: Button
-    private lateinit var wednesdayStartButton: Button
-    private lateinit var thursdayStartButton: Button
-    private lateinit var fridayStartButton: Button
-    private lateinit var saturdayStartButton: Button
-    private lateinit var sundayStartButton: Button
+    private lateinit var startButtonList: ArrayList<Button>
+    private lateinit var endButtonList: ArrayList<Button>
+    private lateinit var busyButtonList: ArrayList<Button>
+    private lateinit var availabilityTextViewList: ArrayList<TextView>
 
-    private lateinit var mondayEndButton: Button
-    private lateinit var tuesdayEndButton: Button
-    private lateinit var wednesdayEndButton: Button
-    private lateinit var thursdayEndButton: Button
-    private lateinit var fridayEndButton: Button
-    private lateinit var saturdayEndButton: Button
-    private lateinit var sundayEndButton: Button
-
-    private lateinit var mondayBusyButton: Button
-    private lateinit var tuesdayBusyButton: Button
-    private lateinit var wednesdayBusyButton: Button
-    private lateinit var thursdayBusyButton: Button
-    private lateinit var fridayBusyButton: Button
-    private lateinit var saturdayBusyButton: Button
-    private lateinit var sundayBusyButton: Button
-
-    private lateinit var mondayTextView: TextView
-    private lateinit var tuesdayTextView: TextView
-    private lateinit var wednesdayTextView: TextView
-    private lateinit var thursdayTextView: TextView
-    private lateinit var fridayTextView: TextView
-    private lateinit var saturdayTextView: TextView
-    private lateinit var sundayTextView: TextView
-    private lateinit var currentPreferences: Preferences
     private var currentUserId: String = usersAuthRepository.getCurrentUser()!!.uid
+    private lateinit var currentPreferences: Preferences
     private var currentAvailability: MutableList<Int> = mutableListOf(-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1)
-
+    private var currentDietaryRestrictionIndex = -1
+    private var currentFoodPreferences = ""
+    private var currentActivityPreferences = ""
+    private var daysInTheWeek: Int = 7
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,42 +56,38 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        CoroutineScope(Dispatchers.IO).launch{
-            preferencesRepository.getPreferenceById(currentUserId){preferences ->
-                if (preferences != null) {
-                    currentPreferences = preferences
-                    currentAvailability = currentPreferences.availability!!
-                    for(i in 0..<currentAvailability.size){
-                        Log.d("Availability", "index: $i has item: ${currentAvailability[i]}")
-                    }
+        startButtonList = ArrayList<Button>(daysInTheWeek)
+        endButtonList = ArrayList<Button>(daysInTheWeek)
+        busyButtonList = ArrayList<Button>(daysInTheWeek)
+        availabilityTextViewList = ArrayList<TextView>(daysInTheWeek)
+
+        foodPreferencesEditText = binding.foodPreferencesInput
+        dietaryRestrictionsSpinner = binding.dietaryRestrictionsInput
+        activityPreferencesEditText = binding.activityPreferencesInput
+
+        initializeAvailabilityTextViews()
+        initializeButtons()
+
+        profileViewModel.preferences.observe(viewLifecycleOwner){ preferences ->
+            if (preferences != null) {
+                currentPreferences = preferences
+                currentAvailability = currentPreferences.availability!!
+                logList("Availability:64", currentAvailability)
+                currentDietaryRestrictionIndex = currentPreferences.dietaryRestrictionIndex!!
+                currentFoodPreferences = currentPreferences.foodPreferences!!
+                currentActivityPreferences = currentPreferences.activityPreferences!!
+
+                foodPreferencesEditText.setText(currentFoodPreferences)
+                activityPreferencesEditText.setText(currentActivityPreferences)
+                dietaryRestrictionsSpinner.setSelection(currentDietaryRestrictionIndex)
+
+                for (i in 0..<daysInTheWeek){
+                    setAvailability(i)
                 }
             }
         }
 
-
-
-        foodPreferencesList = binding.foodPreferencesList
-        foodPreferencesEditText = binding.foodPreferencesInput
-//        profileViewModel.foodPreferences.observe(viewLifecycleOwner) {
-//            foodPreferencesList.text = it
-//        }
-
-        dietaryRestrictionsSpinner = binding.dietaryRestrictionsInput
-//        profileViewModel.dietaryRestrictionIndex.observe(viewLifecycleOwner){
-//            dietaryRestrictionsSpinner.setSelection(it)
-//        }
-
-        activityPreferenceList = binding.activityPreferencesList
-        activityPreferencesEditText = binding.activityPreferencesInput
-//        profileViewModel.activityPreferences.observe(viewLifecycleOwner) {
-//            activityPreferenceList.text = it
-//        }
-        profileViewModel.preferences.observe(viewLifecycleOwner){preferences ->
-            foodPreferencesList.text = preferences.foodPreferences.toString()
-            preferences.dietaryRestrictionIndex?.let { it -> dietaryRestrictionsSpinner.setSelection(it) }
-            activityPreferenceList.text = preferences.foodPreferences.toString()
-
-        }
+        populateStoredValues()
 
         saveButton = binding.profileSaveButton
         saveButton.setOnClickListener {
@@ -132,37 +102,49 @@ class ProfileFragment : Fragment() {
             val dietaryRestrictionsIndex = dietaryRestrictionsSpinner.selectedItemId.toInt()
             val currentUserUid = usersAuthRepository.getCurrentUser()!!.uid
             val availability = currentAvailability
-            validateAvailability()
-            CoroutineScope(Dispatchers.IO).launch {
-                preferencesRepository.updatePreference(currentUserUid, foodPreferences, dietaryRestrictionsIndex,
-                    activityPreferences, availability){preferences ->
-                    profileViewModel.preferences.value = preferences
+            if(setAndValidateAvailability()){
+                CoroutineScope(Dispatchers.IO).launch {
+                    preferencesRepository.updatePreference(currentUserUid, foodPreferences, dietaryRestrictionsIndex,
+                        activityPreferences, availability){ preferences ->
+                        profileViewModel.preferences.value = preferences
+                    }
                 }
             }
         }
-
-        initializeAvailabilityTextViews()
-        initializeStartAndEndButtons()
-        initializeBusyButtons()
-
         val root: View = binding.root
         return root
     }
 
-    private fun validateAvailability(): Boolean {
+    private fun populateStoredValues() {
+        for(i in 0..<daysInTheWeek){
+            setAvailability(i)
+        }
+    }
+
+    private fun logList(tag: String, arrayList: MutableList<Int>){
+        var string = "{"
+        for(item in arrayList){
+            string += item.toString()
+            string += ","
+        }
+        string = string.dropLast(1)
+        string += "}"
+        Log.d(tag, string)
+    }
+
+    private fun setAndValidateAvailability(): Boolean {
         val weekArray = resources.getStringArray(R.array.days_of_week)
         var isValid = true
         for(i in 0..< currentAvailability.size step 2){
-            println("sdot size: ${currentAvailability.size}")
-            println("sdot i: $i")
             var startTime = currentAvailability[i]
             var endTime = currentAvailability[i+1]
-            if(endTime <= startTime || startTime == -1 || endTime == -1){
+            val currentDayIndex = i/2
+            val currentDay = weekArray[currentDayIndex]
+            if(isBusy(startTime, endTime)){
                 isValid = false
-                val currentDay = weekArray[i/2]
-                setAvailabilityText(i, getString(R.string.available_from_string, minutesToTime(startTime), minutesToTime(endTime)))
+//                setAvailability(currentDayIndex, -1, -1,"Busy")
                 Toast.makeText(this.context,
-                    "The availability for $currentDay is invalid, start time:${minutesToTime(startTime)} end time: ${minutesToTime(endTime)} ",
+                    "The availability for $currentDay is invalid, start time:${minutesToTime(startTime)} end time: ${minutesToTime(endTime)}, please check start and end times",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -170,16 +152,28 @@ class ProfileFragment : Fragment() {
         return isValid
     }
 
-    private fun setAvailabilityText(dayIndex: Int, text: String){
-        when (dayIndex){
-            0 -> mondayTextView.text = text
-            1 -> tuesdayTextView.text = text
-            2 -> wednesdayTextView.text = text
-            3 -> thursdayTextView.text = text
-            4 -> fridayTextView.text = text
-            5 -> saturdayTextView.text = text
-            6 -> sundayTextView.text = text
+    private fun setAvailability(dayIndex: Int) {
+        val startTime = currentAvailability[dayIndex * 2]
+        val endTime = currentAvailability[dayIndex * 2 + 1]
+        var availability = if (startTime == -1){
+            getString(R.string.available_from_string, "Unknown", minutesToTime(endTime))
+        }else if (endTime == -1){
+            getString(R.string.available_from_string, minutesToTime(startTime), "Unknown")
+        } else {
+            getString(R.string.available_from_string, minutesToTime(startTime), minutesToTime(endTime))
         }
+        availabilityTextViewList[dayIndex].text = availability
+    }
+
+    private fun setAvailabilityBusy(dayIndex: Int){
+        currentAvailability[dayIndex*2] = -1
+        currentAvailability[dayIndex*2 + 1] = -1
+        availabilityTextViewList[dayIndex].text = "Busy"
+
+    }
+
+    private fun isBusy(startTime: Int, endTime: Int): Boolean{
+        return endTime <= startTime || startTime == -1 || endTime == -1
     }
 
     private fun minutesToTime(minutes: Int): String{
@@ -189,25 +183,55 @@ class ProfileFragment : Fragment() {
     }
 
     private fun initializeAvailabilityTextViews() {
-        mondayTextView = binding.mondayAvailabilityTextview
-        tuesdayTextView = binding.tuesdayAvailabilityTextview
-        wednesdayTextView = binding.wednesdayAvailabilityTextview
-        thursdayTextView = binding.thursdayAvailabilityTextview
-        fridayTextView = binding.fridayAvailabilityTextview
-        saturdayTextView = binding.saturdayAvailabilityTextview
-        sundayTextView = binding.sundayAvailabilityTextview
+        availabilityTextViewList.add(binding.mondayAvailabilityTextview)
+        availabilityTextViewList.add(binding.tuesdayAvailabilityTextview)
+        availabilityTextViewList.add(binding.wednesdayAvailabilityTextview)
+        availabilityTextViewList.add(binding.thursdayAvailabilityTextview)
+        availabilityTextViewList.add(binding.fridayAvailabilityTextview)
+        availabilityTextViewList.add(binding.saturdayAvailabilityTextview)
+        availabilityTextViewList.add(binding.sundayAvailabilityTextview)
     }
     
-    private fun initializeStartAndEndButtons(){
-        mondayStartButton = binding.mondayStartTimeButton
-        mondayStartButton.setOnClickListener { 
-            getTime(0, false)
-//            Log.d("Availability", "User is available from ${availability?.get(0)} to ${availability?.get(1)}")
+    private fun initializeButtons(){
+        startButtonList.add(binding.mondayStartTimeButton)
+        startButtonList.add(binding.tuesdayStartTimeButton)
+        startButtonList.add(binding.wednesdayStartTimeButton)
+        startButtonList.add(binding.thursdayStartTimeButton)
+        startButtonList.add(binding.fridayStartTimeButton)
+        startButtonList.add(binding.saturdayStartTimeButton)
+        startButtonList.add(binding.sundayStartTimeButton)
 
-        }
-        mondayEndButton = binding.mondayEndTimeButton
-        mondayEndButton.setOnClickListener {
-            getTime(0, true)
+        endButtonList.add(binding.mondayEndTimeButton)
+        endButtonList.add(binding.tuesdayEndTimeButton)
+        endButtonList.add(binding.wednesdayEndTimeButton)
+        endButtonList.add(binding.thursdayEndTimeButton)
+        endButtonList.add(binding.fridayEndTimeButton)
+        endButtonList.add(binding.saturdayEndTimeButton)
+        endButtonList.add(binding.sundayEndTimeButton)
+
+        busyButtonList.add(binding.mondayBusyButton)
+        busyButtonList.add(binding.tuesdayBusyButton)
+        busyButtonList.add(binding.wednesdayBusyButton)
+        busyButtonList.add(binding.thursdayBusyButton)
+        busyButtonList.add(binding.fridayBusyButton)
+        busyButtonList.add(binding.saturdayBusyButton)
+        busyButtonList.add(binding.sundayBusyButton)
+
+        for(i in 0..<busyButtonList.size){
+            var currentStartButton = startButtonList[i]
+            currentStartButton.setOnClickListener {
+                getTime(i, false)
+//                setAvailability(i)
+            }
+            var currentEndButton = endButtonList[i]
+            currentEndButton.setOnClickListener {
+                getTime(i, true)
+//                setAvailability(i)
+            }
+            var currentBusyButton = busyButtonList[i]
+            currentBusyButton.setOnClickListener {
+                setAvailabilityBusy(i)
+            }
         }
     }
 
@@ -220,9 +244,8 @@ class ProfileFragment : Fragment() {
             TimePickerDialog.OnTimeSetListener { _, hourSelected, minuteSelected ->
                 var timeSelected = hourSelected*60 + minuteSelected
                 currentAvailability[dayIndex*2 + isEnd.toInt()] = timeSelected
-                for(i in 0..<currentAvailability.size){
-                    Log.d("Availability", "index: $i has item: ${currentAvailability[i]}")
-                }
+                setAvailability(dayIndex)
+                logList("After Get Time: 247", currentAvailability)
             },
             hour,
             minute,
@@ -233,38 +256,6 @@ class ProfileFragment : Fragment() {
 
     // Function below taken from: https://stackoverflow.com/questions/46401879/boolean-int-conversion-in-kotlin
     private fun Boolean.toInt() = if (this) 1 else 0
-
-    private fun initializeBusyButtons() {
-        mondayBusyButton = binding.mondayBusyButton
-        mondayBusyButton.setOnClickListener {
-            setAvailabilityText(0, "Busy")
-        }
-        tuesdayBusyButton = binding.tuesdayBusyButton
-        tuesdayBusyButton.setOnClickListener {
-            setAvailabilityText(1, "Busy")
-        }
-        wednesdayBusyButton = binding.wednesdayBusyButton
-        wednesdayBusyButton.setOnClickListener {
-            setAvailabilityText(2, "Busy")
-        }
-        thursdayBusyButton = binding.thursdayBusyButton
-        thursdayBusyButton.setOnClickListener {
-
-            setAvailabilityText(3, "Busy")
-        }
-        fridayBusyButton = binding.fridayBusyButton
-        fridayBusyButton.setOnClickListener {
-            setAvailabilityText(4, "Busy")
-        }
-        saturdayBusyButton = binding.saturdayBusyButton
-        saturdayBusyButton.setOnClickListener {
-            setAvailabilityText(5, "Busy")
-        }
-        sundayBusyButton = binding.sundayBusyButton
-        sundayBusyButton.setOnClickListener {
-            setAvailabilityText(6, "Busy")
-        }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
