@@ -11,5 +11,6 @@ data class Groups(
     val name: String? = null,
     val admins: ArrayList<String>? = null,
     val latestMessage: Message? = null,
-    var balances:HashMap<String, HashMap<String, Double>>? = null
+    var balances:HashMap<String, HashMap<String, Double>>? = null,
+    val timestampGroupCreated: Long? = null
 )

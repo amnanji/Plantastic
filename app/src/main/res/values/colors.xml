@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="card_background">#F2D5C3</color>
+    <color name="icon_color">#2B2B2B</color>
+
+    <!--  Chat Related Colors  -->
+    <color name="curr_user_msg">#F2D5C3</color>
+    <color name="other_user_msg">#EDEDED</color>
+    <color name="ai_msg">#EB5552</color>
+    <color name="text_on_background">#FF000000</color>
+    <color name="write_msg_background">#DFDFDF</color>
 </resources>

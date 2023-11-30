@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="card_background">#1F1F21</color>
+    <color name="icon_color">#C1C1C1</color>
+
+    <!--  Chat Related Colors  -->
+    <color name="curr_user_msg">#A67759</color>
+    <color name="other_user_msg">#2B2B2B</color>
+    <color name="ai_msg">#EB5552</color>
+    <color name="text_on_background">#FFFFFF</color>
+    <color name="write_msg_background">#1F1F21</color>
+</resources>
