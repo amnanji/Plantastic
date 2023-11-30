@@ -73,8 +73,12 @@ class ConversationActivity : AppCompatActivity() {
                 adapter = ConversationAdapter(options, userId, group.groupType == "group")
                 recyclerView.adapter = adapter
                 val manager = WrapContentLinearLayoutManager(this)
-                manager.stackFromEnd
+                manager.stackFromEnd = true
                 recyclerView.layoutManager = manager
+
+                adapter?.registerAdapterDataObserver(
+                    ScrollToBottomObserver(recyclerView, adapter!!, manager)
+                )
 
                 adapter?.startListening()
             }
@@ -102,9 +106,6 @@ class ConversationActivity : AppCompatActivity() {
                     }
 
                 messageEditText.setText("")
-                if (adapter != null) {
-                    recyclerView.smoothScrollToPosition(adapter!!.itemCount.minus(1))
-                }
             }.addOnFailureListener {
                 Log.d(TAG, "Could not set new msg --> $msgRef")
                 it.printStackTrace()
