@@ -58,7 +58,7 @@ class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
         holder.balanceOwedByOthers.text = amountOwedByOthers.toString()
 
         holder.itemView.setOnClickListener{
-            navigateToTransactionsActivity(holder.itemView.context)
+            navigateToTransactionsActivity(holder.itemView.context, model.id!!)
         }
     }
 
@@ -68,9 +68,9 @@ class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
         val balanceOwedByOthers: TextView = itemView.findViewById(R.id.balancesAmountOwedByOthers)
     }
 
-    private fun navigateToTransactionsActivity(context: Context){
+    private fun navigateToTransactionsActivity(context: Context, id: String){
         val intent = Intent(context, TransactionsActivity::class.java)
+        intent.putExtra(TransactionsActivity.GROUP_ID, id)
         context.startActivity(intent)
-
     }
 }

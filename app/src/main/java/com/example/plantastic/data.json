@@ -1,5 +1,49 @@
 {
+  "transactions": {
+    "88392f42-8f93-11ee-b9d1-0242ac120002": {
+      "groupId": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
+      "id": "88392f42-8f93-11ee-b9d1-0242ac120002",
+      "date": "",
+      "description": "Pizza",
+      "totalAmount": "50",
+      "moneyOwedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2"
+    }
+  },
   "groups": {
+    "186af84e-c18e-49cc-9d76-008cdb674b37": {
+      "balances": {
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": {
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 23,
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": 50.25,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": 15
+        },
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -23,
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": -20,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": -12.45
+        },
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -50.25,
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 20,
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": 10
+        },
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": -15,
+          "WanfT73gsZQ7x9n6IMHwmNxc3nu2": 12.45,
+          "am2iF1032zfTfqeC1gpCxbwBZRq2": -10
+        }
+      },
+      "groupType": "group",
+      "id": "186af84e-c18e-49cc-9d76-008cdb674b37",
+      "name": "No messages group",
+      "participants": {
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true,
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true,
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": true,
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true
+      },
+      "timestampGroupCreated": 1701310022284
+    },
     "4fad1c55-8c3b-457c-b04a-8d20dbd356e0": {
       "balances": {
         "ExxalHuGF6VbA3bqGiblJseYg1q1": {
@@ -20,7 +64,8 @@
       "participants": {
         "ExxalHuGF6VbA3bqGiblJseYg1q1": true,
         "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true
-      }
+      },
+      "timestampGroupCreated": 1700292400000
     },
     "a74394cb-802f-4321-b1af-3083c3d1dc09": {
       "balances": {
@@ -37,20 +82,33 @@
           "Ijzd4tnU3De18AHvaA4s1wb9gNN2": 0
         }
       },
+      "events": {
+        "event1": {
+          "date": "2023-01-01",
+          "location": "Location 1",
+          "name": "Event 1"
+        },
+        "event2": {
+          "date": "2023-02-01",
+          "location": "Location 2",
+          "name": "Event 2"
+        }
+      },
       "groupType": "group",
       "id": "a74394cb-802f-4321-b1af-3083c3d1dc09",
       "latestMessage": {
-        "content": "Just checking in!",
+        "content": "m",
         "messageType": "text",
         "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
-        "timestamp": 1700292100000
+        "timestamp": 1701313685542
       },
       "name": "besties",
       "participants": {
         "2TuuhzF4QFNVFRed3Wd3RsME1003": true,
         "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true,
         "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true
-      }
+      },
+      "timestampGroupCreated": 1701257412036
     },
     "c8b07dc2-8d6e-11ee-b9d1-0242ac120002": {
       "balances": {
@@ -75,21 +133,34 @@
           "am2iF1032zfTfqeC1gpCxbwBZRq2": -10
         }
       },
+      "events": {
+        "event3": {
+          "date": "2023-01-01",
+          "location": "Location ",
+          "name": "Event 3"
+        },
+        "event4": {
+          "date": "2023-02-01",
+          "location": "Location 4",
+          "name": "Event 4"
+        }
+      },
       "groupType": "group",
       "id": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
       "latestMessage": {
-        "content": "Just checking in!",
+        "content": "Ali is useless",
         "messageType": "text",
-        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
-        "timestamp": 1700292100000
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701352826852
       },
       "name": "CMPT 362",
       "participants": {
         "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true,
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true,
         "am2iF1032zfTfqeC1gpCxbwBZRq2": true,
-        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true,
-        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true
-      }
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true
+      },
+      "timestampGroupCreated": 1701293248722
     },
     "e6040596-8d79-11ee-b9d1-0242ac120002": {
       "balances": {
@@ -109,17 +180,41 @@
       "groupType": "group",
       "id": "e6040596-8d79-11ee-b9d1-0242ac120002",
       "latestMessage": {
-        "content": "Just checking in!",
+        "content": "jg",
         "messageType": "text",
-        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
-        "timestamp": 1700292100000
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312870920
       },
       "name": "Birthday",
       "participants": {
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true,
         "am2iF1032zfTfqeC1gpCxbwBZRq2": true,
-        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true,
-        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true
-      }
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true
+      },
+      "timestampGroupCreated": 1701292775155
+    },
+    "ef856b2b-b483-4f29-ba32-dedeb8002aef": {
+      "balances": {
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": {
+          "g6CgR7rSbFXxygy7EB2cXfRE9hD3": -5
+        },
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": {
+          "Ijzd4tnU3De18AHvaA4s1wb9gNN2": 5
+        }
+      },
+      "groupType": "individual",
+      "id": "ef856b2b-b483-4f29-ba32-dedeb8002aef",
+      "latestMessage": {
+        "content": "hgf",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701313093058
+      },
+      "participants": {
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true,
+        "g6CgR7rSbFXxygy7EB2cXfRE9hD3": true
+      },
+      "timestampGroupCreated": 1701309127408
     },
     "f055f81a-8d79-11ee-b9d1-0242ac120002": {
       "balances": {
@@ -133,15 +228,16 @@
       "groupType": "individual",
       "id": "f055f81a-8d79-11ee-b9d1-0242ac120002",
       "latestMessage": {
-        "content": "Just checking in!",
+        "content": "hello",
         "messageType": "text",
         "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
-        "timestamp": 1700292100000
+        "timestamp": 1701292908386
       },
       "participants": {
-        "am2iF1032zfTfqeC1gpCxbwBZRq2": true,
-        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true
-      }
+        "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true,
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": true
+      },
+      "timestampGroupCreated": 1701292908386
     },
     "f72e3d3f-c39f-42d2-b261-71848e95837c": {
       "balances": {
@@ -155,15 +251,16 @@
       "groupType": "individual",
       "id": "f72e3d3f-c39f-42d2-b261-71848e95837c",
       "latestMessage": {
-        "content": "Just booked my flight!",
+        "content": "kk",
         "messageType": "text",
-        "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
-        "timestamp": 1700292700000
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701257397402
       },
       "participants": {
         "2TuuhzF4QFNVFRed3Wd3RsME1003": true,
         "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true
-      }
+      },
+      "timestampGroupCreated": 1701257397402
     }
   },
   "messages": {
@@ -206,6 +303,60 @@
       }
     },
     "a74394cb-802f-4321-b1af-3083c3d1dc09": {
+      "-NkPRWfLoyqlLvyoKWNO": {
+        "content": "this is workinggg",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701250735051
+      },
+      "-NkPTlyNA_5rkK5cx9IU": {
+        "content": "is it tho?",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701251326093
+      },
+      "-NkPc9-L-B9NowPRdwCw": {
+        "content": "lets test again",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701253783818
+      },
+      "-NkPhVQBmFgdAuP4lpJ7": {
+        "content": "jg",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701255186372
+      },
+      "-NkPpz2_U4WpJ0mhKeY7": {
+        "content": "yooo",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701257408987
+      },
+      "-NkPpznENtzNsO2iFeAn": {
+        "content": "😂",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701257412036
+      },
+      "-NkT9aji8JZQ-hCyYxX6": {
+        "content": ".",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701313146120
+      },
+      "-NkT9y5mvet11pn2fto7": {
+        "content": "gcg",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701313241804
+      },
+      "-NkTBeRBvSfxR71ILu8F": {
+        "content": "m",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701313685542
+      },
       "msg01": {
         "content": "Hello Group One!",
         "messageType": "text",
@@ -241,9 +392,383 @@
         "messageType": "text",
         "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
         "timestamp": 1700292100000
+      },
+      "msg07": {
+        "content": "Testing 123",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1700292190000
+      },
+      "msg79": {
+        "content": "Hope this works",
+        "messageType": "text",
+        "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+        "timestamp": 1701258412036
+      },
+      "msg80": {
+        "content": "Testing once again",
+        "messageType": "text",
+        "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+        "timestamp": 1701259412036
+      },
+      "msg81": {
+        "content": "Testing for the third time",
+        "messageType": "text",
+        "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+        "timestamp": 1701269412036
+      }
+    },
+    "c8b07dc2-8d6e-11ee-b9d1-0242ac120002": {
+      "-NkPfVbh3b-f9ugY7NEB": {
+        "content": "..",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701254662884
+      },
+      "-NkPgIk1JKYvV_-8g9WQ": {
+        "content": "m",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701254872312
+      },
+      "-NkPhEbzaGS3gTNyMpBK": {
+        "content": "kk",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701255117563
+      },
+      "-NkPhQY6c7fMHw1RJbFQ": {
+        "content": "kk",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701255166399
+      },
+      "-NkPhTAdmSgFQ1YdTuYX": {
+        "content": "kk",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701255177185
+      },
+      "-NkPpxw2HR_puSqnaswG": {
+        "content": "lol",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701257404409
+      },
+      "-NkPq18KfiC-0TrdYp2P": {
+        "content": "😂😂😂",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701257421643
+      },
+      "-NkPq2mtvoMZoyuncDbp": {
+        "content": "ouu emojis work too",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701257428399
+      },
+      "-NkPq6hj1Py3Jf79rbFN": {
+        "content": "😁😁😁😁😁",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701257444453
+      },
+      "-NkPqDvWSXURj9iL0eI-": {
+        "content": "     .",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701257474007
+      },
+      "-NkRwiXfNvq7_C-Nig-B": {
+        "content": "hello there ",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701292732198
+      },
+      "-NkRwk72C93r2H2zAIiQ": {
+        "content": "how is everyone doing?",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701292738687
+      },
+      "-NkRygz87Vop8L3aWAOc": {
+        "content": ".",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701293248722
+      },
+      "-NkT8Jes3f9eo6UB_liV": {
+        "content": "hellll9999",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312811380
+      },
+      "-NkT8KFWOWVQys8Ji6Ae": {
+        "content": "hello",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312813789
+      },
+      "-NkUkBUdc1yyoIwi3wjy": {
+        "content": "helooooo",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701339778737
+      },
+      "-NkVPGyFUgb1GPBMXa2I": {
+        "content": "hiiiii",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701350809743
+      },
+      "-NkVWyZeww_oFvLd6zql": {
+        "content": "Ali is useless",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701352826852
+      },
+      "msg778": {
+        "content": "hello",
+        "messageType": "text",
+        "senderId": "WanfT73gsZQ7x9n6IMHwmNxc3nu2",
+        "timestamp": 1701254762884
+      }
+    },
+    "e6040596-8d79-11ee-b9d1-0242ac120002": {
+      "-NkRwt0rtSusGXnOKCWR": {
+        "content": "hey guys! when do we start working on the project?",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701292775155
+      },
+      "-NkT8T_ys__oBCc6OFiB": {
+        "content": "        k",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312852025
+      },
+      "-NkT8Wt6dUpEwGu6I7A4": {
+        "content": "    j",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312865539
+      },
+      "-NkT8XVWjBBgwmpSZh-8": {
+        "content": "o",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312868061
+      },
+      "-NkT8YCBp78dyADGfkpe": {
+        "content": "jg",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312870920
+      }
+    },
+    "ef856b2b-b483-4f29-ba32-dedeb8002aef": {
+      "-NkT82XEktA1dXgBsMuZ": {
+        "content": "that's a lie",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312741195
+      },
+      "-NkT84VarO0hKmCmmfY4": {
+        "content": "u liar",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701312747840
+      },
+      "-NkT84hV-Ev0o5IGb3uk": {
+        "content": "I did not mean that ",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312750108
+      },
+      "-NkT85O3xXGilwvXdsQH": {
+        "content": "badtameez insaan",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701312751454
+      },
+      "-NkT85WBwWzVCrOys1QV": {
+        "content": "pls no udo",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312753416
+      },
+      "-NkT86O5qpRzn-sycEG_": {
+        "content": "chadar ki kameez",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701312755552
+      },
+      "-NkT86fz2AGsh21VdICv": {
+        "content": "you batameez",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312758203
+      },
+      "-NkT87ZpSprhKh72X4Uy": {
+        "content": "lohay ka pajama",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701312760399
+      },
+      "-NkT899uORLKTBYs1Whb": {
+        "content": "bandar tera mama",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701312766932
+      },
+      "-NkT8AH94crslSA4MdMo": {
+        "content": "you bandarrrrrr",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312772934
+      },
+      "-NkT8b2v9ek7b8Pe9pyZ": {
+        "content": "h",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312886711
+      },
+      "-NkT8jnvfAExqg1e-zPN": {
+        "content": "sahil is langoor",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701312922551
+      },
+      "-NkT8nP0GWxYtmdHXgSh": {
+        "content": "😂😂😂",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701312935834
+      },
+      "-NkT98pAs4XN5taQ20xk": {
+        "content": "😍",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701313029126
+      },
+      "-NkT9AxL08ij1Nwt7uz5": {
+        "content": "I know i'm very bootiful thankyou thankyou",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701313036400
+      },
+      "-NkT9Cj_ne_8RCg_Q-sJ": {
+        "content": "eh",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701313045153
+      },
+      "-NkT9DnKVv8kFdd5lpg8": {
+        "content": "no",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701313049489
+      },
+      "-NkT9Gr2sOYDh5ptQMih": {
+        "content": "now ",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701313062015
+      },
+      "-NkT9OmccA2dGv_Qye3l": {
+        "content": "hgf",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701313093058
+      },
+      "msg081": {
+        "content": "Hello Robika",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701308127408
+      },
+      "msg082": {
+        "content": "You are so amazing Ali, the best",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701309127408
+      }
+    },
+    "f055f81a-8d79-11ee-b9d1-0242ac120002": {
+      "-NkRxOYaJ-rbsKSOzspF": {
+        "content": "hello",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701292908386
       }
     },
     "f72e3d3f-c39f-42d2-b261-71848e95837c": {
+      "-NkPQmcCxrBoZTvXK5xY": {
+        "content": "hello?",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701250542337
+      },
+      "-NkPROqD_HsGDSasa7F8": {
+        "content": "test 123",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701250702979
+      },
+      "-NkPTe3aiRP1qKn5UnPM": {
+        "content": "hello",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701251293723
+      },
+      "-NkPTf5TEu94Xmg-m51G": {
+        "content": ".",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701251297939
+      },
+      "-NkPThfobdT3ubAsjHx4": {
+        "content": "jkjk",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701251308521
+      },
+      "-NkPU2Y7zX13Xa2ypxMI": {
+        "content": "hg",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701251398076
+      },
+      "-NkPUopFdniHDono25Nh": {
+        "content": "hh",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701251599942
+      },
+      "-NkPWlcmJxN5zy8VxHlb": {
+        "content": "hjh",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701252111144
+      },
+      "-NkPcCK5rzzoGWTZRWaQ": {
+        "content": "this is also working",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701253797434
+      },
+      "-NkPhUIZTfJovh6mLa-S": {
+        "content": "jj",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701255181788
+      },
+      "-NkPpwDZKIOuiubXMJD7": {
+        "content": "kk",
+        "messageType": "text",
+        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "timestamp": 1701257397402
+      },
       "msg13": {
         "content": "Greetings Group Three!",
         "messageType": "text",
@@ -279,6 +804,246 @@
         "messageType": "text",
         "senderId": "2TuuhzF4QFNVFRed3Wd3RsME1003",
         "timestamp": 1700292700000
+      }
+    }
+  },
+  "preferences": {
+    "PZCehjF4MyepENw9qYFaX6T2zf33": {
+      "activityPreferences": "None",
+      "availability": [
+        227,
+        347,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "dietaryRestrictionIndex": 0,
+      "foodPreferences": "None"
+    },
+    "am2iF1032zfTfqeC1gpCxbwBZRq2": {
+      "activityPreferences": "Kobe123123",
+      "availability": [
+        1277,
+        1431,
+        1216,
+        1276,
+        257,
+        1217,
+        197,
+        277,
+        1217,
+        1397,
+        257,
+        1217,
+        557,
+        1217
+      ],
+      "dietaryRestrictionIndex": 5,
+      "foodPreferences": "Jamaican"
+    }
+  },
+  "toDoLists": {
+    "186af84e-c18e-49cc-9d76-008cdb674b37": {
+      "task1": {
+        "assignedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "description": "Make some to-do items so you can test your application properly",
+        "dueDate": 1701742892670,
+        "isCompleted": false,
+        "title": "Make random todo items"
+      },
+      "task2": {
+        "assignedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "completedDate": 1701914652670,
+        "description": "Review the overall design of the application and provide feedback",
+        "dueDate": 1701915692670,
+        "isCompleted": true,
+        "title": "Review application design"
+      },
+      "task3": {
+        "assignedTo": "WanfT73gsZQ7x9n6IMHwmNxc3nu2",
+        "description": "Test the group chat functionality to ensure smooth communication",
+        "dueDate": 1702088492670,
+        "isCompleted": false,
+        "title": "Test group chat functionality"
+      },
+      "task4": {
+        "assignedTo": "WanfT73gsZQ7x9n6IMHwmNxc3nu2",
+        "description": "Share thoughts on the user interface and suggest improvements",
+        "dueDate": 1702261292670,
+        "isCompleted": false,
+        "title": "Provide feedback on user interface"
+      },
+      "task5": {
+        "assignedTo": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "description": "Test the individual chat functionality to ensure smooth communication",
+        "dueDate": 1702434092670,
+        "isCompleted": false,
+        "title": "Test individual chat functionality"
+      },
+      "task6": {
+        "assignedTo": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "description": "Review the application documentation and provide feedback",
+        "dueDate": 1702606892670,
+        "isCompleted": false,
+        "title": "Review application documentation"
+      },
+      "task7": {
+        "assignedTo": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "description": "Share thoughts on additional features for the group functionality",
+        "dueDate": 1702779692670,
+        "isCompleted": false,
+        "title": "Provide input on group features"
+      },
+      "task8": {
+        "assignedTo": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "description": "Conduct user acceptance testing for various scenarios",
+        "dueDate": 1702952492670,
+        "isCompleted": false,
+        "title": "Conduct user acceptance testing"
+      }
+    },
+    "a74394cb-802f-4321-b1af-3083c3d1dc09": {
+      "task10": {
+        "assignedTo": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+        "description": "Assist in planning the logistics for the next group event",
+        "dueDate": 1703298092670,
+        "isCompleted": false,
+        "title": "Plan event logistics"
+      },
+      "task11": {
+        "assignedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "description": "Collaborate on strategies to promote the upcoming group event",
+        "dueDate": 1703470892670,
+        "isCompleted": false,
+        "title": "Collaborate on event promotion"
+      },
+      "task12": {
+        "assignedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "completedDate": 1703623692670,
+        "description": "Provide feedback on the proposed ideas for upcoming group events",
+        "dueDate": 1703643692670,
+        "isCompleted": true,
+        "title": "Provide feedback on event ideas"
+      },
+      "task13": {
+        "assignedTo": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "description": "Coordinate transportation details for the upcoming group event",
+        "dueDate": 1703816492670,
+        "isCompleted": false,
+        "title": "Coordinate transportation for event"
+      },
+      "task14": {
+        "assignedTo": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "description": "Provide assistance in setting up for the group event",
+        "dueDate": 1703989292670,
+        "isCompleted": false,
+        "title": "Assist in event setup"
+      },
+      "task9": {
+        "assignedTo": "2TuuhzF4QFNVFRed3Wd3RsME1003",
+        "description": "Share creative ideas for upcoming events and activities",
+        "dueDate": 1703125292670,
+        "isCompleted": false,
+        "title": "Brainstorm event ideas"
+      }
+    },
+    "c8b07dc2-8d6e-11ee-b9d1-0242ac120002": {
+      "task15": {
+        "assignedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "completedDate": 1704112092670,
+        "description": "Review materials for the upcoming CMPT 362 course",
+        "dueDate": 1704162092670,
+        "isCompleted": true,
+        "title": "Review course materials"
+      },
+      "task16": {
+        "assignedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "description": "Initiate a discussion on potential project ideas for the course",
+        "dueDate": 1704334892670,
+        "isCompleted": false,
+        "title": "Discuss project ideas"
+      },
+      "task17": {
+        "assignedTo": "WanfT73gsZQ7x9n6IMHwmNxc3nu2",
+        "description": "Conduct research on various topics related to CMPT 362",
+        "dueDate": 1704507692670,
+        "isCompleted": false,
+        "title": "Research on CMPT 362 topics"
+      },
+      "task18": {
+        "assignedTo": "WanfT73gsZQ7x9n6IMHwmNxc3nu2",
+        "description": "Prepare materials for the upcoming group discussion in CMPT 362",
+        "dueDate": 1704680492670,
+        "isCompleted": false,
+        "title": "Prepare for group discussion"
+      },
+      "task19": {
+        "assignedTo": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "description": "Prepare and submit the project proposal for CMPT 362",
+        "dueDate": 1704853292670,
+        "isCompleted": false,
+        "title": "Submit project proposal"
+      },
+      "task20": {
+        "assignedTo": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "description": "Prepare materials for an upcoming class presentation in CMPT 362",
+        "dueDate": 1705026092670,
+        "isCompleted": false,
+        "title": "Prepare for class presentation"
+      },
+      "task21": {
+        "assignedTo": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "description": "Initiate the formation of a study group for CMPT 362",
+        "dueDate": 1705198892670,
+        "isCompleted": false,
+        "title": "Organize study group"
+      },
+      "task22": {
+        "assignedTo": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "description": "Coordinate study sessions for the CMPT 362 study group",
+        "dueDate": 1705371692670,
+        "isCompleted": false,
+        "title": "Coordinate group study sessions"
+      }
+    },
+    "ef856b2b-b483-4f29-ba32-dedeb8002aef": {
+      "task23": {
+        "assignedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "description": "Plan the agenda for the upcoming meeting with Revs",
+        "dueDate": 1705544492670,
+        "isCompleted": false,
+        "title": "Plan meeting agenda"
+      },
+      "task24": {
+        "assignedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "completedDate": 1705797292670,
+        "description": "Prepare materials for the presentation during the meeting with Revs",
+        "dueDate": 1705717292670,
+        "isCompleted": true,
+        "title": "Prepare presentation materials"
+      },
+      "task25": {
+        "assignedTo": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "description": "Collect feedback from Revs during the meeting",
+        "dueDate": 1705890092670,
+        "isCompleted": false,
+        "title": "Gather feedback from Revs"
+      },
+      "task26": {
+        "assignedTo": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "description": "Summarize the outcomes of the meeting with Revs",
+        "dueDate": 1706062892670,
+        "isCompleted": false,
+        "title": "Summarize meeting outcomes"
       }
     }
   },
@@ -336,6 +1101,12 @@
       "firstName": "abc",
       "lastName": "fbdj",
       "username": "dusjdnd"
+    },
+    "PZCehjF4MyepENw9qYFaX6T2zf33": {
+      "email": "shakeelkapadia@gmail.com",
+      "firstName": "Shakeel",
+      "lastName": "Kapadia",
+      "username": "shakeel"
     },
     "R1rzpgEWc5autAwdIY1ZhHPwWok1": {
       "email": "c@c.com",
