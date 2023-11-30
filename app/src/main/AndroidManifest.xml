@@ -19,7 +19,7 @@
             android:name=".ui.transactions.TransactionsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.profile.ProfileActivity"
+            android:name=".ui.conversation.ConversationActivity"
             android:exported="false" />
         <activity
             android:name=".ui.signup.SignUpActivity"
