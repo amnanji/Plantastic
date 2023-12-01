@@ -59,4 +59,5 @@
 
 
     <string name="message_hint">Message…</string>
+    <string name="todo_list_individual_group_title">From chat with %1$s %2$s</string>
 </resources>
