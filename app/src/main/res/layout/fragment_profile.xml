@@ -15,6 +15,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!--     Start of Username      -->
+            <TextView
+                android:id="@+id/username_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="@string/your_username"
+                android:textSize="18sp"
+                android:layout_marginBottom="10dp"/>
+
+            <EditText
+                android:id="@+id/username_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:hint="@string/enter_a_username"
+                android:textSize="18sp"
+                android:layout_marginBottom="10dp"/>
+
             <!--     Start of food preferences       -->
             <TextView
                 android:id="@+id/food_preferences_label"
@@ -31,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:hint="@string/food_preference_hint"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:layout_marginBottom="10dp"/>
 
 
@@ -68,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:hint="@string/food_preference_hint"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:layout_marginBottom="10dp"/>
 
             <!--      Start of availability preferences         -->

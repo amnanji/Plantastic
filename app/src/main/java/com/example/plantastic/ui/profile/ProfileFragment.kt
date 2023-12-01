@@ -11,12 +11,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.plantastic.R
 import com.example.plantastic.databinding.FragmentProfileBinding
 import com.example.plantastic.models.Preferences.Preferences
+import com.example.plantastic.models.Users
 import com.example.plantastic.repository.PreferencesRepository
 import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.utilities.CustomAlertDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,20 +32,23 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
+    private var usersRepository: UsersRepository = UsersRepository()
     private var preferencesRepository: PreferencesRepository = PreferencesRepository()
     private var profileViewModel: ProfileViewModel = ProfileViewModel()
 
-    private lateinit var saveButton: Button
+    private lateinit var usernameEditText: EditText
     private lateinit var foodPreferencesEditText: EditText
     private lateinit var dietaryRestrictionsSpinner: Spinner
     private lateinit var activityPreferencesEditText: EditText
 
+    private lateinit var availabilityTextViewList: ArrayList<TextView>
     private lateinit var startButtonList: ArrayList<Button>
     private lateinit var endButtonList: ArrayList<Button>
     private lateinit var busyButtonList: ArrayList<Button>
-    private lateinit var availabilityTextViewList: ArrayList<TextView>
+    private lateinit var saveButton: Button
 
     private var currentUserId: String = usersAuthRepository.getCurrentUser()!!.uid
+    private lateinit var currentUser: Users
     private lateinit var currentPreferences: Preferences
     private var currentAvailability: MutableList<Int> = mutableListOf(-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1)
     private var currentDietaryRestrictionIndex = -1
@@ -61,12 +67,20 @@ class ProfileFragment : Fragment() {
         busyButtonList = ArrayList<Button>(daysInTheWeek)
         availabilityTextViewList = ArrayList<TextView>(daysInTheWeek)
 
+        usernameEditText = binding.usernameInput
         foodPreferencesEditText = binding.foodPreferencesInput
         dietaryRestrictionsSpinner = binding.dietaryRestrictionsInput
         activityPreferencesEditText = binding.activityPreferencesInput
 
         initializeAvailabilityTextViews()
         initializeButtons()
+
+        profileViewModel.user.observe(viewLifecycleOwner){user ->
+            if (user != null){
+                currentUser = user
+                usernameEditText.setText(user.username)
+            }
+        }
 
         profileViewModel.preferences.observe(viewLifecycleOwner){ preferences ->
             if (preferences != null) {
@@ -90,6 +104,38 @@ class ProfileFragment : Fragment() {
 
         saveButton = binding.profileSaveButton
         saveButton.setOnClickListener {
+            val currentUserUid = usersAuthRepository.getCurrentUser()!!.uid
+            var username = currentUser.username
+            if (usernameEditText.text.toString().isNotBlank()){
+                username = usernameEditText.text.toString()
+            }
+            CoroutineScope(Dispatchers.IO).launch {
+                Log.d("username", "test")
+                if (username != null) {
+                    usersRepository.isUsernameUnique(currentUserId, username){isUnique ->
+                        when (isUnique) {
+                            true -> {
+                                usersRepository.updateUsername(currentUserId, username){user ->
+                                    if (user != null) {
+                                        currentUser = user
+                                    }
+                                }
+                                Toast.makeText(requireContext(),
+                                    getString(R.string.username_updated_successfully), Toast.LENGTH_SHORT)
+                            }
+                            false -> {
+                                val alertDialog = CustomAlertDialog(requireContext())
+                                alertDialog.showAlertDialog("Invalid Username",
+                                    getString(R.string.use_different_username_message, username))
+                            }
+                            else -> {
+                                Log.d("username", "username is null")
+                            }
+                        }
+                    }
+                }
+            }
+
             var foodPreferences = "None"
             if (foodPreferencesEditText.text.toString().isNotBlank()){
                 foodPreferences = foodPreferencesEditText.text.toString()
@@ -99,7 +145,6 @@ class ProfileFragment : Fragment() {
                 activityPreferences = activityPreferencesEditText.text.toString()
             }
             val dietaryRestrictionsIndex = dietaryRestrictionsSpinner.selectedItemId.toInt()
-            val currentUserUid = usersAuthRepository.getCurrentUser()!!.uid
             val availability = currentAvailability
             if(setAndValidateAvailability()){
                 CoroutineScope(Dispatchers.IO).launch {
@@ -109,6 +154,8 @@ class ProfileFragment : Fragment() {
                     }
                 }
             }
+            Toast.makeText(requireContext(),
+                getString(R.string.preferences_and_availability_updated_successfully), Toast.LENGTH_SHORT)
         }
         val root: View = binding.root
         return root

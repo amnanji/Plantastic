@@ -66,4 +66,9 @@
     <string name="available_from_string">Available from: %1$s to %2$s</string>
     <string name="invalid_days_message">"The following days have an invalid value for availability: "</string>
     <string name="please_correct_availability_message">. Please correct availability to save preferences.</string>
+    <string name="your_username">Your username:</string>
+    <string name="enter_a_username">Enter a username</string>
+    <string name="use_different_username_message">The username %1$s has been taken by another user. Please use a different username.</string>
+    <string name="preferences_and_availability_updated_successfully">Preferences and Availability updated successfully</string>
+    <string name="username_updated_successfully">Username updated successfully</string>
 </resources>
