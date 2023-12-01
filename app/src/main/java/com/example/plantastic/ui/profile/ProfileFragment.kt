@@ -11,7 +11,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.plantastic.R
 import com.example.plantastic.databinding.FragmentProfileBinding
@@ -60,12 +59,12 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        startButtonList = ArrayList<Button>(daysInTheWeek)
-        endButtonList = ArrayList<Button>(daysInTheWeek)
-        busyButtonList = ArrayList<Button>(daysInTheWeek)
-        availabilityTextViewList = ArrayList<TextView>(daysInTheWeek)
+        startButtonList = ArrayList(daysInTheWeek)
+        endButtonList = ArrayList(daysInTheWeek)
+        busyButtonList = ArrayList(daysInTheWeek)
+        availabilityTextViewList = ArrayList(daysInTheWeek)
 
         usernameEditText = binding.usernameInput
         foodPreferencesEditText = binding.foodPreferencesInput
@@ -75,14 +74,16 @@ class ProfileFragment : Fragment() {
         initializeAvailabilityTextViews()
         initializeButtons()
 
-        profileViewModel.user.observe(viewLifecycleOwner){user ->
-            if (user != null){
+        // When data is changed, update variables with viewmodel data
+        profileViewModel.user.observe(viewLifecycleOwner) { user ->
+            if (user != null) {
                 currentUser = user
                 usernameEditText.setText(user.username)
             }
         }
 
-        profileViewModel.preferences.observe(viewLifecycleOwner){ preferences ->
+
+        profileViewModel.preferences.observe(viewLifecycleOwner) { preferences ->
             if (preferences != null) {
                 currentPreferences = preferences
                 currentAvailability = currentPreferences.availability!!
@@ -94,40 +95,40 @@ class ProfileFragment : Fragment() {
                 activityPreferencesEditText.setText(currentActivityPreferences)
                 dietaryRestrictionsSpinner.setSelection(currentDietaryRestrictionIndex)
 
-                for (i in 0..<daysInTheWeek){
-                    setAvailability(i)
-                }
+                populateStoredValues()
             }
         }
-
-        populateStoredValues()
 
         saveButton = binding.profileSaveButton
         saveButton.setOnClickListener {
             val currentUserUid = usersAuthRepository.getCurrentUser()!!.uid
             var username = currentUser.username
-            if (usernameEditText.text.toString().isNotBlank()){
+            if (usernameEditText.text.toString().isNotBlank()) {
                 username = usernameEditText.text.toString()
             }
+            // Validating that the new username is unique and then updating username for user in database
             CoroutineScope(Dispatchers.IO).launch {
-                Log.d("username", "test")
                 if (username != null) {
-                    usersRepository.isUsernameUnique(currentUserId, username){isUnique ->
+                    usersRepository.isUsernameUnique(currentUserId, username) { isUnique ->
                         when (isUnique) {
                             true -> {
-                                usersRepository.updateUsername(currentUserId, username){user ->
+                                // Update username when unique
+                                usersRepository.updateUsername(currentUserId, username) { user ->
                                     if (user != null) {
                                         currentUser = user
                                     }
                                 }
-                                Toast.makeText(requireContext(),
-                                    getString(R.string.username_updated_successfully), Toast.LENGTH_SHORT)
                             }
+
                             false -> {
+                                // Show alert when the new username inputted is used by another user
                                 val alertDialog = CustomAlertDialog(requireContext())
-                                alertDialog.showAlertDialog("Invalid Username",
-                                    getString(R.string.use_different_username_message, username))
+                                alertDialog.showAlertDialog(
+                                    "Invalid Username",
+                                    getString(R.string.use_different_username_message, username)
+                                )
                             }
+
                             else -> {
                                 Log.d("username", "username is null")
                             }
@@ -137,44 +138,46 @@ class ProfileFragment : Fragment() {
             }
 
             var foodPreferences = "None"
-            if (foodPreferencesEditText.text.toString().isNotBlank()){
+            if (foodPreferencesEditText.text.toString().isNotBlank()) {
                 foodPreferences = foodPreferencesEditText.text.toString()
             }
             var activityPreferences = "None"
-            if (activityPreferencesEditText.text.toString().isNotBlank()){
+            if (activityPreferencesEditText.text.toString().isNotBlank()) {
                 activityPreferences = activityPreferencesEditText.text.toString()
             }
             val dietaryRestrictionsIndex = dietaryRestrictionsSpinner.selectedItemId.toInt()
             val availability = currentAvailability
-            if(setAndValidateAvailability()){
+
+            // Validate all availabilities
+            if (validateAvailability()) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    preferencesRepository.updatePreference(currentUserUid, foodPreferences, dietaryRestrictionsIndex,
-                        activityPreferences, availability){ preferences ->
+                    preferencesRepository.updatePreference(
+                        currentUserUid, foodPreferences, dietaryRestrictionsIndex,
+                        activityPreferences, availability
+                    ) { preferences ->
                         profileViewModel.preferences.value = preferences
                     }
                 }
             }
-            Toast.makeText(requireContext(),
-                getString(R.string.preferences_and_availability_updated_successfully), Toast.LENGTH_SHORT)
         }
-        val root: View = binding.root
-        return root
+        return binding.root
     }
 
+    // Set all availability textViews with their availabilities
     private fun populateStoredValues() {
         for(i in 0..<daysInTheWeek){
             setAvailability(i)
         }
     }
 
-    private fun setAndValidateAvailability(): Boolean {
+    private fun validateAvailability(): Boolean {
         val weekArray = resources.getStringArray(R.array.days_of_week)
         var isValid = true
         val alertDialog = CustomAlertDialog(requireContext())
         var daysWithInvalidAvailability = getString(R.string.invalid_days_message)
         for(i in 0..< currentAvailability.size step 2){
-            var startTime = currentAvailability[i]
-            var endTime = currentAvailability[i+1]
+            val startTime = currentAvailability[i]
+            val endTime = currentAvailability[i+1]
             val currentDayIndex = i/2
             val currentDay = weekArray[currentDayIndex]
             if(isInvalidTime(startTime, endTime)){
@@ -182,6 +185,7 @@ class ProfileFragment : Fragment() {
                 isValid = false
             }
         }
+        // Collect which day textViews have incorrect values so they can be input into the AlertDialog
         daysWithInvalidAvailability = daysWithInvalidAvailability.dropLast(2)
         daysWithInvalidAvailability += getString(R.string.please_correct_availability_message)
         Log.d("Alert", daysWithInvalidAvailability)
@@ -192,9 +196,12 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setAvailability(dayIndex: Int) {
+        // Set the textView corresponding to the day of the week with its availability value
         val startTime = currentAvailability[dayIndex * 2]
         val endTime = currentAvailability[dayIndex * 2 + 1]
-        var availability = if (startTime == -1){
+        val availability = if (startTime == -1 && endTime == -1){
+            getString(R.string.busy_text_textview)
+        } else if (startTime == -1){
             getString(R.string.available_from_string, "Unknown", minutesToTime(endTime))
         }else if (endTime == -1){
             getString(R.string.available_from_string, minutesToTime(startTime), "Unknown")
@@ -205,14 +212,23 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setAvailabilityBusy(dayIndex: Int){
+        // Busy is represented by -1 in both start and end timeslot in the array, start being even
+        // indices, end being odd indices
         currentAvailability[dayIndex*2] = -1
         currentAvailability[dayIndex*2 + 1] = -1
-        availabilityTextViewList[dayIndex].text = "Busy"
+        availabilityTextViewList[dayIndex].text = getString(R.string.busy_text_textview)
 
     }
 
+    // Function used to check that end time is always greater than start time unless the user is busy
     private fun isInvalidTime(startTime: Int, endTime: Int): Boolean{
-        return endTime <= startTime || startTime == -1 || endTime == -1
+        if (startTime != -1 && endTime != -1){
+            if (endTime <= startTime){
+                return true
+            }
+            return false
+        }
+        else return endTime != -1 || startTime != -1
     }
 
     private fun minutesToTime(minutes: Int): String{
@@ -221,6 +237,7 @@ class ProfileFragment : Fragment() {
         return String.format("%02d:%02d", startHours, startMinutes)
     }
 
+    // Dynamically add textviews to a list so they can be index by day of the week
     private fun initializeAvailabilityTextViews() {
         availabilityTextViewList.add(binding.mondayAvailabilityTextview)
         availabilityTextViewList.add(binding.tuesdayAvailabilityTextview)
@@ -230,7 +247,8 @@ class ProfileFragment : Fragment() {
         availabilityTextViewList.add(binding.saturdayAvailabilityTextview)
         availabilityTextViewList.add(binding.sundayAvailabilityTextview)
     }
-    
+
+    // Dynamically add buttons to a list to set their onClickListeners by indexing the day of the week
     private fun initializeButtons(){
         startButtonList.add(binding.mondayStartTimeButton)
         startButtonList.add(binding.tuesdayStartTimeButton)
@@ -257,29 +275,32 @@ class ProfileFragment : Fragment() {
         busyButtonList.add(binding.sundayBusyButton)
 
         for(i in 0..<busyButtonList.size){
-            var currentStartButton = startButtonList[i]
+            val currentStartButton = startButtonList[i]
             currentStartButton.setOnClickListener {
                 getTime(i, false)
             }
-            var currentEndButton = endButtonList[i]
+            val currentEndButton = endButtonList[i]
             currentEndButton.setOnClickListener {
                 getTime(i, true)
             }
-            var currentBusyButton = busyButtonList[i]
+            val currentBusyButton = busyButtonList[i]
             currentBusyButton.setOnClickListener {
                 setAvailabilityBusy(i)
             }
         }
     }
 
+    // Input time for either start of availability or end of availability
     private fun getTime(dayIndex: Int, isEnd: Boolean) {
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
+        // Use timePickerDialog for input
         val timePickerDialog = TimePickerDialog(
             requireContext(),
-            TimePickerDialog.OnTimeSetListener { _, hourSelected, minuteSelected ->
-                var timeSelected = hourSelected*60 + minuteSelected
+            { _, hourSelected, minuteSelected ->
+                val timeSelected = hourSelected*60 + minuteSelected
+                // Store values in 2*n list
                 currentAvailability[dayIndex*2 + isEnd.toInt()] = timeSelected
                 setAvailability(dayIndex)
             },

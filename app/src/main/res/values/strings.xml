@@ -69,6 +69,8 @@
     <string name="your_username">Your username:</string>
     <string name="enter_a_username">Enter a username</string>
     <string name="use_different_username_message">The username %1$s has been taken by another user. Please use a different username.</string>
-    <string name="preferences_and_availability_updated_successfully">Preferences and Availability updated successfully</string>
-    <string name="username_updated_successfully">Username updated successfully</string>
+    <string name="preferences_and_availability_updated_successfully">Preferences and Availability updated successfully!</string>
+    <string name="username_updated_successfully">Username updated successfully!</string>
+    <string name="busy_text_textview">Busy</string>
+    <string name="username_availability_and_preferences_updated_successfully">Username, Availability and Preferences updated successfully!</string>
 </resources>

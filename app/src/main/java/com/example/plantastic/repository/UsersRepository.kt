@@ -90,36 +90,35 @@ class UsersRepository {
         return ret
     }
 
+    // Update the username of a user
     fun updateUsername(userId: String, username: String, callback: (Users?) -> Unit){
         val reference = usersReference.child(userId)
         reference.child("username").setValue(username)
     }
 
+    // Query all users with the same username, ensure no one else has that username
     fun isUsernameUnique(userId: String, username: String, callback: (Boolean?) -> Unit){
         val query: Query = usersReference.orderByChild("username").equalTo(username)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot.exists()){
                     val count = dataSnapshot.children.count()
-                    Log.d("username", "count: $count")
+                    val users = dataSnapshot.children
                     if (count == 0){
                         callback(true)
                     } else if (count > 1){
                         callback(false)
                     } else {
-                        val users = dataSnapshot.children
                         var isOldUsername = false
                         for(user in users){
                             if(user.key.toString() == userId){
                                 isOldUsername = true
                             }
                         }
-                        if (isOldUsername){
-                            callback(true)
-                        } else {
-                            callback(false)
-                        }
+                        callback(isOldUsername)
                     }
+                } else {
+                    callback(true)
                 }
             }
 
