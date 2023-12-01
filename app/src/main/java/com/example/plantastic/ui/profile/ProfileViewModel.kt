@@ -3,7 +3,7 @@ package com.example.plantastic.ui.profile
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.plantastic.models.Preferences.Preferences
+import com.example.plantastic.models.Preferences
 import com.example.plantastic.models.Users
 import com.example.plantastic.repository.PreferencesRepository
 import com.example.plantastic.repository.UsersAuthRepository

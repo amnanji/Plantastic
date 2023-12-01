@@ -14,7 +14,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.plantastic.R
 import com.example.plantastic.databinding.FragmentProfileBinding
-import com.example.plantastic.models.Preferences.Preferences
+import com.example.plantastic.models.Preferences
 import com.example.plantastic.models.Users
 import com.example.plantastic.repository.PreferencesRepository
 import com.example.plantastic.repository.UsersAuthRepository
