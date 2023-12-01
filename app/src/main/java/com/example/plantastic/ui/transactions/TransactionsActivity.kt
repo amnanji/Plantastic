@@ -12,7 +12,10 @@ import com.example.plantastic.repository.TransactionsRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.ui.conversation.ConversationActivity
 import com.example.plantastic.utilities.FirebaseNodes
+import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class TransactionsActivity : AppCompatActivity() {
 
@@ -41,13 +44,19 @@ class TransactionsActivity : AppCompatActivity() {
             finish()
         }
 
-        val transactionQuery = transactionsRepository.getTransactionsForGroup(groupId!!)
+//        val transactionQuery = transactionsRepository.getTransactionsForGroup(groupId!!)
+
+        var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
+        var transactionsReference: DatabaseReference = firebaseDatabase.getReference(FirebaseNodes.TRANSACTIONS_NODE)
+        val transactionQuery =  transactionsReference.orderByChild(FirebaseNodes.TRANSACTIONS_GROUP_NODE).equalTo(groupId)
 
         val options = FirebaseRecyclerOptions.Builder<Transaction>()
             .setQuery(transactionQuery, Transaction::class.java).build()
 
-        adapter = TransactionsAdapter(options, "a", "a")
+        adapter = TransactionsAdapter(options)
         recyclerView.adapter = adapter
+        val manager = WrapContentLinearLayoutManager(this)
+        recyclerView.layoutManager = manager
         adapter.startListening()
     }
 

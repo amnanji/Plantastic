@@ -13,15 +13,13 @@ import com.example.plantastic.ui.balances.BalancesAdapter
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 
-class TransactionsAdapter(private var options: FirebaseRecyclerOptions<Transaction>,
-                          private val userId: String,
-                          private val groupId: String
-) :
+class TransactionsAdapter(private var options: FirebaseRecyclerOptions<Transaction>) :
     FirebaseRecyclerAdapter<Transaction, TransactionsAdapter.TransactionViewHolder>(options) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): TransactionViewHolder {
+        Log.d("TransactionsRepository", "inside on create View holder")
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.custom_transactions_layout, parent, false)
         return TransactionViewHolder(view)
@@ -32,11 +30,10 @@ class TransactionsAdapter(private var options: FirebaseRecyclerOptions<Transacti
         position: Int,
         model: Transaction
     ) {
+        Log.d("TransactionsRepository", "inside on bind view holder")
         holder.transactionDescription.text = "hello there"
         holder.transactionSentence.text = "hfhfhfgbfbhf"
         holder.transactionDate.text = "hfhfhhf"
-
-        Log.d("fck", "hello here I am ")
     }
 
     inner class TransactionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

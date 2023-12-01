@@ -4,10 +4,10 @@ import com.google.firebase.database.IgnoreExtraProperties
 
 @IgnoreExtraProperties
 data class Transaction(
-    var id: String,
-    var groupId: String,
-    var date: String,
-    var description: String,
-    var moneyOwedTo: String,
-    var totalAmount: Double
+    var id: String? = null,
+    var groupId: String? = null,
+    var date: String? = null,
+    var description: String? = null,
+    var moneyOwedTo: String? = null,
+    var totalAmount: Double? = null
 )
