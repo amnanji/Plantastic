@@ -13,18 +13,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.databinding.FragmentAddFriendsBinding
 import com.example.plantastic.models.Users
-import com.example.plantastic.utilities.FirebaseNodes
+import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.database.FirebaseDatabase
 
 class AddFriendsFragment : Fragment() {
     private var _binding: FragmentAddFriendsBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var viewModel: AddFriendsViewModel
-    private lateinit var adapter: AddFriendsAdapter
     private var flag = true
+
+    private lateinit var adapter: AddFriendsAdapter
+    private lateinit var usersRepository: UsersRepository
+    private lateinit var usersAuthRepository: UsersAuthRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,9 +38,11 @@ class AddFriendsFragment : Fragment() {
         recyclerView.layoutManager = WrapContentLinearLayoutManager(requireContext())
 
         val editTextSearch = root.findViewById<EditText>(R.id.editTextSearch)
-        // Initialize Firebase Database and the query
-        val databaseReference = FirebaseDatabase.getInstance().getReference(FirebaseNodes.USERS_NODE)
-        val query = databaseReference.orderByChild(FirebaseNodes.USERNAME_NODE)
+
+        usersRepository = UsersRepository()
+        usersAuthRepository = UsersAuthRepository()
+
+        val currUser = usersAuthRepository.getCurrentUser()
 
         // Set up TextWatcher to filter data based on search input
         editTextSearch.addTextChangedListener(object : TextWatcher {
@@ -51,12 +54,15 @@ class AddFriendsFragment : Fragment() {
 
                 // Update the query only if the search string is not empty
                 if (searchText.isNotEmpty()) {
-                    val newQuery = query.startAt(searchText).endAt("$searchText\uf8ff")
+
                     val newOptions = FirebaseRecyclerOptions.Builder<Users>()
-                        .setQuery(newQuery, Users::class.java)
+                        .setQuery(
+                            usersRepository.getUsernameQuery(searchText),
+                            Users::class.java)
                         .build()
+
                     if (flag){
-                        adapter = AddFriendsAdapter(newOptions)
+                        adapter = AddFriendsAdapter(newOptions, currUser!!.uid)
                         recyclerView.adapter = adapter
                         flag = false
                     }
@@ -64,12 +70,15 @@ class AddFriendsFragment : Fragment() {
                         adapter.stopListening()
                         adapter.updateOptions(newOptions)
                     }
+
                     adapter.startListening()
                     recyclerView.adapter?.notifyDataSetChanged()
                 }
                 else{
-                    adapter.stopListening()
-                    recyclerView.adapter = null
+                    if(!flag){
+                        adapter.stopListening()
+                        recyclerView.adapter = null
+                    }
                     flag = true
                 }
             }
@@ -85,9 +94,17 @@ class AddFriendsFragment : Fragment() {
         _binding = null
     }
 
-    override fun onPause() {
-        super.onPause()
-        adapter.stopListening()
+    override fun onStart() {
+        super.onStart()
+        if(!flag){
+            adapter.startListening()
+        }
     }
 
+    override fun onPause() {
+        super.onPause()
+        if(!flag) {
+            adapter.stopListening()
+        }
+    }
 }

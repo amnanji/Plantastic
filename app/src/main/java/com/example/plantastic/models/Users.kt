@@ -7,5 +7,6 @@ data class Users(
     val firstName: String? = null,
     val lastName: String? =null,
     val username: String? = null,
-    val email: String? = null
+    val email: String? = null,
+    val friends: HashMap<String, Boolean>? = null
 )

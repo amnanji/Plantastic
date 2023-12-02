@@ -10,11 +10,15 @@ import com.example.plantastic.models.Users
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 
-class AddFriendsAdapter(options: FirebaseRecyclerOptions<Users>) :
+class AddFriendsAdapter(
+    options: FirebaseRecyclerOptions<Users>,
+    userId: String
+) :
     FirebaseRecyclerAdapter<Users, AddFriendsAdapter.SearchUsersViewHolder>(options) {
 
     inner class SearchUsersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textViewItem: TextView = itemView.findViewById(R.id.searchTextViewItem)
+        val usernameTextView: TextView = itemView.findViewById(R.id.searchUsernameTextView)
+        val nameTextView: TextView = itemView.findViewById(R.id.searchNameTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchUsersViewHolder {
@@ -24,8 +28,7 @@ class AddFriendsAdapter(options: FirebaseRecyclerOptions<Users>) :
     }
 
     override fun onBindViewHolder(holder: SearchUsersViewHolder, position: Int, model: Users) {
-        if (model != null){
-            holder.textViewItem.text = model.username
-        }
+        holder.usernameTextView.text = model.username
+        "${model.firstName} ${model.lastName}".also { holder.nameTextView.text = it }
     }
 }

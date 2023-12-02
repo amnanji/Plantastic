@@ -3,6 +3,7 @@ package com.example.plantastic.repository
 import android.util.Log
 import com.example.plantastic.models.Users
 import com.example.plantastic.utilities.FirebaseNodes
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -126,5 +127,10 @@ class UsersRepository {
                 callback(null)
             }
         })
+    }
+
+    fun getUsernameQuery(searchString: String): Query {
+        val usernameQuery = usersReference.orderByChild(FirebaseNodes.USERNAME_NODE)
+        return usernameQuery.startAt(searchString).endAt("$searchString\uf8ff")
     }
 }
