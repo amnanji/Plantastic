@@ -24,6 +24,7 @@ class EventsAdapter(private val eventsList: List<Events>) : RecyclerView.Adapter
         holder.eventName.text = event.name
         holder.eventDate.text = event.date
         holder.eventLocation.text = event.location
+        Log.d("revs","GID: ${event.GID}")
         groupsRepository.getGroupById(event.GID!!){
             if(it!=null)
             {
