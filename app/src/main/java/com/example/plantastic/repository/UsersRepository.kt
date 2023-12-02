@@ -3,7 +3,6 @@ package com.example.plantastic.repository
 import android.util.Log
 import com.example.plantastic.models.Users
 import com.example.plantastic.utilities.FirebaseNodes
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -28,7 +27,7 @@ class UsersRepository {
         onComplete: (Boolean) -> Unit
     ) {
 
-        val user = Users(firstName, lastName, username, email)
+        val user = Users(userId, firstName, lastName, username, email, HashMap())
         usersReference.child(userId).setValue(user)
             .addOnSuccessListener {
                 onComplete(true)
@@ -132,5 +131,22 @@ class UsersRepository {
     fun getUsernameQuery(searchString: String): Query {
         val usernameQuery = usersReference.orderByChild(FirebaseNodes.USERNAME_NODE)
         return usernameQuery.startAt(searchString).endAt("$searchString\uf8ff")
+    }
+
+    fun addFriends(userId1: String, userId2: String){
+        this.getUserById(userId1){
+            if (it != null){
+                val userReference = firebaseDatabase.getReference("${FirebaseNodes.USERS_NODE}/$userId1")
+                    it.friends?.put(userId2, true)
+                userReference.setValue(it)
+            }
+        }
+        this.getUserById(userId2){
+            if (it != null){
+                val userReference = firebaseDatabase.getReference("${FirebaseNodes.USERS_NODE}/$userId2")
+                it.friends?.put(userId1, true)
+                userReference.setValue(it)
+            }
+        }
     }
 }

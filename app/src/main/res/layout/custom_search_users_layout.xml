@@ -27,14 +27,28 @@
         android:paddingStart="16dp"
         tools:text="Username" />
 
+    <!-- ImageView for Friend -->
     <ImageView
-        android:id="@+id/iconImageView"
+        android:id="@+id/iconImageViewFriend"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/baseline_check_circle_24"
+        tools:src="@drawable/ic_launcher_foreground"
+        android:visibility="gone" />
+
+    <!-- ImageView for User -->
+    <ImageView
+        android:id="@+id/iconImageViewUser"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="16dp"
         android:src="@drawable/baseline_person_add_alt_1_24"
-        tools:src="@drawable/ic_launcher_foreground" />
+        tools:src="@drawable/ic_launcher_foreground"
+        android:visibility="gone" />
 
 </RelativeLayout>
