@@ -73,4 +73,7 @@
     <string name="username_updated_successfully">Username updated successfully!</string>
     <string name="busy_text_textview">Busy</string>
     <string name="username_availability_and_preferences_updated_successfully">Username, Availability and Preferences updated successfully!</string>
+    <string name="nav_add_friends">Add friends</string>
+    <string name="log_out">Log out</string>
+    <string name="add_friends">Add friends</string>
 </resources>
