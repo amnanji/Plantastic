@@ -6,5 +6,6 @@ import com.google.firebase.database.IgnoreExtraProperties
 data class Events(
     val name: String? = null,
     val location: String? = null,
-    val date: String? = null
+    val date: String? = null,
+    var GID: String? = null
 )

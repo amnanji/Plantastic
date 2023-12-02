@@ -71,6 +71,39 @@
 
             <LinearLayout
                 android:id="@+id/eventLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="-30dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eventDateTime">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Pin Icon"
+                    android:src="@drawable/baseline_pin_drop_24" />
+
+                <TextView
+                    android:id="@+id/eventLocationName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center_vertical"
+                    android:text="Event Location"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/groupNameLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -80,26 +113,27 @@
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eventDateTime"
+                app:layout_constraintTop_toBottomOf="@+id/eventLocation"
                 app:layout_constraintBottom_toBottomOf="parent">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/baseline_pin_drop_24"
-                    android:contentDescription="Pin Icon" />
+                    android:src="@drawable/baseline_groups_24"
+                    android:contentDescription="Group Icon" />
 
                 <TextView
-                    android:id="@+id/eventLocationName"
+                    android:id="@+id/eventsGroupName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Event Location"
+                    android:text="Group Name"
                     android:textSize="18sp"
                     android:textColor="@android:color/black"
                     android:gravity="center_vertical"/>
-
             </LinearLayout>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

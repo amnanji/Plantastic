@@ -49,6 +49,7 @@ class GroupsRepository {
                     val grp = groupSnapshot.getValue(Groups::class.java)
                     if (grp != null) {
                         val events = grp.events?.values?.toList() ?: emptyList()
+
                         eventsList.addAll(events)
                     }
                 }
