@@ -1,5 +1,6 @@
 package com.example.plantastic.ui.friends
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.databinding.FragmentAddFriendsBinding
@@ -41,26 +41,22 @@ class AddFriendsFragment : Fragment() {
         val databaseReference = FirebaseDatabase.getInstance().getReference(FirebaseNodes.USERS_NODE)
         val query = databaseReference.orderByChild(FirebaseNodes.USERNAME_NODE)
 
-        // Set up FirebaseRecyclerOptions
-        val options = FirebaseRecyclerOptions.Builder<Users>()
-            .setQuery(query, Users::class.java)
-            .build()
-
         // Set up TextWatcher to filter data based on search input
         editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
 
+            @SuppressLint("NotifyDataSetChanged")
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
                 val searchText = charSequence.toString().trim()
 
                 // Update the query only if the search string is not empty
                 if (searchText.isNotEmpty()) {
-                    val newQuery = query.startAt(searchText).endAt(searchText + "\uf8ff")
+                    val newQuery = query.startAt(searchText).endAt("$searchText\uf8ff")
                     val newOptions = FirebaseRecyclerOptions.Builder<Users>()
                         .setQuery(newQuery, Users::class.java)
                         .build()
                     if (flag){
-                        adapter = AddFriendsAdapter(options)
+                        adapter = AddFriendsAdapter(newOptions)
                         recyclerView.adapter = adapter
                         flag = false
                     }
@@ -69,6 +65,12 @@ class AddFriendsFragment : Fragment() {
                         adapter.updateOptions(newOptions)
                     }
                     adapter.startListening()
+                    recyclerView.adapter?.notifyDataSetChanged()
+                }
+                else{
+                    adapter.stopListening()
+                    recyclerView.adapter = null
+                    flag = true
                 }
             }
 
@@ -86,11 +88,6 @@ class AddFriendsFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         adapter.stopListening()
-    }
-
-    override fun onResume() {
-        super.onResume()
-//        adapter.startListening()
     }
 
 }
