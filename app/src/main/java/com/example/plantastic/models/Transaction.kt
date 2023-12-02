@@ -6,8 +6,9 @@ import com.google.firebase.database.IgnoreExtraProperties
 data class Transaction(
     var id: String? = null,
     var groupId: String? = null,
-    var date: String? = null,
+    var timestamp: Long? = null,
     var description: String? = null,
     var moneyOwedTo: String? = null,
-    var totalAmount: Double? = null
+    var totalAmount: Double? = null,
+    var transactionType: String? = null
 )

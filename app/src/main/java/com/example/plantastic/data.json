@@ -1,14 +1,4 @@
 {
-  "transactions": {
-    "88392f42-8f93-11ee-b9d1-0242ac120002": {
-      "groupId": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
-      "id": "88392f42-8f93-11ee-b9d1-0242ac120002",
-      "date": "",
-      "description": "Pizza",
-      "totalAmount": "50",
-      "moneyOwedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2"
-    }
-  },
   "groups": {
     "186af84e-c18e-49cc-9d76-008cdb674b37": {
       "balances": {
@@ -97,10 +87,10 @@
       "groupType": "group",
       "id": "a74394cb-802f-4321-b1af-3083c3d1dc09",
       "latestMessage": {
-        "content": "m",
+        "content": "yello",
         "messageType": "text",
-        "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
-        "timestamp": 1701313685542
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701492950330
       },
       "name": "besties",
       "participants": {
@@ -148,10 +138,10 @@
       "groupType": "group",
       "id": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
       "latestMessage": {
-        "content": "Ali is useless",
+        "content": "this",
         "messageType": "text",
         "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
-        "timestamp": 1701352826852
+        "timestamp": 1701493035467
       },
       "name": "CMPT 362",
       "participants": {
@@ -228,10 +218,10 @@
       "groupType": "individual",
       "id": "f055f81a-8d79-11ee-b9d1-0242ac120002",
       "latestMessage": {
-        "content": "hello",
+        "content": "jdjfk",
         "messageType": "text",
         "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
-        "timestamp": 1701292908386
+        "timestamp": 1701493072011
       },
       "participants": {
         "WanfT73gsZQ7x9n6IMHwmNxc3nu2": true,
@@ -356,6 +346,12 @@
         "messageType": "text",
         "senderId": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
         "timestamp": 1701313685542
+      },
+      "-NkcsVI2N3SX1KayLiWh": {
+        "content": "yello",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701492950330
       },
       "msg01": {
         "content": "Hello Group One!",
@@ -526,6 +522,42 @@
         "messageType": "text",
         "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
         "timestamp": 1701352826852
+      },
+      "-NkXsSbIDhNHVNIvqR65": {
+        "content": "That message was not sent by shaneil ",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701392277696
+      },
+      "-NkZ9Qr_fCjgSZdy2NCv": {
+        "content": "yes billi sent message 😂",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701413764217
+      },
+      "-NkcsjP1ErjBgcljWpUz": {
+        "content": "hello ",
+        "messageType": "text",
+        "senderId": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
+        "timestamp": 1701493012217
+      },
+      "-Nkcsly80gojBnN2T2GV": {
+        "content": "henlo",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701493022673
+      },
+      "-NkcsojUovs7yKzOd1vC": {
+        "content": "we should ditch WhatsApp and use yhid",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701493034023
+      },
+      "-Nkcsp52WJPxgyBG3MJT": {
+        "content": "this",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701493035467
       },
       "msg778": {
         "content": "hello",
@@ -700,6 +732,18 @@
         "messageType": "text",
         "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
         "timestamp": 1701292908386
+      },
+      "-NkZScMKETs3MrrIOb0T": {
+        "content": "hello",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701418796129
+      },
+      "-Nkcsy02xRCCzfENfkJ8": {
+        "content": "jdjfk",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701493072011
       }
     },
     "f72e3d3f-c39f-42d2-b261-71848e95837c": {
@@ -830,22 +874,22 @@
       "foodPreferences": "None"
     },
     "am2iF1032zfTfqeC1gpCxbwBZRq2": {
-      "activityPreferences": "Kobe123123",
+      "activityPreferences": "Kobe12345",
       "availability": [
-        1277,
-        1431,
-        1216,
-        1276,
-        257,
-        1217,
-        197,
-        277,
-        1217,
-        1397,
-        257,
-        1217,
-        557,
-        1217
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
       ],
       "dietaryRestrictionIndex": 5,
       "foodPreferences": "Jamaican"
@@ -862,7 +906,7 @@
       },
       "task2": {
         "assignedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
-        "completedDate": 1701914652670,
+        "completedDate": 1701401979396,
         "description": "Review the overall design of the application and provide feedback",
         "dueDate": 1701915692670,
         "isCompleted": true,
@@ -928,7 +972,7 @@
       },
       "task12": {
         "assignedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
-        "completedDate": 1703623692670,
+        "completedDate": 1701403639424,
         "description": "Provide feedback on the proposed ideas for upcoming group events",
         "dueDate": 1703643692670,
         "isCompleted": true,
@@ -959,7 +1003,7 @@
     "c8b07dc2-8d6e-11ee-b9d1-0242ac120002": {
       "task15": {
         "assignedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
-        "completedDate": 1704112092670,
+        "completedDate": 1701403640695,
         "description": "Review materials for the upcoming CMPT 362 course",
         "dueDate": 1704162092670,
         "isCompleted": true,
@@ -1018,9 +1062,10 @@
     "ef856b2b-b483-4f29-ba32-dedeb8002aef": {
       "task23": {
         "assignedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+        "completedDate": 1701400270481,
         "description": "Plan the agenda for the upcoming meeting with Revs",
         "dueDate": 1705544492670,
-        "isCompleted": false,
+        "isCompleted": true,
         "title": "Plan meeting agenda"
       },
       "task24": {
@@ -1045,6 +1090,24 @@
         "isCompleted": false,
         "title": "Summarize meeting outcomes"
       }
+    }
+  },
+  "transactions": {
+    "88392f42-8f93-11ee-b9d1-0242ac120002": {
+      "timestamp": 1701313685542,
+      "description": "Pizza",
+      "groupId": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
+      "id": "88392f42-8f93-11ee-b9d1-0242ac120002",
+      "moneyOwedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+      "totalAmount": 50
+    },
+    "5bc3b176-90d3-11ee-b9d1-0242ac120002": {
+      "timestamp": 1700292400000,
+      "description": "Food",
+      "groupId": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
+      "id": "5bc3b176-90d3-11ee-b9d1-0242ac120002",
+      "moneyOwedTo": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+      "totalAmount": 45.67
     }
   },
   "users": {
@@ -1130,7 +1193,7 @@
       "email": "shaneil1024@gmail.com",
       "firstName": "Shaneil",
       "lastName": "Kapadia",
-      "username": "shaneilk"
+      "username": "shaneilkapadia"
     },
     "g6CgR7rSbFXxygy7EB2cXfRE9hD3": {
       "email": "jain.revika@gmail.com",
