@@ -24,10 +24,7 @@ class EventsFragment : Fragment(), EventsCallback {
     private lateinit var usersAuthRepository: UsersAuthRepository
     private val binding get() = _binding!!
 
-    private lateinit var eventsViewModel: EventsViewModel
     private lateinit var eventsAdapter: EventsAdapter
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,19 +34,15 @@ class EventsFragment : Fragment(), EventsCallback {
         _binding = FragmentEventsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        eventsViewModel = ViewModelProvider(this)[EventsViewModel::class.java]
         usersAuthRepository = UsersAuthRepository()
         val currUser = usersAuthRepository.getCurrentUser()
         groupsRepository = GroupsRepository()
         if(currUser == null) {
             navigateToLoginActivity()
         }
-
-            if (currUser != null) {
-                groupsRepository.getAllEventsQueryForUser(currUser.uid, this)
-            }
-
-
+        if (currUser != null) {
+            groupsRepository.getAllEventsQueryForUser(currUser.uid, this)
+        }
         return root
     }
     override fun onDestroyView() {
