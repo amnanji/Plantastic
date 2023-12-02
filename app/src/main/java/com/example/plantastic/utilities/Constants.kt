@@ -9,4 +9,5 @@ object FirebaseNodes {
     const val GROUPS_PARTICIPANTS_NODE = "participants"
     const val GROUPS_LATEST_MESSAGE_NODE = "latestMessage"
     const val MESSAGES_TIMESTAMP_NODE = "timestamp"
+    const val EVENTS_NODE = "events"
 }
