@@ -44,6 +44,15 @@ class AddFriendsFragment : Fragment() {
 
         val currUser = usersAuthRepository.getCurrentUser()
 
+        val options = FirebaseRecyclerOptions.Builder<Users>()
+            .setQuery(
+                usersRepository.getInitialFriendsQuery(currUser!!.uid),
+                Users::class.java)
+            .build()
+
+        adapter = AddFriendsAdapter(options, currUser!!.uid)
+        recyclerView.adapter = adapter
+
         // Set up TextWatcher to filter data based on search input
         editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -61,25 +70,16 @@ class AddFriendsFragment : Fragment() {
                             Users::class.java)
                         .build()
 
-                    if (flag){
-                        adapter = AddFriendsAdapter(newOptions, currUser!!.uid)
-                        recyclerView.adapter = adapter
-                        flag = false
-                    }
-                    else{
-                        adapter.stopListening()
-                        adapter.updateOptions(newOptions)
-                    }
-
+                    adapter.stopListening()
+                    adapter.updateOptions(newOptions)
                     adapter.startListening()
                     recyclerView.adapter?.notifyDataSetChanged()
                 }
                 else{
-                    if(!flag){
-                        adapter.stopListening()
-                        recyclerView.adapter = null
-                    }
-                    flag = true
+                    adapter.stopListening()
+                    adapter.updateOptions(options)
+                    adapter.startListening()
+                    recyclerView.adapter?.notifyDataSetChanged()
                 }
             }
 
@@ -96,15 +96,11 @@ class AddFriendsFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        if(!flag){
             adapter.startListening()
-        }
     }
 
     override fun onPause() {
         super.onPause()
-        if(!flag) {
-            adapter.stopListening()
-        }
+        adapter.stopListening()
     }
 }

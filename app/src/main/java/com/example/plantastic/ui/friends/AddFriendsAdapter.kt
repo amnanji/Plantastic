@@ -39,14 +39,20 @@ class AddFriendsAdapter(
         if(model.id == userId){
             holder.iconImageViewFriend.visibility = View.GONE
             holder.iconImageViewUser.visibility = View.GONE
+            holder.iconImageViewUser.setOnClickListener{
+                usersRepository.addFriends(userId, model.id!!)
+            }
         }
         else if (model.friends == null){
             holder.iconImageViewUser.visibility = View.VISIBLE
+            holder.iconImageViewFriend.visibility = View.GONE
         }
         else if(model.friends.containsKey(userId) && model.friends[userId]!!){
             holder.iconImageViewFriend.visibility = View.VISIBLE
+            holder.iconImageViewUser.visibility = View.GONE
         }else{
             holder.iconImageViewUser.visibility = View.VISIBLE
+            holder.iconImageViewFriend.visibility = View.GONE
             holder.iconImageViewUser.setOnClickListener{
                 usersRepository.addFriends(userId, model.id!!)
             }

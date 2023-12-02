@@ -133,6 +133,10 @@ class UsersRepository {
         return usernameQuery.startAt(searchString).endAt("$searchString\uf8ff")
     }
 
+    fun getInitialFriendsQuery(userId: String): Query {
+        return usersReference.orderByChild("${FirebaseNodes.USERS_FRIENDS_NODE}/$userId").equalTo(true)
+    }
+
     fun addFriends(userId1: String, userId2: String){
         this.getUserById(userId1){
             if (it != null){
