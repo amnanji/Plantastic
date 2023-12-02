@@ -1,6 +1,5 @@
 package com.example.plantastic.repository
 
-import android.util.Log
 import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
 import com.example.plantastic.utilities.FirebaseNodes

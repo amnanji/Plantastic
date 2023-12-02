@@ -77,4 +77,7 @@
     <string name="log_out">Log out</string>
     <string name="add_friends">Add friends</string>
     <string name="search_users">Search</string>
+    <string name="ok">OK</string>
+    <string name="owes_you">%1$s owes you %2$s</string>
+    <string name="you_owe">You owe %1$s %2$s</string>
 </resources>

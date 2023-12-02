@@ -93,12 +93,12 @@ class UsersRepository {
     // Update the username of a user
     fun updateUsername(userId: String, username: String, callback: (Users?) -> Unit){
         val reference = usersReference.child(userId)
-        reference.child("username").setValue(username)
+        reference.child(FirebaseNodes.USERNAME_NODE).setValue(username)
     }
 
     // Query all users with the same username, ensure no one else has that username
     fun isUsernameUnique(userId: String, username: String, callback: (Boolean?) -> Unit){
-        val query: Query = usersReference.orderByChild("username").equalTo(username)
+        val query: Query = usersReference.orderByChild(FirebaseNodes.USERNAME_NODE).equalTo(username)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot.exists()){
@@ -141,7 +141,7 @@ class UsersRepository {
         this.getUserById(userId1){
             if (it != null){
                 val userReference = firebaseDatabase.getReference("${FirebaseNodes.USERS_NODE}/$userId1")
-                    it.friends?.put(userId2, true)
+                it.friends?.put(userId2, true)
                 userReference.setValue(it)
             }
         }
