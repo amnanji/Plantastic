@@ -21,20 +21,20 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 class AddFriendsFragment : Fragment() {
     private var _binding: FragmentAddFriendsBinding? = null
     private val binding get() = _binding!!
-    private var flag = true
 
     private lateinit var adapter: AddFriendsAdapter
     private lateinit var usersRepository: UsersRepository
     private lateinit var usersAuthRepository: UsersAuthRepository
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentAddFriendsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val recyclerView: RecyclerView = root.findViewById(R.id.addFriendsRecyclerView)
+        recyclerView = root.findViewById(R.id.addFriendsRecyclerView)
         recyclerView.layoutManager = WrapContentLinearLayoutManager(requireContext())
 
         val editTextSearch = root.findViewById<EditText>(R.id.editTextSearch)
@@ -50,7 +50,7 @@ class AddFriendsFragment : Fragment() {
                 Users::class.java)
             .build()
 
-        adapter = AddFriendsAdapter(options, currUser!!.uid)
+        adapter = AddFriendsAdapter(options, currUser.uid)
         recyclerView.adapter = adapter
 
         // Set up TextWatcher to filter data based on search input
@@ -70,16 +70,10 @@ class AddFriendsFragment : Fragment() {
                             Users::class.java)
                         .build()
 
-                    adapter.stopListening()
-                    adapter.updateOptions(newOptions)
-                    adapter.startListening()
-                    recyclerView.adapter?.notifyDataSetChanged()
+                    restartAdapter(newOptions)
                 }
                 else{
-                    adapter.stopListening()
-                    adapter.updateOptions(options)
-                    adapter.startListening()
-                    recyclerView.adapter?.notifyDataSetChanged()
+                    restartAdapter(options)
                 }
             }
 
@@ -96,11 +90,18 @@ class AddFriendsFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-            adapter.startListening()
+        adapter.startListening()
     }
 
     override fun onPause() {
         super.onPause()
         adapter.stopListening()
+    }
+
+    private fun restartAdapter(options: FirebaseRecyclerOptions<Users>){
+        adapter.stopListening()
+        adapter.updateOptions(options)
+        adapter.startListening()
+        recyclerView.adapter?.notifyDataSetChanged()
     }
 }
