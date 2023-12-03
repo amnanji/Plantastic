@@ -23,6 +23,7 @@ class AddFriendsAdapter(
     inner class SearchUsersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val usernameTextView: TextView = itemView.findViewById(R.id.searchUsernameTextView)
         val nameTextView: TextView = itemView.findViewById(R.id.searchNameTextView)
+        // the two image views overlap and are hidden by default
         val iconImageViewFriend: ImageView = itemView.findViewById(R.id.iconImageViewFriend)
         val iconImageViewUser: ImageView = itemView.findViewById(R.id.iconImageViewUser)
     }
@@ -36,6 +37,8 @@ class AddFriendsAdapter(
     override fun onBindViewHolder(holder: SearchUsersViewHolder, position: Int, model: Users) {
         holder.usernameTextView.text = model.username
         "${model.firstName} ${model.lastName}".also { holder.nameTextView.text = it }
+
+        // checking if the user at this position is the current user
         if(model.id == userId){
             holder.iconImageViewFriend.visibility = View.GONE
             holder.iconImageViewUser.visibility = View.GONE
@@ -43,19 +46,30 @@ class AddFriendsAdapter(
                 usersRepository.addFriends(userId, model.id!!)
             }
         }
+        // if the friends object is null, user has no friends
         else if (model.friends == null){
-            holder.iconImageViewUser.visibility = View.VISIBLE
-            holder.iconImageViewFriend.visibility = View.GONE
+            setUpAddFriendButton(holder, model)
         }
+        // the current user is already a friend of the user at this position
         else if(model.friends.containsKey(userId) && model.friends[userId]!!){
             holder.iconImageViewFriend.visibility = View.VISIBLE
             holder.iconImageViewUser.visibility = View.GONE
-        }else{
-            holder.iconImageViewUser.visibility = View.VISIBLE
-            holder.iconImageViewFriend.visibility = View.GONE
-            holder.iconImageViewUser.setOnClickListener{
-                usersRepository.addFriends(userId, model.id!!)
-            }
+        }
+        // the current user has friends but the user at this position is not one of them
+        else{
+            setUpAddFriendButton(holder, model)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return snapshots.size
+    }
+
+    private fun setUpAddFriendButton(holder: SearchUsersViewHolder, model: Users){
+        holder.iconImageViewUser.visibility = View.VISIBLE
+        holder.iconImageViewFriend.visibility = View.GONE
+        holder.iconImageViewUser.setOnClickListener{
+            usersRepository.addFriends(userId, model.id!!)
         }
     }
 }

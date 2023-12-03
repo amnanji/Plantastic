@@ -80,4 +80,5 @@
     <string name="ok">OK</string>
     <string name="owes_you">%1$s owes you %2$s</string>
     <string name="you_owe">You owe %1$s %2$s</string>
+    <string name="no_users_found">No users found</string>
 </resources>

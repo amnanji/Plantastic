@@ -38,17 +38,6 @@
                     android:singleLine="true"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <ImageView
-                android:id="@+id/clearIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="8dp"
-                android:visibility="gone"/>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Your RecyclerView -->
@@ -57,6 +46,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/searchConstraintLayout"/>
+
+        <!-- TextView for No Users Found Message -->
+        <TextView
+            android:id="@+id/noUsersFoundTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:text="@string/no_users_found"
+            android:textAppearance="?android:textAppearanceMedium"/>
 
     </RelativeLayout>
 </FrameLayout>
