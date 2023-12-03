@@ -22,9 +22,9 @@ class ToDoAdapter(private val todoList: List<ToDoItemForDisplay>) :
     private val toDoRepository = ToDoRepository()
     private val cardBackgroundColors = ArrayList(
         listOf(
-            R.color.todo_list_item_color_1,
-            R.color.todo_list_item_color_2,
-            R.color.todo_list_item_color_3
+            R.color.todo_list_item_color_1
+//            R.color.todo_list_item_color_2,
+//            R.color.todo_list_item_color_3
         )
     )
 

@@ -1,5 +1,6 @@
 package com.example.plantastic.ui.toDo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +11,6 @@ import com.example.plantastic.repository.UsersAuthRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ToDoViewModel : ViewModel() {
 
@@ -24,14 +24,14 @@ class ToDoViewModel : ViewModel() {
         val userId = currUser!!.uid
 
         CoroutineScope(Dispatchers.IO).launch {
-            // Getting all todoItems assigned to the user and using that list to create a new list of
-            // ToDoItemForDisplay which collects all the data needed in addition to todoItem to display the todoItem
-            val data = ArrayList<ToDoItemForDisplay>()
-
             ToDoRepository().getToDoItemsByUserId(userId) { todoListsHashmap, groupsHashmap ->
+                // Getting all todoItems assigned to the user and using that list to create a new list of
+                // ToDoItemForDisplay which collects all the data needed in addition to todoItem to display the todoItem
+                val data = ArrayList<ToDoItemForDisplay>()
                 groupsList = groupsHashmap.values.toList()
                 for ((groupId, toDoItems) in todoListsHashmap) {
                     if (!groupsHashmap.containsKey(groupId)) continue
+                    Log.d(TAG, "Got past this")
                     val groupName = groupsHashmap[groupId]?.name
                     val isGroup = groupsHashmap[groupId]?.groupType == "group"
 
@@ -47,11 +47,12 @@ class ToDoViewModel : ViewModel() {
                         }
                     }
                 }
-            }
-            withContext(Dispatchers.Main) {
-                // Sorting list by due date
-                _toDoItems.value =
-                    ArrayList(data.sortedWith(compareBy { it.dueDate ?: Long.MAX_VALUE }))
+                CoroutineScope(Dispatchers.Main).launch {
+                    Log.d(TAG, "Data is --> $data")
+                    // Sorting list by due date
+                    _toDoItems.value =
+                        ArrayList(data.sortedWith(compareBy { it.dueDate ?: Long.MAX_VALUE }))
+                }
             }
         }
     }

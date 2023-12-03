@@ -148,7 +148,7 @@ class AddTodoItemDialog : DialogFragment() {
                     descriptionTextView.text.toString(),
                     parseDate(),
                     null,
-                    false,
+                    isCompleted = false,
                     participants[participantsSpinner.selectedItemPosition]
                 )
                 toDoRepository.addTodoListItem(
@@ -210,7 +210,7 @@ class AddTodoItemDialog : DialogFragment() {
 
     private fun parseDate(): Long {
         // Choosing what data we are parsing based on the dialog we need to create (Date or Time)
-        val sdf = SimpleDateFormat("yyyy/mm/dd", Locale.CANADA)
+        val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.CANADA)
         return sdf.parse(dueDateTextView.text.toString()).time
     }
 
