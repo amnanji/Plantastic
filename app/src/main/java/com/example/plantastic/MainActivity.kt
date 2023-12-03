@@ -66,7 +66,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.nav_calendar || destination.id == R.id.nav_settings || destination.id == R.id.nav_profile) {
+            if(
+                destination.id == R.id.nav_calendar ||
+                destination.id == R.id.nav_settings ||
+                destination.id == R.id.nav_profile ||
+                destination.id == R.id.nav_add_friends
+            ) {
                 navBottomBar.visibility = View.GONE
             } else {
                 navBottomBar.visibility = View.VISIBLE

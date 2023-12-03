@@ -82,4 +82,14 @@
     <string name="add_new_todo_item">Add New Todo Item</string>
     <string name="date_placeholder">%d/%d/%d</string>
     <string name="cancel">Cancel</string>
+    <string name="nav_add_friends">Add friends</string>
+    <string name="log_out">Log out</string>
+    <string name="add_friends">Add friends</string>
+    <string name="search_users">Search</string>
+    <string name="ok">OK</string>
+    <string name="owes_you">%1$s owes you %2$s</string>
+    <string name="you_owe">You owe %1$s %2$s</string>
+    <string name="no_users_found">No users found</string>
+    <string name="calendar_icon">Calendar Icon</string>
+    <string name="group_icon">Group Icon</string>
 </resources>

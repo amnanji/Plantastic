@@ -1,6 +1,7 @@
 package com.example.plantastic.repository
 
 import android.util.Log
+import com.example.plantastic.models.CalendarElement
 import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
 import com.example.plantastic.utilities.FirebaseNodes
@@ -18,11 +19,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import java.util.Date
+import java.util.Calendar
 
 interface EventsCallback {
     fun onEventsLoaded(events: List<Events>)
 }
 
+interface CalendarCallback {
+    fun onCalendarLoaded(calendarList: List<CalendarElement>)
+}
 
 class GroupsRepository {
     private var firebaseDatabase = FirebaseDatabase.getInstance()
@@ -156,6 +162,64 @@ class GroupsRepository {
                 // Handle error
             }
         })
+    }
+
+    fun getCalendarForUserAndDate(userId: String, targetDate: Date, callback: CalendarCallback) {
+        val eventsReference = FirebaseDatabase.getInstance().getReference(FirebaseNodes.GROUPS_NODE)
+        val query = eventsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/$userId").equalTo(true)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val calendarList = mutableListOf<CalendarElement>()
+
+                for (groupSnapshot in snapshot.children) {
+                    val grp = groupSnapshot.getValue(Groups::class.java)
+                    if (grp != null) {
+                        val events = grp.events ?: emptyMap()
+
+                        for ((eventId, event) in events) {
+                            // Check if the event date matches the target date
+                            if (isSameDate(event.date, targetDate)) {
+                                val calendarEvent = CalendarElement(
+                                    title = event.name,
+                                    type = "Event", // or any other type you want
+                                    date = event.date,
+                                    GID = event.GID
+                                )
+                                calendarList.add(calendarEvent)
+                            }
+                        }
+                    }
+                }
+
+                callback.onCalendarLoaded(calendarList)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
+    }
+
+
+    // Function to check if two dates are the same (ignoring time)
+
+    fun isSameDate(eventDate: Long?, targetDate: Date): Boolean {
+        if (eventDate == null) {
+            return false
+        }
+
+        val eventCalendar = Calendar.getInstance().apply {
+            timeInMillis = eventDate
+        }
+
+        val targetCalendar = Calendar.getInstance().apply {
+            time = targetDate
+        }
+
+        return (eventCalendar.get(Calendar.YEAR) == targetCalendar.get(Calendar.YEAR) &&
+                eventCalendar.get(Calendar.MONTH) == targetCalendar.get(Calendar.MONTH) &&
+                eventCalendar.get(Calendar.DAY_OF_MONTH) == targetCalendar.get(Calendar.DAY_OF_MONTH))
     }
 
     companion object {

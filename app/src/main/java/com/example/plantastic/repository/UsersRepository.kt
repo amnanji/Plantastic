@@ -26,7 +26,7 @@ class UsersRepository {
         onComplete: (Boolean) -> Unit
     ) {
 
-        val user = Users(firstName, lastName, username, email)
+        val user = Users(userId, firstName, lastName, username, email, HashMap())
         usersReference.child(userId).setValue(user)
             .addOnSuccessListener {
                 onComplete(true)
@@ -91,12 +91,12 @@ class UsersRepository {
     // Update the username of a user
     fun updateUsername(userId: String, username: String, callback: (Users?) -> Unit){
         val reference = usersReference.child(userId)
-        reference.child("username").setValue(username)
+        reference.child(FirebaseNodes.USERNAME_NODE).setValue(username)
     }
 
     // Query all users with the same username, ensure no one else has that username
     fun isUsernameUnique(userId: String, username: String, callback: (Boolean?) -> Unit){
-        val query: Query = usersReference.orderByChild("username").equalTo(username)
+        val query: Query = usersReference.orderByChild(FirebaseNodes.USERNAME_NODE).equalTo(username)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot.exists()){
@@ -124,6 +124,32 @@ class UsersRepository {
                 callback(null)
             }
         })
+    }
+
+    fun getUsernameQuery(searchString: String): Query {
+        val usernameQuery = usersReference.orderByChild(FirebaseNodes.USERNAME_NODE)
+        return usernameQuery.startAt(searchString).endAt("$searchString\uf8ff")
+    }
+
+    fun getInitialFriendsQuery(userId: String): Query {
+        return usersReference.orderByChild("${FirebaseNodes.USERS_FRIENDS_NODE}/$userId").equalTo(true)
+    }
+
+    fun addFriends(userId1: String, userId2: String){
+        this.getUserById(userId1){
+            if (it != null){
+                val userReference = firebaseDatabase.getReference("${FirebaseNodes.USERS_NODE}/$userId1")
+                it.friends?.put(userId2, true)
+                userReference.setValue(it)
+            }
+        }
+        this.getUserById(userId2){
+            if (it != null){
+                val userReference = firebaseDatabase.getReference("${FirebaseNodes.USERS_NODE}/$userId2")
+                it.friends?.put(userId1, true)
+                userReference.setValue(it)
+            }
+        }
     }
 
     companion object {

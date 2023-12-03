@@ -31,16 +31,16 @@ class BalancesDialogAdapter(private val context: Context, private val itemList: 
         fun bind(id: String) {
 
             usersRepository.getUserById(id){
-                var st = ""
+                var st: String
                 if (it != null && balances[id]!! != 0.0){
                     if (balances[id]!! > 0){
                         // you get money
-                        st = "${it.username} owes you ${balances[id]!!}"
+                        st = context.getString(R.string.owes_you, it.username, balances[id]!!.toString())
                         editText.setTextColor(ContextCompat.getColor(context, R.color.pastel_green))
                     }
                     else {
                         // you pay money
-                        st = "You owe ${it.username} ${balances[id]!! * -1}"
+                        st = context.getString(R.string.you_owe, it.username, (balances[id]!! * -1).toString())
                         editText.setTextColor(ContextCompat.getColor(context, R.color.pastel_red))
                     }
                     editText.text = st
