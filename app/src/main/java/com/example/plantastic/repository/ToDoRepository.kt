@@ -14,8 +14,6 @@ import java.util.Calendar
 class ToDoRepository {
     private val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val groupsRepository = GroupsRepository()
-
-    //    private val usersRepository = UsersRepository()
     private val toDoListsReference: DatabaseReference =
         firebaseDatabase.getReference(FirebaseNodes.TODO_LISTS_NODE)
 

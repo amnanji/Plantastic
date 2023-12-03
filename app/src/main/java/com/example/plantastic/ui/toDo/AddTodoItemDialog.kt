@@ -28,7 +28,6 @@ import kotlinx.coroutines.withContext
 import java.util.Locale
 import androidx.core.widget.addTextChangedListener
 
-
 class AddTodoItemDialog : DialogFragment() {
     private lateinit var chatsSpinner: Spinner
     private lateinit var participantsSpinner: Spinner
@@ -52,14 +51,15 @@ class AddTodoItemDialog : DialogFragment() {
         val view: View =
             requireActivity().layoutInflater.inflate(R.layout.dialog_add_new_todo_item, null)
 
-        chatsSpinner = view.findViewById(R.id.spinnerGroup)
-        participantsSpinner = view.findViewById(R.id.spinnerAssignTo)
-        dueDateTextView = view.findViewById(R.id.textViewDueDate)
-        dueDateBtn = view.findViewById(R.id.btnDueDate)
-        titleTextView = view.findViewById(R.id.editTextTitle)
-        descriptionTextView = view.findViewById(R.id.editTextDescription)
-        btnCancel = view.findViewById(R.id.cancelButton)
-        btnSave = view.findViewById(R.id.saveButton)
+        chatsSpinner = view.findViewById(R.id.spinnerGroupTodo)
+        participantsSpinner = view.findViewById(R.id.spinnerAssignToTodo)
+        dueDateTextView = view.findViewById(R.id.textViewDueDateTodo)
+        dueDateBtn = view.findViewById(R.id.btnDueDateTodo)
+        titleTextView = view.findViewById(R.id.editTextTitleTodo)
+        descriptionTextView = view.findViewById(R.id.editTextDescriptionTodo)
+        btnCancel = view.findViewById(R.id.cancelButtonTodo)
+        btnSave = view.findViewById(R.id.saveButtonTodo)
+
         btnSave.isEnabled = false
         val textColor =
             requireContext().resources.getColor(R.color.dialog_positive_button_disabled_state)

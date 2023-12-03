@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextTitle"
+            android:id="@+id/editTextTitleTodo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/card_background"
@@ -27,7 +27,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextDescription"
+            android:id="@+id/editTextDescriptionTodo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/card_background"
@@ -54,7 +54,7 @@
                 android:textSize="16sp" />
 
             <Spinner
-                android:id="@+id/spinnerGroup"
+                android:id="@+id/spinnerGroupTodo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:popupBackground="@color/card_background" />
@@ -73,7 +73,7 @@
                 android:textSize="16sp" />
 
             <Spinner
-                android:id="@+id/spinnerAssignTo"
+                android:id="@+id/spinnerAssignToTodo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:popupBackground="@color/card_background" />
@@ -86,7 +86,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnDueDate"
+            android:id="@+id/btnDueDateTodo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/due_date"
@@ -94,7 +94,7 @@
             android:backgroundTint="@color/yellow"/>
 
         <TextView
-            android:id="@+id/textViewDueDate"
+            android:id="@+id/textViewDueDateTodo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="2023-12-30"
@@ -109,7 +109,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/cancelButton"
+            android:id="@+id/cancelButtonTodo"
             style="@style/NegativeButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
             android:text="@string/cancel" />
 
         <Button
-            android:id="@+id/saveButton"
+            android:id="@+id/saveButtonTodo"
             style="@style/PositiveButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
