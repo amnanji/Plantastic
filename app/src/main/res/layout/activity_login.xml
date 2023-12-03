@@ -54,7 +54,7 @@
                 android:layout_gravity="center_horizontal">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextPassword"
+                    android:id="@+id/editTextPasswordLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="password"
@@ -70,16 +70,19 @@
                 android:layout_height="56dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="#eba152"
-                android:text="@string/submit" />
+                android:backgroundTint="@color/yellow"
+                android:text="@string/submit"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/buttonSignUp"
                 android:layout_width="154dp"
                 android:layout_height="51dp"
                 android:layout_gravity="center_horizontal"
-                android:backgroundTint="#eba152"
-                android:text="@string/sign_up" />
+                android:backgroundTint="@color/pastel_red"
+                android:text="@string/sign_up"
+                android:textSize="16sp" />
 
         </LinearLayout>
 

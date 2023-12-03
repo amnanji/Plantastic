@@ -15,18 +15,19 @@ import kotlinx.coroutines.withContext
 import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.R
 import com.example.plantastic.ui.login.LoginActivity
+import com.google.android.material.textfield.TextInputEditText
 
 class SignUpActivity : AppCompatActivity() {
 
     private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
     private var usersRepository: UsersRepository = UsersRepository()
 
-    private lateinit var firstNameEditText: EditText
-    private lateinit var lastNameEditText: EditText
-    private lateinit var usernameEditText: EditText
-    private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText
-    private lateinit var confirmPasswordEditText: EditText
+    private lateinit var firstNameEditText: TextInputEditText
+    private lateinit var lastNameEditText: TextInputEditText
+    private lateinit var usernameEditText: TextInputEditText
+    private lateinit var emailEditText: TextInputEditText
+    private lateinit var passwordEditText: TextInputEditText
+    private lateinit var confirmPasswordEditText: TextInputEditText
     private lateinit var signUpButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {

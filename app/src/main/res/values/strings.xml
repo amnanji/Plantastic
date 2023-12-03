@@ -93,4 +93,6 @@
     <string name="calendar_icon">Calendar Icon</string>
     <string name="group_icon">Group Icon</string>
     <string name="fab">FAB</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
 </resources>
