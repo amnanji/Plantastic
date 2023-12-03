@@ -1,5 +1,6 @@
 package com.example.plantastic.repository
 
+import android.util.Log
 import com.example.plantastic.models.Users
 import com.example.plantastic.utilities.FirebaseNodes
 import com.google.firebase.database.DataSnapshot
@@ -8,6 +9,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.runBlocking
 
@@ -150,6 +152,33 @@ class UsersRepository {
                 userReference.setValue(it)
             }
         }
+    }
+
+    fun getFriendsList(id: String, callback: (ArrayList<Users>?) -> Unit) {
+        val query = getInitialFriendsQuery(id)
+
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+                    val usersHashMap = dataSnapshot.getValue<HashMap<String, Users>>()
+                    if (usersHashMap == null){
+                        callback(null)
+                    }
+                    val userList = ArrayList<Users>()
+                    usersHashMap!!.forEach { (key, value) ->
+                        userList.add(value)
+                    }
+                    callback(userList)
+                }
+                callback(null)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                callback(null)
+            }
+        }
+
+        query.addValueEventListener(postListener)
     }
 
     companion object {

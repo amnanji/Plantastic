@@ -97,12 +97,10 @@ class AddFriendsFragment : Fragment() {
                 // this is used because data change callbacks are not called
                 // when the database query is empty
                 backgroundThread.start()
-
             }
 
             override fun afterTextChanged(editable: Editable?) {}
         })
-
         return root
     }
 
