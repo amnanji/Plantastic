@@ -11,10 +11,4 @@ class BalancesViewModel : ViewModel() {
     }
     val text: LiveData<String> = _text
 
-    // Dummy data for testing
-    val balancesList: List<BalancesItem> = listOf(
-        BalancesItem("John Doe", "You owe:", 50.0),
-        BalancesItem("Jane Doe", "You are owed:", 25.0)
-
-    )
 }

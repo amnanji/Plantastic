@@ -1,11 +1,12 @@
 package com.example.plantastic.repository
 
-import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.models.Users
+import com.example.plantastic.utilities.FirebaseNodes
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.runBlocking
@@ -52,12 +53,10 @@ class UsersRepository {
 
     fun getUserById(id: String, callback: (Users?) -> Unit) {
         val reference = usersReference.child(id)
-//        Log.d(TAG, "Received request --> $id")
 
         reference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val user = dataSnapshot.getValue(Users::class.java)
-//                Log.d(TAG, "got user inside usersRepository : $user")
                 callback(user)
             }
 
@@ -87,6 +86,44 @@ class UsersRepository {
             runBlocking { deferred.await() }?.let { ret.add(it) }
         }
         return ret
+    }
+
+    // Update the username of a user
+    fun updateUsername(userId: String, username: String, callback: (Users?) -> Unit){
+        val reference = usersReference.child(userId)
+        reference.child("username").setValue(username)
+    }
+
+    // Query all users with the same username, ensure no one else has that username
+    fun isUsernameUnique(userId: String, username: String, callback: (Boolean?) -> Unit){
+        val query: Query = usersReference.orderByChild("username").equalTo(username)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+                    val count = dataSnapshot.children.count()
+                    val users = dataSnapshot.children
+                    if (count == 0){
+                        callback(true)
+                    } else if (count > 1){
+                        callback(false)
+                    } else {
+                        var isOldUsername = false
+                        for(user in users){
+                            if(user.key.toString() == userId){
+                                isOldUsername = true
+                            }
+                        }
+                        callback(isOldUsername)
+                    }
+                } else {
+                    callback(true)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                callback(null)
+            }
+        })
     }
 
     companion object {

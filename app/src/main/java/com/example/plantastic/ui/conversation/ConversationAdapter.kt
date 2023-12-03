@@ -1,6 +1,5 @@
 package com.example.plantastic.ui.conversation
 
-import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,9 +9,9 @@ import com.example.plantastic.databinding.MessageGroupBinding
 import com.example.plantastic.databinding.MessageIndividualBinding
 import com.example.plantastic.models.Message
 import com.example.plantastic.repository.UsersRepository
+import com.example.plantastic.utilities.DateTimeUtils
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import java.util.Calendar
 
 class ConversationAdapter(
     private val options: FirebaseRecyclerOptions<Message>,
@@ -56,7 +55,7 @@ class ConversationAdapter(
                 }
             }
             binding.messageText.text = item.content
-            binding.messageTimestamp.text = getDate(item.timestamp!!)
+            binding.messageTimestamp.text = DateTimeUtils.getDateString(item.timestamp!!)
         }
     }
 
@@ -64,7 +63,7 @@ class ConversationAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
             binding.messageText.text = item.content
-            binding.messageTimestamp.text = getDate(item.timestamp!!)
+            binding.messageTimestamp.text = DateTimeUtils.getDateString(item.timestamp!!)
         }
     }
 
@@ -72,28 +71,12 @@ class ConversationAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
             binding.messageText.text = item.content
-            binding.messageTimestamp.text = getDate(item.timestamp!!)
+            binding.messageTimestamp.text = DateTimeUtils.getDateString(item.timestamp!!)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return if (options.snapshots[position].senderId == userId) VIEW_TYPE_CURR_USER else VIEW_TYPE_NOT_CURR_USER
-    }
-
-    private fun getDate(timestamp: Long): String {
-        val currCalendar = Calendar.getInstance()
-        val msgCalendar = Calendar.getInstance()
-        msgCalendar.timeInMillis = timestamp
-
-        return if (currCalendar.get(Calendar.YEAR) != msgCalendar.get(Calendar.YEAR)) {
-            DateFormat.format("MMM dd, yyyy hh:mm a", msgCalendar).toString()
-        } else if (currCalendar.get(Calendar.MONTH) != msgCalendar.get(Calendar.MONTH)) {
-            DateFormat.format("MMM dd hh:mm a", msgCalendar).toString()
-        } else if (currCalendar.get(Calendar.DATE) != msgCalendar.get(Calendar.DATE)) {
-            DateFormat.format("MMM dd hh:mm a", msgCalendar).toString()
-        } else {
-            DateFormat.format("hh:mm a", msgCalendar).toString()
-        }
     }
 
     companion object {

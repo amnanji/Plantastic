@@ -15,7 +15,6 @@ import com.example.plantastic.ui.login.LoginActivity
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 class BalancesFragment : Fragment(){
-
     private var _binding: FragmentBalancesBinding? = null
     private lateinit var balancesViewModel: BalancesViewModel
 
