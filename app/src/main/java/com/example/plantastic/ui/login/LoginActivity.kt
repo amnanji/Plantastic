@@ -10,13 +10,14 @@ import com.example.plantastic.R
 import com.example.plantastic.ui.signup.SignUpActivity
 import android.widget.Toast
 import com.example.plantastic.repository.UsersAuthRepository
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.FirebaseApp
 
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText
+    private lateinit var emailEditText: TextInputEditText
+    private lateinit var passwordEditText: TextInputEditText
     private lateinit var submitButton: Button
     private lateinit var signUpButton: Button
 
@@ -36,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
 
         emailEditText = findViewById(R.id.editTextLoginId)
         passwordEditText = findViewById(R.id.editTextPassword)
-        submitButton = findViewById(R.id.buttonSubmit)
+        submitButton = findViewById(R.id.buttonSubmitLogin)
         signUpButton = findViewById(R.id.buttonSignUp)
 
         submitButton.setOnClickListener {
