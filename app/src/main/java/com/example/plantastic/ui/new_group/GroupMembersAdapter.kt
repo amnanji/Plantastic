@@ -8,20 +8,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.Users
 
-class GroupMembersAdapter(private val memberList: ArrayList<Users>) : RecyclerView.Adapter<GroupMembersAdapter.DateViewHolder>() {
+class GroupMembersAdapter(private val memberList: ArrayList<Users>) : RecyclerView.Adapter<GroupMembersAdapter.GroupMemberViewHolder>() {
 
-    class DateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val dateTextView: TextView = itemView.findViewById(R.id.testTextView)
+    inner class GroupMemberViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val usernameTextView: TextView = itemView.findViewById(R.id.groupMemberUsernameTextView)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupMemberViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.custom_new_group_members_layout, parent, false)
-        return DateViewHolder(itemView)
+        return GroupMemberViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GroupMemberViewHolder, position: Int) {
         val model = memberList[position]
-        holder.dateTextView.text = model.username
+        holder.usernameTextView.text = model.username
     }
 
     override fun getItemCount(): Int {

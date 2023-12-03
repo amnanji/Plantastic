@@ -59,12 +59,12 @@ class NewGroupChatFragment : Fragment() {
         recyclerView = root.findViewById(R.id.addNewGroupRecyclerView)
         recyclerView.layoutManager = WrapContentLinearLayoutManager(requireContext())
         noUsersEditText = root.findViewById(R.id.noGroupFoundTextView)
-        editTextSearch = root.findViewById<EditText>(R.id.editTextSearchGroup)
+        editTextSearch = root.findViewById(R.id.editTextSearchGroup)
 
         filteredFriendsList = ArrayList()
         groupMembers = ArrayList()
 
-        adapter = NewGroupAdapter(filteredFriendsList, currUser!!.uid, newGroupViewModel)
+        adapter = NewGroupAdapter(filteredFriendsList, currUser.uid, newGroupViewModel)
         recyclerView.adapter = adapter
 
         // Set up TextWatcher to filter data based on search input

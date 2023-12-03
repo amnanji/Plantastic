@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- res/layout/item_date.xml -->
-<TextView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/testTextView"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:textSize="16sp"/>
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/iconImageView"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/baseline_account_circle_24"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/groupMemberUsernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="4dp"
+        tools:ignore="HardcodedText"
+        tools:text="Username"/>
+</LinearLayout>
