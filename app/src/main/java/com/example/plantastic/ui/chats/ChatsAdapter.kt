@@ -1,5 +1,6 @@
 package com.example.plantastic.ui.chats
 
+import android.content.Context
 import android.content.Intent
 import android.text.format.DateFormat
 import android.view.ViewGroup
@@ -19,17 +20,18 @@ class ChatsAdapter(
     private val options: FirebaseRecyclerOptions<Groups>,
     private val userId: String
 ) : FirebaseRecyclerAdapter<Groups, RecyclerView.ViewHolder>(options) {
+
     val usersRepository = UsersRepository()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == VIEW_TYPE_GROUP) {
             val view = inflater.inflate(R.layout.chat_group, parent, false)
             val binding = ChatGroupBinding.bind(view)
-            GroupChatViewHolder(binding)
+            GroupChatViewHolder(view.context, binding)
         } else {
             val view = inflater.inflate(R.layout.chat_individual, parent, false)
             val binding = ChatIndividualBinding.bind(view)
-            IndividualChatViewHolder(binding)
+            IndividualChatViewHolder(view.context, binding)
         }
     }
 
@@ -51,7 +53,7 @@ class ChatsAdapter(
         return DateFormat.format("MMM dd, yyyy", calendar).toString()
     }
 
-    inner class GroupChatViewHolder(private val binding: ChatGroupBinding) :
+    inner class GroupChatViewHolder(private val context: Context, private val binding: ChatGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Groups) {
             binding.chatName.text = item.name
@@ -59,9 +61,17 @@ class ChatsAdapter(
                 binding.lastMsgContent.text = item.latestMessage.content
                 binding.lastMsgTimestamp.text = getDate(item.latestMessage.timestamp!!)
 
-                usersRepository.getUserById(item.latestMessage.senderId!!) {
-                    if (it != null) {
-                        binding.lastMsgSender.text = "${it.firstName} ${it.lastName}: "
+                if (item.latestMessage.senderId!! == userId){
+                    binding.lastMsgSender.text = context.getString(R.string.you)
+                } else {
+                    usersRepository.getUserById(item.latestMessage.senderId) {
+                        if (it != null) {
+                            binding.lastMsgSender.text = context.getString(
+                                R.string.name_placeholder_with_colon,
+                                it.firstName,
+                                it.lastName
+                            )
+                        }
                     }
                 }
             } else {
@@ -77,7 +87,7 @@ class ChatsAdapter(
         }
     }
 
-    inner class IndividualChatViewHolder(private val binding: ChatIndividualBinding) :
+    inner class IndividualChatViewHolder(private val context: Context, private val binding: ChatIndividualBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Groups) {
             val participants = item.participants!!.keys.toList()
@@ -86,7 +96,11 @@ class ChatsAdapter(
             var chatName = "Plantastic"
             usersRepository.getUserById(otherParticipantId) {
                 if (it != null) {
-                    chatName = "${it.firstName} ${it.lastName}"
+                    chatName = context.getString(
+                        R.string.name_placeholder,
+                        it.firstName,
+                        it.lastName
+                    )
                     binding.chatName.text = chatName
                 }
             }

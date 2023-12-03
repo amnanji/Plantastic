@@ -95,4 +95,7 @@
     <string name="fab">FAB</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="you">"You: "</string>
+    <string name="name_placeholder_with_colon">"%1$s %2$s: "</string>
+    <string name="name_placeholder">%1$s %2$s</string>
 </resources>

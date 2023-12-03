@@ -1,5 +1,6 @@
 package com.example.plantastic.ui.conversation
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +29,7 @@ class ConversationAdapter(
         } else if (isGroup) {
             val view = inflater.inflate(R.layout.message_group, parent, false)
             val binding = MessageGroupBinding.bind(view)
-            GroupChatMessagesViewHolder(binding)
+            GroupChatMessagesViewHolder(view.context, binding)
         } else {
             val view = inflater.inflate(R.layout.message_individual, parent, false)
             val binding = MessageIndividualBinding.bind(view)
@@ -46,12 +47,16 @@ class ConversationAdapter(
         }
     }
 
-    inner class GroupChatMessagesViewHolder(private val binding: MessageGroupBinding) :
+    inner class GroupChatMessagesViewHolder(private val context: Context, private val binding: MessageGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
             usersRepository.getUserById(item.senderId!!) {
                 if (it != null) {
-                    binding.messageSender.text = "${it.firstName} ${it.lastName}: "
+                    binding.messageSender.text = context.getString(
+                        R.string.name_placeholder_with_colon,
+                        it.firstName,
+                        it.lastName
+                    )
                 }
             }
             binding.messageText.text = item.content
