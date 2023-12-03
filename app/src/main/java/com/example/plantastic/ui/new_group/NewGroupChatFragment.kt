@@ -122,6 +122,12 @@ class NewGroupChatFragment : Fragment() {
                 groupMembers.clear()
                 groupMembers.addAll(it)
                 groupMemberAdapter.notifyDataSetChanged()
+                if (groupMembers.size == 0){
+                    root.findViewById<TextView>(R.id.groupMemberLabelTextView).visibility = View.GONE
+                }
+                else{
+                    root.findViewById<TextView>(R.id.groupMemberLabelTextView).visibility = View.VISIBLE
+                }
             }
         }
 

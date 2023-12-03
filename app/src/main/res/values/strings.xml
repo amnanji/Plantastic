@@ -98,4 +98,8 @@
     <string name="fab">FAB</string>
     <string name="friends">Friends</string>
     <string name="no_friends_found">No friends found</string>
+    <string name="group_members">Group members</string>
+    <string name="group_name">Group Name</string>
+    <string name="group_name_colon">Group Name:</string>
+    <string name="create_group">Create Group</string>
 </resources>

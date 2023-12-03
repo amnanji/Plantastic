@@ -13,7 +13,6 @@ import com.example.plantastic.R
 import com.example.plantastic.models.Users
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.ui.conversation.ConversationActivity
-import com.example.plantastic.ui.new_friend_chat.FriendsChatAdapter
 
 class NewGroupAdapter (
     private var dataList: List<Users>,
@@ -46,12 +45,13 @@ class NewGroupAdapter (
         holder.usernameTextView.text = model.username
         "${model.firstName} ${model.lastName}".also { holder.nameTextView.text = it }
         holder.checkBox.visibility = View.VISIBLE
-        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                newGroupViewModel.addToMembersList(model)
+        holder.checkBox.setOnClickListener{
+            if (newGroupViewModel.isUserInMembersList(model)){
+                holder.checkBox.isChecked = false
+                newGroupViewModel.removeFromMembersList(model)
             }
             else{
-                newGroupViewModel.removeFromMembersList(model)
+                newGroupViewModel.addToMembersList(model)
             }
         }
     }

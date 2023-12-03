@@ -34,7 +34,7 @@ class NewGroupViewModel : ViewModel() {
         }
         else{
             val filteredList = _friendsList.value?.filter { user ->
-                user.username!!.startsWith(search, ignoreCase = true) // Change "name" to the actual field you want to filter
+                user.username!!.startsWith(search, ignoreCase = true)
             }
             _filteredFriendsList.value = filteredList ?: emptyList()
         }
@@ -52,5 +52,8 @@ class NewGroupViewModel : ViewModel() {
         _groupMembersList.value = currentMembersList
     }
 
+    fun isUserInMembersList(user: Users): Boolean {
+        return _groupMembersList.value?.contains(user) ?: false
+    }
 
 }
