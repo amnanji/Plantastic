@@ -1,7 +1,6 @@
 package com.example.plantastic.ui.conversation
 
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +12,6 @@ import com.example.plantastic.models.Message
 import com.example.plantastic.repository.UsersRepository
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.database.DatabaseReference
 import java.util.Calendar
 
 class ConversationAdapter(
@@ -41,18 +39,17 @@ class ConversationAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, model: Message) {
         if (model.senderId == userId) {
-            (holder as CurrUserMessageViewHolder).bind(model, getRef(position))
+            (holder as CurrUserMessageViewHolder).bind(model)
         } else if (isGroup) {
-            (holder as GroupChatMessagesViewHolder).bind(model, getRef(position))
+            (holder as GroupChatMessagesViewHolder).bind(model)
         } else {
-            (holder as IndividualChatMessagesViewHolder).bind(model, getRef(position))
+            (holder as IndividualChatMessagesViewHolder).bind(model)
         }
     }
 
     inner class GroupChatMessagesViewHolder(private val binding: MessageGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Message, ref: DatabaseReference) {
-            Log.i(TAG, "Curr msg item --> $item")
+        fun bind(item: Message) {
             usersRepository.getUserById(item.senderId!!) {
                 if (it != null) {
                     binding.messageSender.text = "${it.firstName} ${it.lastName}: "
@@ -65,8 +62,7 @@ class ConversationAdapter(
 
     inner class IndividualChatMessagesViewHolder(private val binding: MessageIndividualBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Message, ref: DatabaseReference) {
-            Log.i(TAG, "Curr msg item --> $item")
+        fun bind(item: Message) {
             binding.messageText.text = item.content
             binding.messageTimestamp.text = getDate(item.timestamp!!)
         }
@@ -74,8 +70,7 @@ class ConversationAdapter(
 
     inner class CurrUserMessageViewHolder(private val binding: MessageCurrUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Message, ref: DatabaseReference) {
-            Log.i(TAG, "Curr msg item --> $item")
+        fun bind(item: Message) {
             binding.messageText.text = item.content
             binding.messageTimestamp.text = getDate(item.timestamp!!)
         }

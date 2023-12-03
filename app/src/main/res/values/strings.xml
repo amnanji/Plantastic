@@ -60,4 +60,13 @@
 
     <string name="message_hint">Message…</string>
     <string name="todo_list_individual_group_title">From chat with %1$s %2$s</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="group">Group</string>
+    <string name="assign_to">Assign to:</string>
+    <string name="due_date">Due Date</string>
+    <string name="add_new_todo_item">Add New Todo Item</string>
+    <string name="date_placeholder">%d/%d/%d</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

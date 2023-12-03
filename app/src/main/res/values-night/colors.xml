@@ -15,4 +15,6 @@
     <color name="todo_list_item_color_2">@color/pastel_lilac_dark</color>
     <color name="todo_list_item_color_3">@color/pastel_red_var_dark</color>
     <color name="todo_list_item_checkbox_color">@color/pastel_orange</color>
+
+    <color name="dialog_positive_button_disabled_state">#782F2D</color>
 </resources>

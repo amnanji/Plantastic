@@ -2,15 +2,21 @@ package com.example.plantastic.ui.toDo
 // ToDoFragment.kt
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.plantastic.R
 import com.example.plantastic.databinding.FragmentToDoBinding
 import com.example.plantastic.models.ToDoItemForDisplay
+import com.example.plantastic.repository.UsersAuthRepository
 
 class ToDoFragment : Fragment() {
 
@@ -29,6 +35,9 @@ class ToDoFragment : Fragment() {
     ): View {
         _binding = FragmentToDoBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        requireActivity().findViewById<Toolbar>(R.id.toolbar)
+        setHasOptionsMenu(true)
 
         toDoViewModel =
             ViewModelProvider(this)[ToDoViewModel::class.java]
@@ -68,6 +77,27 @@ class ToDoFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.todo_fragment_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.add_todo_item -> {
+                val currUser = UsersAuthRepository().getCurrentUser()
+                val userId = currUser!!.uid
+
+                val dialog = AddTodoItemDialog()
+                val bundle = Bundle()
+                bundle.putString(AddTodoItemDialog.KEY_USER_ID, userId)
+                dialog.arguments = bundle
+                dialog.show(requireActivity().supportFragmentManager, AddTodoItemDialog.TAG_ADD_TODO_ITEM)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     companion object {

@@ -51,4 +51,6 @@
     <color name="todo_list_item_color_3">@color/pastel_red_var</color>
     <color name="todo_list_item_checkbox_color">@color/yellow</color>
 
+    <color name="dialog_positive_button_disabled_state">#E87E7C</color>
+
 </resources>

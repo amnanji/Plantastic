@@ -2,7 +2,6 @@ package com.example.plantastic.ui.chats
 
 import android.content.Intent
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +13,6 @@ import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.conversation.ConversationActivity
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.database.DatabaseReference
 import java.util.Calendar
 
 class ChatsAdapter(
@@ -37,9 +35,9 @@ class ChatsAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, model: Groups) {
         if (model.groupType == "individual") {
-            (holder as IndividualChatViewHolder).bind(model, getRef(position))
+            (holder as IndividualChatViewHolder).bind(model)
         } else {
-            (holder as GroupChatViewHolder).bind(model, getRef(position))
+            (holder as GroupChatViewHolder).bind(model)
         }
     }
 
@@ -55,8 +53,7 @@ class ChatsAdapter(
 
     inner class GroupChatViewHolder(private val binding: ChatGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Groups, ref: DatabaseReference) {
-            Log.i(TAG, "Curr chat item --> $item")
+        fun bind(item: Groups) {
             binding.chatName.text = item.name
             if (item.latestMessage != null) {
                 binding.lastMsgContent.text = item.latestMessage.content
@@ -82,8 +79,7 @@ class ChatsAdapter(
 
     inner class IndividualChatViewHolder(private val binding: ChatIndividualBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Groups, ref: DatabaseReference) {
-            Log.i(TAG, "Curr chat item ref --> $ref")
+        fun bind(item: Groups) {
             val participants = item.participants!!.keys.toList()
             val otherParticipantId =
                 if (participants[0] == userId) participants[1] else participants[0]

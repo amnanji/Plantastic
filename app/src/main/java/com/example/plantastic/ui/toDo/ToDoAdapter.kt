@@ -14,13 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.ToDoItemForDisplay
 import com.example.plantastic.repository.ToDoRepository
-import com.example.plantastic.repository.UsersRepository
 import java.util.Calendar
 
 
 class ToDoAdapter(private val todoList: List<ToDoItemForDisplay>) :
     RecyclerView.Adapter<ToDoAdapter.ViewHolder>() {
-    private val usersRepository = UsersRepository()
     private val toDoRepository = ToDoRepository()
     private val cardBackgroundColors = ArrayList(
         listOf(
@@ -49,27 +47,12 @@ class ToDoAdapter(private val todoList: List<ToDoItemForDisplay>) :
         val todoItem = todoList[position]
         holder.titleTextView.text = todoItem.title
         holder.descTextView.text = todoItem.description
+        holder.groupNameTextView.text = todoItem.groupName
         holder.dueDateTextView.text = todoItem.dueDate?.let { getDate(it) }
 
-        // Setting the group name of the todoItem so the user knows what chat the todoItem is from
-        // If the todoItem is from a group, the we use the group name
-        // else we say "From chat with {other chat participant's name}"
-        if ((todoItem.isGroup != null) && todoItem.isGroup){
-            holder.groupNameTextView.text = todoItem.groupName
-        } else if (todoItem.otherParticipantId != null) {
-            usersRepository.getUserById(todoItem.otherParticipantId) {
-                if (it != null) {
-                    holder.groupNameTextView.text = holder.itemView.context.getString(
-                        R.string.todo_list_individual_group_title,
-                        it.firstName,
-                        it.lastName
-                    )
-                }
-            }
-        }
-
         // Setting the background color of the card from one of colors defined in the list above
-        val backgroundColor = holder.itemView.context.resources.getColor(cardBackgroundColors[position % cardBackgroundColors.size])
+        val backgroundColor =
+            holder.itemView.context.resources.getColor(cardBackgroundColors[position % cardBackgroundColors.size])
         holder.cardView.setCardBackgroundColor(backgroundColor)
 
         if (todoItem.isCompleted != null) {
@@ -82,7 +65,10 @@ class ToDoAdapter(private val todoList: List<ToDoItemForDisplay>) :
         holder.checkbox.setOnCheckedChangeListener(checkedChangeListener(todoItem, holder))
     }
 
-    private fun checkedChangeListener(todoItem: ToDoItemForDisplay, holder: ViewHolder): CompoundButton.OnCheckedChangeListener {
+    private fun checkedChangeListener(
+        todoItem: ToDoItemForDisplay,
+        holder: ViewHolder
+    ): CompoundButton.OnCheckedChangeListener {
         return CompoundButton.OnCheckedChangeListener { _, isChecked ->
             // Updating the data in the database
             toDoRepository.updateTodoListItem(todoItem.id, todoItem.groupId, isChecked)
@@ -91,7 +77,7 @@ class ToDoAdapter(private val todoList: List<ToDoItemForDisplay>) :
     }
 
     // Function to add a strikethrough line through the title of the todoItem if it is completed
-    private fun updateTodoItemTitleStyle(isChecked: Boolean, textView: TextView){
+    private fun updateTodoItemTitleStyle(isChecked: Boolean, textView: TextView) {
         // Referenced from: https://stackoverflow.com/questions/9786544/creating-a-strikethrough-text
         if (isChecked) {
             textView.paintFlags =

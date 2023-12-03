@@ -1,6 +1,5 @@
 package com.example.plantastic.repository
 
-import android.util.Log
 import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.models.Users
 import com.google.firebase.database.DataSnapshot
@@ -8,9 +7,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.values
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
 // Help from - https://firebase.google.com/docs/database/android/read-and-write
@@ -55,10 +52,12 @@ class UsersRepository {
 
     fun getUserById(id: String, callback: (Users?) -> Unit) {
         val reference = usersReference.child(id)
+//        Log.d(TAG, "Received request --> $id")
 
         reference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val user = dataSnapshot.getValue(Users::class.java)
+//                Log.d(TAG, "got user inside usersRepository : $user")
                 callback(user)
             }
 
@@ -69,7 +68,7 @@ class UsersRepository {
         })
     }
 
-    fun getUsersById(ids: ArrayList<String>): ArrayList<Users> {
+    fun getUsersById(ids: List<String>): ArrayList<Users> {
         val ret = ArrayList<Users>()
 
         for (id in ids) {
@@ -78,7 +77,6 @@ class UsersRepository {
 
             reference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("Pln", "Received user --> $snapshot")
                     deferred.complete(snapshot.getValue(Users::class.java))
                 }
 
@@ -91,12 +89,7 @@ class UsersRepository {
         return ret
     }
 
-//    reference.get()
-//    .addOnSuccessListener {
-//        Log.d("Pln", "Received user --> $it")
-//        deferred.complete(it.getValue(Users::class.java))
-//    }.addOnFailureListener {
-//        deferred.completeExceptionally(it)
-//    }
-//    runBlocking { deferred.await() }?.let { ret.add(it) }
+    companion object {
+        private const val TAG = "Pln UsersRepository"
+    }
 }

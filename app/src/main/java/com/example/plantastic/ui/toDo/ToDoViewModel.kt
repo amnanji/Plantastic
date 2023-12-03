@@ -3,41 +3,60 @@ package com.example.plantastic.ui.toDo
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.plantastic.models.Groups
 import com.example.plantastic.models.ToDoItemForDisplay
 import com.example.plantastic.repository.ToDoRepository
 import com.example.plantastic.repository.UsersAuthRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ToDoViewModel : ViewModel() {
 
     private val _toDoItems = MutableLiveData<ArrayList<ToDoItemForDisplay>>()
     val toDoItems: LiveData<ArrayList<ToDoItemForDisplay>> = _toDoItems
 
-    init{
+    var groupsList: List<Groups?> = ArrayList()
+
+    init {
         val currUser = UsersAuthRepository().getCurrentUser()
         val userId = currUser!!.uid
 
-        // Getting all todoItems assigned to the user and using that list to create a new list of
-        // ToDoItemForDisplay which collects all the data needed in addition to todoItem to display the todoItem
-        ToDoRepository().getToDoItemsByUserId(userId){ todoListsHashmap, groupsHashmap ->
+        CoroutineScope(Dispatchers.IO).launch {
+            // Getting all todoItems assigned to the user and using that list to create a new list of
+            // ToDoItemForDisplay which collects all the data needed in addition to todoItem to display the todoItem
             val data = ArrayList<ToDoItemForDisplay>()
-            for ((groupId, toDoItems) in todoListsHashmap){
-                val groupName = groupsHashmap[groupId]?.name
-                val isGroup = groupsHashmap[groupId]?.groupType == "group"
-                val participants = groupsHashmap[groupId]?.participants!!.keys.toList()
-                val otherParticipantId = if (isGroup) null else {
-                    if (participants[0] == userId) participants[1] else participants[0]
-                }
 
-                for (toDoItem in toDoItems){
-                    if (toDoItem.id != null) {
-                        val toDoItemForDisplay = ToDoItemForDisplay(toDoItem, groupId, isGroup, groupName, otherParticipantId)
-                        data.add(toDoItemForDisplay)
+            ToDoRepository().getToDoItemsByUserId(userId) { todoListsHashmap, groupsHashmap ->
+                groupsList = groupsHashmap.values.toList()
+                for ((groupId, toDoItems) in todoListsHashmap) {
+                    if (!groupsHashmap.containsKey(groupId)) continue
+                    val groupName = groupsHashmap[groupId]?.name
+                    val isGroup = groupsHashmap[groupId]?.groupType == "group"
+
+                    for (toDoItem in toDoItems) {
+                        if (toDoItem.id != null) {
+                            val toDoItemForDisplay = ToDoItemForDisplay(
+                                toDoItem,
+                                groupId,
+                                isGroup,
+                                groupName
+                            )
+                            data.add(toDoItemForDisplay)
+                        }
                     }
                 }
             }
-
-            // Sorting list by due date
-            _toDoItems.value = ArrayList(data.sortedWith(compareBy { it.dueDate ?: Long.MAX_VALUE }))
+            withContext(Dispatchers.Main) {
+                // Sorting list by due date
+                _toDoItems.value =
+                    ArrayList(data.sortedWith(compareBy { it.dueDate ?: Long.MAX_VALUE }))
+            }
         }
+    }
+
+    companion object {
+        private const val TAG = "Pln ToDoViewModel"
     }
 }
