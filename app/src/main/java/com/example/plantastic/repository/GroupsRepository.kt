@@ -4,12 +4,15 @@ import android.util.Log
 import com.example.plantastic.models.CalendarElement
 import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
+import com.example.plantastic.utilities.DateTimeUtils
 import com.example.plantastic.utilities.FirebaseNodes
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.Query
+import com.google.firebase.database.getValue
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -19,7 +22,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import java.util.Date
 import java.util.Calendar
 
 interface EventsCallback {
@@ -139,8 +141,7 @@ class GroupsRepository {
     }
 
     fun getAllEventsQueryForUser(userId: String, callback: EventsCallback) {
-        val eventsReference = FirebaseDatabase.getInstance().getReference(FirebaseNodes.GROUPS_NODE)
-        val query = eventsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/$userId").equalTo(true)
+        val query = getAllGroupsQueryForUser(userId)
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -165,8 +166,7 @@ class GroupsRepository {
     }
 
     fun getCalendarForUserAndDate(userId: String, targetDate: Long, callback: CalendarCallback) {
-        val eventsReference = FirebaseDatabase.getInstance().getReference(FirebaseNodes.GROUPS_NODE)
-        val query = eventsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/$userId").equalTo(true)
+        val query = getAllGroupsQueryForUser(userId)
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -217,6 +217,80 @@ class GroupsRepository {
         return (eventCalendar.get(Calendar.YEAR) == targetCalendar.get(Calendar.YEAR) &&
                 eventCalendar.get(Calendar.MONTH) == targetCalendar.get(Calendar.MONTH) &&
                 eventCalendar.get(Calendar.DAY_OF_MONTH) == targetCalendar.get(Calendar.DAY_OF_MONTH))
+    }
+
+    fun getGroupIdForUsers(userId1: String, userId2: String, callback: (String?) -> Unit){
+        getAllGroupsQueryForUser(userId1).addListenerForSingleValueEvent (
+            object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    var gId: String? = null
+                    if (dataSnapshot.exists()) {
+                        dataSnapshot.getValue<HashMap<String, Groups>>()?.forEach { (key, value) ->
+                            if (value.participants!!.size == 2 &&
+                                value.participants.containsKey(userId2) &&
+                                value.participants.containsKey(userId1) &&
+                                value.groupType == "individual"
+                            ) {
+                                gId = key
+                            }
+                        }
+                    }
+                    callback(gId)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    callback(null)
+                }
+            }
+        )
+    }
+
+
+    fun createGroupForUsers(userList: ArrayList<String>, groupName: String?, callback: (String?) -> Unit) {
+        val participants: HashMap<String, Boolean> = HashMap()
+        val timestampGroupCreated: Long = DateTimeUtils.getCurrentTimeStamp()
+        val balances: HashMap<String, HashMap<String, Double>> = HashMap()
+
+        for (user in userList){
+            participants[user] = true
+            balances[user] = HashMap()
+            userList.forEach{
+                if (it != user){
+                    balances[user]!![it] = 0.0
+                }
+            }
+        }
+
+        //create individual group
+        val groupType: String = if (userList.size == 2){
+            "individual"
+        }
+        //create big group
+        else {
+            "group"
+        }
+
+        val reference: DatabaseReference = groupsReference.push()
+        val groupId: String? = reference.key
+
+        val group: Groups = Groups(
+            groupId,
+            groupType,
+            participants,
+            groupName,
+            null,
+            balances,
+            timestampGroupCreated,
+            null
+        )
+
+        reference.setValue(group)
+            .addOnSuccessListener {
+                callback(groupId)
+            }
+            .addOnFailureListener {
+                callback(null)
+            }
     }
 
     companion object {

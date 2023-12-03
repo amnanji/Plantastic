@@ -27,4 +27,8 @@ object DateTimeUtils {
 
         return DateFormat.format("hh:mm a", msgCalendar).toString()
     }
+
+    fun getCurrentTimeStamp(): Long {
+        return Calendar.getInstance().timeInMillis
+    }
 }

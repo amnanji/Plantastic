@@ -40,16 +40,17 @@ class UsersRepository {
 
     fun isFieldUnique(nodeName: String, value: String): Boolean {
         val deferred = CompletableDeferred<Boolean>()
-        usersReference.orderByChild(nodeName).equalTo(value).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                deferred.complete(!snapshot.exists())
-            }
+        usersReference.orderByChild(nodeName).equalTo(value).addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    deferred.complete(!snapshot.exists())
+                }
 
-            override fun onCancelled(error: DatabaseError) {
-                deferred.completeExceptionally(error.toException())
+                override fun onCancelled(error: DatabaseError) {
+                    deferred.completeExceptionally(error.toException())
+                }
             }
-        })
+        )
         return runBlocking { deferred.await() }
     }
 
