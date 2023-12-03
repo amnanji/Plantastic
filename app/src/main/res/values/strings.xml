@@ -92,9 +92,10 @@
     <string name="no_users_found">No users found</string>
     <string name="calendar_icon">Calendar Icon</string>
     <string name="group_icon">Group Icon</string>
-    <string name="fab">FAB</string>
     <string name="nav_new_chat">New Chat</string>
     <string name="nav_new_individual_chat">New Individual Chat</string>
     <string name="nav_new_group">New Group</string>
     <string name="fab">FAB</string>
+    <string name="friends">Friends</string>
+    <string name="no_friends_found">No friends found</string>
 </resources>

@@ -11,7 +11,6 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-        <!-- Aesthetic Search Bar -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,14 +39,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Your RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/addFriendsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/searchConstraintLayout"/>
 
-        <!-- TextView for No Users Found Message -->
         <TextView
             android:id="@+id/noUsersFoundTextView"
             android:layout_width="wrap_content"
