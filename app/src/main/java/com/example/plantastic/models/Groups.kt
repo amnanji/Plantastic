@@ -7,7 +7,7 @@ data class Groups(
     val id: String? = null,
     val groupType: String? = null, // Group, Individual, Event
     val participants: HashMap<String, Boolean>? = null,
-    val name: String? = null,
+    var name: String? = null,
     val admins: ArrayList<String>? = null,
     val latestMessage: Message? = null,
     var balances:HashMap<String, HashMap<String, Double>>? = null,

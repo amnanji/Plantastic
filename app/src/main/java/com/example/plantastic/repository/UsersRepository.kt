@@ -1,6 +1,5 @@
 package com.example.plantastic.repository
 
-import android.util.Log
 import com.example.plantastic.models.Users
 import com.example.plantastic.utilities.FirebaseNodes
 import com.google.firebase.database.DataSnapshot
@@ -68,7 +67,7 @@ class UsersRepository {
         })
     }
 
-    fun getUsersById(ids: ArrayList<String>): ArrayList<Users> {
+    fun getUsersById(ids: List<String>): ArrayList<Users> {
         val ret = ArrayList<Users>()
 
         for (id in ids) {
@@ -77,7 +76,6 @@ class UsersRepository {
 
             reference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("Pln", "Received user --> $snapshot")
                     deferred.complete(snapshot.getValue(Users::class.java))
                 }
 
@@ -152,5 +150,9 @@ class UsersRepository {
                 userReference.setValue(it)
             }
         }
+    }
+
+    companion object {
+        private const val TAG = "Pln UsersRepository"
     }
 }

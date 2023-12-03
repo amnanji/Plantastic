@@ -1,16 +1,13 @@
 package com.example.plantastic.ui.transactions
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
-import com.example.plantastic.models.Groups
 import com.example.plantastic.models.Transaction
 import com.example.plantastic.repository.UsersRepository
-import com.example.plantastic.ui.balances.BalancesAdapter
 import com.example.plantastic.utilities.DateTimeUtils
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions

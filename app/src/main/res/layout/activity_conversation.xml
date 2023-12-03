@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
-            android:src="@drawable/add" />
+            android:src="@drawable/add_icon_pastel_red" />
 
         <EditText
             android:id="@+id/messageEditText"
@@ -58,7 +58,7 @@
             android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:enabled="false"
-            android:src="@drawable/send_button_selector" />
+            android:src="@drawable/selector_send_button" />
 
     </LinearLayout>
 
