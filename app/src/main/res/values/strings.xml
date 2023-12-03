@@ -81,4 +81,6 @@
     <string name="owes_you">%1$s owes you %2$s</string>
     <string name="you_owe">You owe %1$s %2$s</string>
     <string name="no_users_found">No users found</string>
+    <string name="calendar_icon">Calendar Icon</string>
+    <string name="group_icon">Group Icon</string>
 </resources>
