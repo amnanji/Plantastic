@@ -15,7 +15,44 @@
     <!--  Chat Related Colors  -->
     <color name="curr_user_msg">#F2D5C3</color>
     <color name="other_user_msg">#EDEDED</color>
-    <color name="ai_msg">#EB5552</color>
+    <color name="ai_msg">@color/pastel_red</color>
     <color name="text_on_background">#FF000000</color>
     <color name="write_msg_background">#DFDFDF</color>
+    
+    <!--  Pastel Colors  -->
+    <color name="pastel_red_var">#FDE2E2</color>
+    <color name="pastel_hot_pink">#F8DCE8</color>
+    <color name="pastel_marigold">#FBECC6</color>
+    <color name="pastel_yellow">#F7F0AD</color>
+    <color name="pastel_green_var">#D0E6BB</color>
+    <color name="pastel_teal">#C9EFE6</color>
+    <color name="pastel_orange">#F9E2C4</color>
+    <color name="pastel_lime_green">#CCE29C</color>
+    <color name="pastel_blue">#D2E5F6</color>
+    <color name="pastel_indigo">#D5DEFD</color>
+    <color name="pastel_purple">#E6D9F0</color>
+    <color name="pastel_lilac">#E7CCF1</color>
+
+    <!-- Dark Mode Variations of Pastel Color -->
+    <color name="pastel_red_var_dark">#E26666</color>
+    <color name="pastel_hot_pink_dark">#E28CA4</color>
+    <color name="pastel_marigold_dark">#E5D2A1</color>
+    <color name="pastel_yellow_dark">#E8E4A1</color>
+    <color name="pastel_green_dark">#A7C394</color>
+    <color name="pastel_teal_dark">#9FCBCF</color>
+    <color name="pastel_orange_dark">#E1AA8A</color>
+    <color name="pastel_lime_green_dark">#B3CC8E</color>
+    <color name="pastel_blue_dark">#9EBFDB</color>
+    <color name="pastel_indigo_dark">#A9ADDD</color>
+    <color name="pastel_purple_dark">#C4B5D9</color>
+    <color name="pastel_lilac_dark">#C7B5D9</color>
+
+    <!-- Colors for To Do List Items -->
+    <color name="todo_list_item_color_1">@color/pastel_orange</color>
+    <color name="todo_list_item_color_2">@color/pastel_lilac</color>
+    <color name="todo_list_item_color_3">@color/pastel_red_var</color>
+    <color name="todo_list_item_checkbox_color">@color/yellow</color>
+
+    <color name="dialog_positive_button_disabled_state">#E87E7C</color>
+
 </resources>

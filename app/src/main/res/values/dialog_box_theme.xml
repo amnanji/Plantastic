@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Referenced from:https://stackoverflow.com/questions/27965662/how-can-i-change-default-dialog-button-text-color-in-android-5 -->
+<resources>
+    <style name="DialogBoxTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:backgroundTint">@color/card_background</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle </item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:textColorPrimary">@color/pastel_red</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/text_on_background</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/pastel_red</item>
+    </style>
+</resources>

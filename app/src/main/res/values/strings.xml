@@ -73,6 +73,15 @@
     <string name="username_updated_successfully">Username updated successfully!</string>
     <string name="busy_text_textview">Busy</string>
     <string name="username_availability_and_preferences_updated_successfully">Username, Availability and Preferences updated successfully!</string>
+    <string name="todo_list_individual_group_title">From chat with %1$s %2$s</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="group">Group</string>
+    <string name="assign_to">Assign to:</string>
+    <string name="due_date">Due Date</string>
+    <string name="add_new_todo_item">Add New Todo Item</string>
+    <string name="date_placeholder">%d/%d/%d</string>
+    <string name="cancel">Cancel</string>
     <string name="nav_add_friends">Add friends</string>
     <string name="log_out">Log out</string>
     <string name="add_friends">Add friends</string>
@@ -87,4 +96,5 @@
     <string name="nav_new_chat">New Chat</string>
     <string name="nav_new_individual_chat">New Individual Chat</string>
     <string name="nav_new_group">New Group</string>
+    <string name="fab">FAB</string>
 </resources>

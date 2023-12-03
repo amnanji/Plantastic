@@ -18,5 +18,13 @@ object DateTimeUtils {
         } else {
             DateFormat.format("hh:mm a", msgCalendar).toString()
         }
+
+
+    }
+    fun getTimeString(timestamp: Long): String {
+        val msgCalendar = Calendar.getInstance()
+        msgCalendar.timeInMillis = timestamp
+
+        return DateFormat.format("hh:mm a", msgCalendar).toString()
     }
 }

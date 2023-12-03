@@ -2,12 +2,10 @@ package com.example.plantastic.ui.events
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.plantastic.databinding.FragmentEventsBinding
 import com.example.plantastic.models.Events
@@ -15,7 +13,6 @@ import com.example.plantastic.repository.EventsCallback
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.ui.login.LoginActivity
-import com.firebase.ui.database.FirebaseRecyclerOptions
 
 class EventsFragment : Fragment(), EventsCallback {
 

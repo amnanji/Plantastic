@@ -1,3 +1,5 @@
+package com.example.plantastic.ui.calendar
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -5,15 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.plantastic.databinding.FragmentCalendarBinding
+import com.example.plantastic.models.CalendarElement
+import com.example.plantastic.repository.CalendarCallback
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.ui.calendar.calendarAdapter
 import java.util.*
 
-class CalendarFragment : Fragment() {
+class CalendarFragment : Fragment(), CalendarCallback{
 
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
@@ -36,21 +39,14 @@ class CalendarFragment : Fragment() {
         groupsRepository = GroupsRepository()
         calendarAdapter = calendarAdapter(emptyList())
 
-        binding.calendarRecyclerView.adapter = calendarAdapter
-        binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-
         // REFERENCED: https://developer.android.com/reference/android/widget/CalendarView.OnDateChangeListener
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val selectedDay = Calendar.getInstance().apply {
                 set(year, month, dayOfMonth)
             }.time
-            Log.d("Revs", "selectedDay $selectedDay")
+            groupsRepository.getCalendarForUserAndDate(currUser!!.uid,selectedDay.time,this)
 
-            // Make sure to handle the null case appropriately
-//            groupsRepository.getCalendarForUserAndDate(selectedDay.toString()) { calendarElements ->
-//                // Update the adapter with the new data
-//                calendarAdapter.updateCalendarElements(calendarElements)
-//            }
+
         }
 
         return root
@@ -59,5 +55,14 @@ class CalendarFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    override fun onCalendarLoaded(calendarList: List<CalendarElement>) {
+
+        calendarAdapter = calendarAdapter(calendarList)
+        binding.calendarRecyclerView.adapter = calendarAdapter
+        binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
     }
 }
