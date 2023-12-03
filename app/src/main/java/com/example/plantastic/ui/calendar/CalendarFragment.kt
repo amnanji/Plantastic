@@ -45,10 +45,6 @@ class CalendarFragment : Fragment(), CalendarCallback{
             val selectedDay = Calendar.getInstance().apply {
                 set(year, month, dayOfMonth)
             }.time
-            val selectedDayInms = selectedDay.time
-            Log.d("Revs", "selectedDay $selectedDayInms")
-
-            // Make sure to handle the null case appropriately
             groupsRepository.getCalendarForUserAndDate(currUser!!.uid,selectedDay.time,this)
 
 

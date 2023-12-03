@@ -106,10 +106,7 @@ class GroupsRepository {
             }
         })
     }
-
-
     // Function to check if two dates are the same (ignoring time)
-
     fun isSameDate(eventDate: Long?, targetDate: Long): Boolean {
         if (eventDate == null) {
             return false
