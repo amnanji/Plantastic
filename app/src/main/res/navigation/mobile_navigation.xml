@@ -52,4 +52,11 @@
         android:name="com.example.plantastic.ui.friends.AddFriendsFragment"
         android:label="@string/nav_add_friends"
         tools:layout="@layout/fragment_add_friends" />
+
+    <fragment
+        android:id="@+id/nav_new_chat"
+        android:name="com.example.plantastic.ui.newchat.NewChatFragment"
+        android:label="@string/nav_new_chat"
+        tools:layout="@layout/fragment_new_chat" />
+
 </navigation>
