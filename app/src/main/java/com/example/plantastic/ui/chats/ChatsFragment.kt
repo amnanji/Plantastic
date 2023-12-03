@@ -14,7 +14,6 @@ import com.example.plantastic.databinding.FragmentChatsBinding
 import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
-import com.example.plantastic.ui.newchat.NewChatFragment
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
