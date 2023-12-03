@@ -1,10 +1,11 @@
-package com.example.plantastic.ui.new_friend_chat
+package com.example.plantastic.ui.new_group
 
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -12,49 +13,38 @@ import com.example.plantastic.R
 import com.example.plantastic.models.Users
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.ui.conversation.ConversationActivity
+import com.example.plantastic.ui.new_friend_chat.FriendsChatAdapter
 
-class FriendsChatAdapter(
+class NewGroupAdapter (
     private var dataList: List<Users>,
     private val userId: String
 ) :
-    RecyclerView.Adapter<FriendsChatAdapter.SearchFriendsViewHolder>() {
+    RecyclerView.Adapter<NewGroupAdapter.NewGroupViewHolder>() {
 
     private val groupsRepository = GroupsRepository()
 
-    inner class SearchFriendsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class NewGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val usernameTextView: TextView = itemView.findViewById(R.id.searchUsernameTextView)
         val nameTextView: TextView = itemView.findViewById(R.id.searchNameTextView)
         val searchContainer: RelativeLayout = itemView.findViewById(R.id.searchContainer)
+        val checkBox: CheckBox = itemView.findViewById(R.id.checkBoxSearchUsers)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchFriendsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewGroupViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.custom_search_users_layout, parent, false)
-        return SearchFriendsViewHolder(itemView)
+        return NewGroupViewHolder(itemView)
     }
 
     override fun getItemCount(): Int {
         return dataList.size
     }
 
-    override fun onBindViewHolder(holder: SearchFriendsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NewGroupViewHolder, position: Int) {
         val model = dataList[position]
         holder.usernameTextView.text = model.username
         "${model.firstName} ${model.lastName}".also { holder.nameTextView.text = it }
-        holder.searchContainer.setOnClickListener {
-            groupsRepository.getGroupIdForUsers(userId, model.id!!){
-                if (it == null){
-                    groupsRepository.createGroupForUsers(arrayListOf(userId, model.id), null){ groupId ->
-                        if (groupId != null){
-                            navigateToConversationsActivity(holder.itemView.context, groupId, model.username!!)
-                        }
-                    }
-                }
-                else{
-                    navigateToConversationsActivity(holder.itemView.context, it, model.username!!)
-                }
-            }
-        }
+        holder.checkBox.visibility = View.VISIBLE
     }
 
     private fun navigateToConversationsActivity(context: Context, id: String, username: String){

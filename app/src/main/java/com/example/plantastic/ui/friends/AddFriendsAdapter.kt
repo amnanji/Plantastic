@@ -73,22 +73,6 @@ class AddFriendsAdapter(
         holder.iconImageViewFriend.visibility = View.GONE
         holder.iconImageViewUser.setOnClickListener{
             usersRepository.addFriends(userId, model.id!!)
-//            groupsRepository.createGroupForUsers(arrayListOf(userId, model.id), null){
-//                if (it != null){
-//                    holder.iconImageViewUser.visibility = View.VISIBLE
-//                    holder.iconImageViewFriend.visibility = View.GONE
-//                    Toast.makeText(holder.itemView.context,
-//                        "Successfully added ${model.username} as a friend!",
-//                        Toast.LENGTH_SHORT).show()
-//                }
-//                else{
-//                    holder.iconImageViewUser.visibility = View.VISIBLE
-//                    holder.iconImageViewFriend.visibility = View.GONE
-//                    Toast.makeText(holder.itemView.context,
-//                        "Failed to add ${model.username} as a friend, try again later",
-//                        Toast.LENGTH_SHORT).show()
-//                }
-//            }
         }
     }
 }

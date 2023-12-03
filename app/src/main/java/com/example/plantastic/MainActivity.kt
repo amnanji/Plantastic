@@ -77,7 +77,10 @@ class MainActivity : AppCompatActivity() {
                 destination.id == R.id.nav_calendar ||
                 destination.id == R.id.nav_settings ||
                 destination.id == R.id.nav_profile ||
-                destination.id == R.id.nav_add_friends
+                destination.id == R.id.nav_add_friends ||
+                destination.id == R.id.nav_new_chat ||
+                destination.id == R.id.nav_new_chat_individual ||
+                destination.id == R.id.nav_new_chat_group
             ) {
                 navBottomBar.visibility = View.GONE
             } else {

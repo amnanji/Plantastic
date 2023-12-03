@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.new_group.NewGroupChatFragment">
-
-    <RelativeLayout
+    tools:context=".ui.new_friend_chat.NewIndividualChatFragment">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/addNewGroupHorizontalRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/searchFriendsConstraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="4dp"
             android:padding="8dp"
-            android:id="@+id/searchGroupConstraintLayout">
+            android:layout_below="@id/addNewGroupHorizontalRecyclerView">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/searchGroupInputLayout"
@@ -40,10 +44,10 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/addFriendsRecyclerView"
+            android:id="@+id/addNewGroupRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/searchGroupConstraintLayout"/>
+            android:layout_below="@id/searchFriendsConstraintLayout"/>
 
         <TextView
             android:id="@+id/noGroupFoundTextView"
@@ -54,6 +58,4 @@
             android:text="@string/no_friends_found"
             android:textAppearance="?android:textAppearanceMedium"/>
 
-    </RelativeLayout>
-
-</FrameLayout>
+</RelativeLayout>
