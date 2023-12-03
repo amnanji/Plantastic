@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
+import com.example.plantastic.models.Users
 
-class GroupMembersAdapter(private val dateList: List<String>) : RecyclerView.Adapter<GroupMembersAdapter.DateViewHolder>() {
+class GroupMembersAdapter(private val memberList: ArrayList<Users>) : RecyclerView.Adapter<GroupMembersAdapter.DateViewHolder>() {
 
     class DateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val dateTextView: TextView = itemView.findViewById(R.id.testTextView)
@@ -19,11 +20,11 @@ class GroupMembersAdapter(private val dateList: List<String>) : RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
-        val date = dateList[position]
-        holder.dateTextView.text = date
+        val model = memberList[position]
+        holder.dateTextView.text = model.username
     }
 
     override fun getItemCount(): Int {
-        return dateList.size
+        return memberList.size
     }
 }

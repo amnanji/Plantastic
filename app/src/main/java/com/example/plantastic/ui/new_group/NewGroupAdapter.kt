@@ -17,7 +17,8 @@ import com.example.plantastic.ui.new_friend_chat.FriendsChatAdapter
 
 class NewGroupAdapter (
     private var dataList: List<Users>,
-    private val userId: String
+    private val userId: String,
+    private val newGroupViewModel: NewGroupViewModel
 ) :
     RecyclerView.Adapter<NewGroupAdapter.NewGroupViewHolder>() {
 
@@ -45,6 +46,14 @@ class NewGroupAdapter (
         holder.usernameTextView.text = model.username
         "${model.firstName} ${model.lastName}".also { holder.nameTextView.text = it }
         holder.checkBox.visibility = View.VISIBLE
+        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                newGroupViewModel.addToMembersList(model)
+            }
+            else{
+                newGroupViewModel.removeFromMembersList(model)
+            }
+        }
     }
 
     private fun navigateToConversationsActivity(context: Context, id: String, username: String){

@@ -16,12 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.databinding.FragmentNewGroupBinding
-import com.example.plantastic.databinding.FragmentNewIndividualChatBinding
 import com.example.plantastic.models.Users
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
-import com.example.plantastic.ui.new_friend_chat.FriendsChatAdapter
-import com.example.plantastic.ui.new_friend_chat.FriendsChatViewModel
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 
 class NewGroupChatFragment : Fragment() {
@@ -41,6 +38,7 @@ class NewGroupChatFragment : Fragment() {
 
     private lateinit var allFriendsList: ArrayList<Users>
     private lateinit var filteredFriendsList: ArrayList<Users>
+    private lateinit var groupMembers: ArrayList<Users>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,8 +62,9 @@ class NewGroupChatFragment : Fragment() {
         editTextSearch = root.findViewById<EditText>(R.id.editTextSearchGroup)
 
         filteredFriendsList = ArrayList()
+        groupMembers = ArrayList()
 
-        adapter = NewGroupAdapter(filteredFriendsList, currUser!!.uid)
+        adapter = NewGroupAdapter(filteredFriendsList, currUser!!.uid, newGroupViewModel)
         recyclerView.adapter = adapter
 
         // Set up TextWatcher to filter data based on search input
@@ -111,14 +110,20 @@ class NewGroupChatFragment : Fragment() {
             }
         }, 200)
 
-        val dateList = listOf("2023-01-01", "2023-01-02", "2023-01-03", "2023-01-04", "2023-01-05")
-
         // Set up the RecyclerView and its adapter
         groupMembersRecyclerView = root.findViewById(R.id.addNewGroupHorizontalRecyclerView)
-        val groupMemberAdapter = GroupMembersAdapter(dateList)
+        val groupMemberAdapter = GroupMembersAdapter(groupMembers)
 
         groupMembersRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         groupMembersRecyclerView.adapter = groupMemberAdapter
+
+        newGroupViewModel.groupMembersList.observe(requireActivity()){
+            if (it != null){
+                groupMembers.clear()
+                groupMembers.addAll(it)
+                groupMemberAdapter.notifyDataSetChanged()
+            }
+        }
 
         return root
     }
