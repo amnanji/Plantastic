@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.CalendarElement
 import com.example.plantastic.repository.GroupsRepository
+import com.example.plantastic.utilities.DateTimeUtils
+
 
 class calendarAdapter(private var calendarElementList: List<CalendarElement>) :
     RecyclerView.Adapter<calendarAdapter.CalendarViewHolder>() {
@@ -30,7 +32,7 @@ class calendarAdapter(private var calendarElementList: List<CalendarElement>) :
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         val calendar = calendarElementList[position]
         holder.calType.text = calendar.type
-        holder.calTime.text = calendar.date.toString()
+        holder.calTime.text = DateTimeUtils.getTimeString(calendar.date!!)
         holder.calTitle.text = calendar.title
         groupsRepository.getGroupById(calendar.GID!!){
             if(it!=null)

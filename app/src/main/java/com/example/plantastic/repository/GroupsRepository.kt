@@ -164,7 +164,7 @@ class GroupsRepository {
         })
     }
 
-    fun getCalendarForUserAndDate(userId: String, targetDate: Date, callback: CalendarCallback) {
+    fun getCalendarForUserAndDate(userId: String, targetDate: Long, callback: CalendarCallback) {
         val eventsReference = FirebaseDatabase.getInstance().getReference(FirebaseNodes.GROUPS_NODE)
         val query = eventsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/$userId").equalTo(true)
 
@@ -182,7 +182,7 @@ class GroupsRepository {
                             if (isSameDate(event.date, targetDate)) {
                                 val calendarEvent = CalendarElement(
                                     title = event.name,
-                                    type = "Event", // or any other type you want
+                                    type = "Event", // will switch up in TO-DO
                                     date = event.date,
                                     GID = event.GID
                                 )
@@ -200,11 +200,8 @@ class GroupsRepository {
             }
         })
     }
-
-
     // Function to check if two dates are the same (ignoring time)
-
-    fun isSameDate(eventDate: Long?, targetDate: Date): Boolean {
+    fun isSameDate(eventDate: Long?, targetDate: Long): Boolean {
         if (eventDate == null) {
             return false
         }
@@ -214,7 +211,7 @@ class GroupsRepository {
         }
 
         val targetCalendar = Calendar.getInstance().apply {
-            time = targetDate
+            timeInMillis = targetDate
         }
 
         return (eventCalendar.get(Calendar.YEAR) == targetCalendar.get(Calendar.YEAR) &&
