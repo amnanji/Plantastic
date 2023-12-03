@@ -85,4 +85,6 @@
     <string name="group_icon">Group Icon</string>
     <string name="fab">FAB</string>
     <string name="nav_new_chat">New Chat</string>
+    <string name="nav_new_individual_chat">New Individual Chat</string>
+    <string name="nav_new_group">New Group</string>
 </resources>

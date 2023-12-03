@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var navController: NavController
 
     var newChatsFragmentId: Int = -1
+    var newGroupChatFragmentId: Int = -1
+    var newIndividualChatFragmentId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,6 +107,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         newChatsFragmentId = R.id.nav_new_chat
+        newIndividualChatFragmentId = R.id.nav_new_chat_individual
+        newGroupChatFragmentId = R.id.nav_new_chat_group
     }
 
     override fun onSupportNavigateUp(): Boolean {

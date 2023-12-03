@@ -59,4 +59,16 @@
         android:label="@string/nav_new_chat"
         tools:layout="@layout/fragment_new_chat" />
 
+    <fragment
+        android:id="@+id/nav_new_chat_individual"
+        android:name="com.example.plantastic.ui.newchat.NewIndividualChatFragment"
+        android:label="@string/nav_new_individual_chat"
+        tools:layout="@layout/fragment_new_individual_chat" />
+
+    <fragment
+        android:id="@+id/nav_new_chat_group"
+        android:name="com.example.plantastic.ui.newchat.NewGroupChatFragment"
+        android:label="@string/nav_new_group"
+        tools:layout="@layout/fragment_new_group" />
+
 </navigation>

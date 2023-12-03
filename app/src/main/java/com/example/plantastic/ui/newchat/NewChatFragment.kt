@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.viewpager.widget.ViewPager
+import com.example.plantastic.MainActivity
 import com.example.plantastic.databinding.FragmentNewChatBinding
 import com.google.android.material.tabs.TabLayout
 
@@ -21,46 +23,27 @@ class NewChatFragment : Fragment() {
         _binding = FragmentNewChatBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // Get the ViewPager and set it up with the TabLayout
+        val mainActivity: MainActivity = (requireActivity() as MainActivity)
+
+        // Get the nav controller from main activity
+        val navController: NavController = mainActivity.navController
+
+        val newChatFragmentId: Int = mainActivity.newChatsFragmentId
+        val newIndividualChatFragmentId: Int = mainActivity.newIndividualChatFragmentId
+        val newGroupChatFragmentId: Int = mainActivity.newGroupChatFragmentId
+
+
         val viewPager: ViewPager = binding.viewPager
         val tabLayout: TabLayout = binding.tabLayout
 
-        // Create an instance of the adapter that will hold the fragments for each tab
-        val adapter = ViewPagerAdapter(childFragmentManager)
-        adapter.addFragment(NewChatFragment(), "Friends")
-        adapter.addFragment(NewGroupFragment(), "New Group")
+        // Set up ViewPager with the adapter
+        val pagerAdapter = NewChatPagerAdapter(childFragmentManager)
+        viewPager.adapter = pagerAdapter
 
-        // Set the adapter to the ViewPager
-        viewPager.adapter = adapter
-
-        // Connect the TabLayout with the ViewPager
+        // Link the TabLayout with the ViewPager
         tabLayout.setupWithViewPager(viewPager)
 
+
         return root
-    }
-
-    // Adapter for the ViewPager
-    private class ViewPagerAdapter(manager: androidx.fragment.app.FragmentManager) :
-        androidx.fragment.app.FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-
-        private val fragmentList: MutableList<Fragment> = mutableListOf()
-        private val fragmentTitleList: MutableList<String> = mutableListOf()
-
-        override fun getItem(position: Int): Fragment {
-            return fragmentList[position]
-        }
-
-        override fun getCount(): Int {
-            return fragmentList.size
-        }
-
-        fun addFragment(fragment: Fragment, title: String) {
-            fragmentList.add(fragment)
-            fragmentTitleList.add(title)
-        }
-
-        override fun getPageTitle(position: Int): CharSequence? {
-            return fragmentTitleList[position]
-        }
     }
 }
