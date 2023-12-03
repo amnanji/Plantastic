@@ -13,4 +13,6 @@ object FirebaseNodes {
     const val EVENTS_NODE = "events"
     const val TRANSACTIONS_NODE = "transactions"
     const val TRANSACTIONS_GROUP_NODE = "groupId"
+    const val USERS_FRIENDS_NODE = "friends"
+
 }

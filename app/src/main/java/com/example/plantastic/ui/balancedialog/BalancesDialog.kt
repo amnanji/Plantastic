@@ -18,7 +18,7 @@ class BalancesDialog(context: Context, currUserId: String, balances: HashMap<Str
         builder.setView(view)
 
         // empty function closes dialog automatically
-        builder.setPositiveButton("OK") { _, _ ->
+        builder.setPositiveButton(context.getString(R.string.ok)) { _, _ ->
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)

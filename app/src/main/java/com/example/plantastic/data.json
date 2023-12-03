@@ -74,11 +74,13 @@
       },
       "events": {
         "event1": {
+          "GID": "a74394cb-802f-4321-b1af-3083c3d1dc09",
           "date": "2023-01-01",
           "location": "Location 1",
           "name": "Event 1"
         },
         "event2": {
+          "GID": "a74394cb-802f-4321-b1af-3083c3d1dc09",
           "date": "2023-02-01",
           "location": "Location 2",
           "name": "Event 2"
@@ -125,11 +127,13 @@
       },
       "events": {
         "event3": {
+          "GID": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
           "date": "2023-01-01",
           "location": "Location ",
           "name": "Event 3"
         },
         "event4": {
+          "GID": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
           "date": "2023-02-01",
           "location": "Location 4",
           "name": "Event 4"
@@ -138,10 +142,10 @@
       "groupType": "group",
       "id": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
       "latestMessage": {
-        "content": "this",
+        "content": "uhjj",
         "messageType": "text",
         "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
-        "timestamp": 1701493035467
+        "timestamp": 1701506139255
       },
       "name": "CMPT 362",
       "participants": {
@@ -559,6 +563,12 @@
         "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
         "timestamp": 1701493035467
       },
+      "-NkdeoEvaokI5mPUeL54": {
+        "content": "uhjj",
+        "messageType": "text",
+        "senderId": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+        "timestamp": 1701506139255
+      },
       "msg778": {
         "content": "hello",
         "messageType": "text",
@@ -891,7 +901,7 @@
         -1,
         -1
       ],
-      "dietaryRestrictionIndex": 5,
+      "dietaryRestrictionIndex": 0,
       "foodPreferences": "Jamaican"
     }
   },
@@ -1093,125 +1103,91 @@
     }
   },
   "transactions": {
-    "88392f42-8f93-11ee-b9d1-0242ac120002": {
-      "timestamp": 1701313685542,
-      "description": "Pizza",
-      "groupId": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
-      "id": "88392f42-8f93-11ee-b9d1-0242ac120002",
-      "moneyOwedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
-      "totalAmount": 50
-    },
     "5bc3b176-90d3-11ee-b9d1-0242ac120002": {
-      "timestamp": 1700292400000,
       "description": "Food",
       "groupId": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
       "id": "5bc3b176-90d3-11ee-b9d1-0242ac120002",
       "moneyOwedTo": "am2iF1032zfTfqeC1gpCxbwBZRq2",
+      "timestamp": 1700292400000,
       "totalAmount": 45.67
+    },
+    "88392f42-8f93-11ee-b9d1-0242ac120002": {
+      "description": "Pizza",
+      "groupId": "c8b07dc2-8d6e-11ee-b9d1-0242ac120002",
+      "id": "88392f42-8f93-11ee-b9d1-0242ac120002",
+      "moneyOwedTo": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
+      "timestamp": 1701313685542,
+      "totalAmount": 50
     }
   },
   "users": {
     "2TuuhzF4QFNVFRed3Wd3RsME1003": {
+      "id": "2TuuhzF4QFNVFRed3Wd3RsME1003",
       "email": "h@h.com",
       "firstName": "fjjsjs",
       "lastName": "zjnsn",
-      "username": "jsjsjs"
-    },
-    "5jNzVJH8lmfVpgLQsT9iF3zuDK02": {
-      "email": "hdhd@a.com",
-      "firstName": "djjdjd",
-      "lastName": "sjdjdn",
-      "username": "disksk"
-    },
-    "72FygfkVmUe5LjtTYuEEAJ73yxm2": {
-      "email": "a@a.com",
-      "firstName": "jdjks",
-      "lastName": "siskms",
-      "username": "jsnsmsm"
+      "username": "jsjsjs",
+      "friends": {}
     },
     "9kSNqPiEO9cyIbq2PgeLReBLbXd2": {
+      "id": "9kSNqPiEO9cyIbq2PgeLReBLbXd2",
       "email": "rheaunni01@gmail.com",
       "firstName": "Rhea",
       "lastName": "Unni",
-      "username": "rheaa"
-    },
-    "CFUWlYhRYYV3eVewATPwfRsJIlQ2": {
-      "email": "b@b.com",
-      "firstName": "yhjj",
-      "lastName": "fnmm",
-      "username": "ndjdndn"
-    },
-    "EXYDmvFrfsOIrRV7IMjSZBgpmyi1": {
-      "email": "s@s.com",
-      "firstName": "jdjdnnd",
-      "lastName": "jsjjsns",
-      "username": "smodaka"
+      "username": "rheaa",
+      "friends": {}
     },
     "ExxalHuGF6VbA3bqGiblJseYg1q1": {
+      "id": "ExxalHuGF6VbA3bqGiblJseYg1q1",
       "email": "smodak@a.com",
       "firstName": "nsndjdn",
       "lastName": "snsnsm",
-      "username": "smodak"
+      "username": "smodak",
+      "friends": {}
     },
     "Ijzd4tnU3De18AHvaA4s1wb9gNN2": {
+      "id": "Ijzd4tnU3De18AHvaA4s1wb9gNN2",
       "email": "amnamn2012@gmail.com",
       "firstName": "Ali",
       "lastName": "Nanji",
-      "username": "amnanji"
-    },
-    "O6U1fJUWaKfBAHJNPPY5gKRnmiG2": {
-      "email": "def@def.com",
-      "firstName": "abc",
-      "lastName": "fbdj",
-      "username": "dusjdnd"
+      "username": "amnanji",
+      "friends": {
+        "am2iF1032zfTfqeC1gpCxbwBZRq2": true
+      }
     },
     "PZCehjF4MyepENw9qYFaX6T2zf33": {
+      "id": "PZCehjF4MyepENw9qYFaX6T2zf33",
       "email": "shakeelkapadia@gmail.com",
       "firstName": "Shakeel",
       "lastName": "Kapadia",
-      "username": "shakeel"
-    },
-    "R1rzpgEWc5autAwdIY1ZhHPwWok1": {
-      "email": "c@c.com",
-      "firstName": "hzjska",
-      "lastName": "shjsjs",
-      "username": "hdjskakdn"
-    },
-    "SgleSw2twENN4cWNrcQFMxBkHSi2": {
-      "email": "sidjnd@sndn.com",
-      "firstName": "fjdjjdjd",
-      "lastName": "didjjdnd",
-      "username": "dijdjdk"
+      "username": "shakeel",
+      "friends": {}
     },
     "WanfT73gsZQ7x9n6IMHwmNxc3nu2": {
+      "id": "WanfT73gsZQ7x9n6IMHwmNxc3nu2",
       "email": "jsmithgmail@gmail.com",
       "firstName": "joe",
       "lastName": "smith",
-      "username": "jsmith"
+      "username": "jsmith",
+      "friends": {}
     },
     "am2iF1032zfTfqeC1gpCxbwBZRq2": {
+      "id": "am2iF1032zfTfqeC1gpCxbwBZRq2",
       "email": "shaneil1024@gmail.com",
       "firstName": "Shaneil",
       "lastName": "Kapadia",
-      "username": "shaneilkapadia"
+      "username": "shaneilkapadia123",
+      "friends": {
+        "Ijzd4tnU3De18AHvaA4s1wb9gNN2": true
+      }
     },
     "g6CgR7rSbFXxygy7EB2cXfRE9hD3": {
+      "id": "g6CgR7rSbFXxygy7EB2cXfRE9hD3",
       "email": "jain.revika@gmail.com",
       "firstName": "revika ",
       "lastName": "jain",
-      "username": "revikaj"
-    },
-    "uYeImUAMUMWmnxsWK85HOPndb4M2": {
-      "email": "s@s.coma",
-      "firstName": "dhhdjdn",
-      "lastName": "dujdjd",
-      "username": "shsnnd"
-    },
-    "vkEEbh6VWkTVYq4fzjX0xSP77LS2": {
-      "email": "r@r.com",
-      "firstName": "jsnsns",
-      "lastName": "brnd",
-      "username": "rr"
+      "username": "revikaj",
+      "friends": {}
     }
   }
 }
