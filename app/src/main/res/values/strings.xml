@@ -73,4 +73,6 @@
     <string name="username_updated_successfully">Username updated successfully!</string>
     <string name="busy_text_textview">Busy</string>
     <string name="username_availability_and_preferences_updated_successfully">Username, Availability and Preferences updated successfully!</string>
+    <string name="calendar_icon">Calendar Icon</string>
+    <string name="group_icon">Group Icon</string>
 </resources>

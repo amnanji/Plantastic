@@ -22,7 +22,7 @@ class EventsAdapter(private val eventsList: List<Events>) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: EventsViewHolder, position: Int) {
         val event = eventsList[position]
         holder.eventName.text = event.name
-        holder.eventDate.text = event.date
+        holder.eventDate.text = event.date.toString()
         holder.eventLocation.text = event.location
         groupsRepository.getGroupById(event.GID!!){
             if(it!=null)
