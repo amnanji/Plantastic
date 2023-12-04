@@ -57,12 +57,12 @@ class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
         }
         holder.balanceOwedByYou.text =
             holder.itemView.context.getString(R.string.balance_placeholder, amountOwedByMe.toString())
-        if (amountOwedByMe > 0) holder.balanceOwedByYou.setTextColor(Color.RED)
+        if (amountOwedByMe > 0.0) holder.balanceOwedByYou.setTextColor(Color.RED)
 
 
         holder.balanceOwedByOthers.text =
             holder.itemView.context.getString(R.string.balance_placeholder, amountOwedByOthers.toString())
-        if (amountOwedByOthers > 0) {
+        if (amountOwedByOthers > 0.0) {
             val color = holder.itemView.context.getColor(R.color.i_am_owed_green)
             holder.balanceOwedByOthers.setTextColor(color)
         }
