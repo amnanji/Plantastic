@@ -31,7 +31,6 @@ class ToDoViewModel : ViewModel() {
                 groupsList = groupsHashmap.values.toList()
                 for ((groupId, toDoItems) in todoListsHashmap) {
                     if (!groupsHashmap.containsKey(groupId)) continue
-                    Log.d(TAG, "Got past this")
                     val groupName = groupsHashmap[groupId]?.name
                     val isGroup = groupsHashmap[groupId]?.groupType == "group"
 
@@ -48,7 +47,6 @@ class ToDoViewModel : ViewModel() {
                     }
                 }
                 CoroutineScope(Dispatchers.Main).launch {
-                    Log.d(TAG, "Data is --> $data")
                     // Sorting list by due date
                     _toDoItems.value =
                         ArrayList(data.sortedWith(compareBy { it.dueDate ?: Long.MAX_VALUE }))

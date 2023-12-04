@@ -82,6 +82,7 @@
     <string name="due_date">Due Date</string>
     <string name="add_new_todo_item">Add New Todo Item</string>
     <string name="date_placeholder">%d/%d/%d</string>
+    <string name="time_placeholder">%1$d:%2$02d</string>
     <string name="cancel">Cancel</string>
     <string name="nav_add_friends">Add friends</string>
     <string name="log_out">Log out</string>
@@ -102,4 +103,7 @@
     <string name="balance_placeholder">$ %1$s</string>
     <string name="you_are_owed">You are owed:</string>
     <string name="you_owe_with_colon">You owe:</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="location">Location</string>
 </resources>
