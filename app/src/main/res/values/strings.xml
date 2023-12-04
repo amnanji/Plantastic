@@ -117,4 +117,6 @@
     <string name="create_group">Create Group</string>
     <string name="group_name_cannot_be_empty">Group name cannot be empty</string>
     <string name="group_participants_error">Please add at least 2 friends to the group</string>
+    <string name="verify_email">Please verify your email before proceeding</string>
+    <string name="resend_verification_email">Resend verification email</string>
 </resources>

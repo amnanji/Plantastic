@@ -13,6 +13,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.FirebaseApp
 import androidx.core.widget.addTextChangedListener
+import com.google.android.material.snackbar.Snackbar
 
 
 class LoginActivity : AppCompatActivity() {
@@ -49,7 +50,13 @@ class LoginActivity : AppCompatActivity() {
             if (isValidData()){
                 usersAuthRepository.loginUser(emailEditText.text.toString(), passwordEditText.text.toString()){ isSuccessful ->
                     if(isSuccessful){
-                        navigateToMainActivity()
+                        if (usersAuthRepository.getCurrentUser()!!.isEmailVerified){
+                            navigateToMainActivity()
+                        }
+                        else{
+                            // display snackbar here
+                            usersAuthRepository.logOutUser()
+                        }
                     }
                     else {
                         Toast.makeText(this,
@@ -112,6 +119,19 @@ class LoginActivity : AppCompatActivity() {
         }
 
         return flag
+    }
+
+    private fun setUpSnackBar(){
+        val snackbar = Snackbar.make(
+            findViewById(android.R.id.content),
+            getString(R.string.verify_email),
+            Snackbar.LENGTH_INDEFINITE
+        )
+        snackbar.setAction(getString(R.string.resend_verification_email)) {
+            usersAuthRepository.
+            snackbar.dismiss()
+        }
+        snackbar.show()
     }
 
     private fun setEmailInvalidError(inputLayout: TextInputLayout) {

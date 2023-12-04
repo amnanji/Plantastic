@@ -182,6 +182,10 @@ class UsersRepository {
         query.addValueEventListener(postListener)
     }
 
+    fun updateUserVerificationStatus(userId: String, status: Boolean) {
+        usersReference.child("userId").child(FirebaseNodes.VERIFIED_NODE).setValue(status)
+    }
+
     companion object {
         private const val TAG = "Pln UsersRepository"
     }

@@ -1,5 +1,7 @@
 package com.example.plantastic.repository
 
+import android.app.Activity
+import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -32,5 +34,15 @@ class UsersAuthRepository {
 
     fun logOutUser(){
         firebaseAuth.signOut()
+    }
+
+    fun sendEmailVerification(activity: Activity, user: FirebaseUser?, usersRepository: UsersRepository) {
+        user?.sendEmailVerification()
+            ?.addOnCompleteListener(activity) { task ->
+                if (task.isSuccessful) {
+                    // Update the Realtime Database to indicate email verification status
+                    usersRepository.updateUserVerificationStatus(user.uid, false)
+                }
+            }
     }
 }

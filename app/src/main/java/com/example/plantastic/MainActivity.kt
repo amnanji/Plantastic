@@ -22,6 +22,7 @@ import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.login.LoginActivity
 import android.Manifest
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -49,7 +50,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         if(!currUser!!.isEmailVerified){
-
+            Toast.makeText(this,
+                getString(R.string.a_verification_email_has_been_sent_please_verify_your_email),
+                Toast.LENGTH_SHORT).show()
+            usersAuthRepository.logOutUser()
+            navigateToLoginActivity()
+            finish()
         }
 
         binding = ActivityMainBinding.inflate(layoutInflater)

@@ -102,8 +102,6 @@ class SignUpActivity : AppCompatActivity() {
 
                             val currUser = usersAuthRepository.getCurrentUser()
 
-                            sendEmailVerification(currUser)
-
                             val currUserUid = currUser!!.uid
                             usersRepository.createNewUser(
                                 currUserUid,
@@ -122,16 +120,6 @@ class SignUpActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun sendEmailVerification(user: FirebaseUser?) {
-        user?.sendEmailVerification()
-            ?.addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Update the Realtime Database to indicate email verification status
-                    usersRepository.updateUserVerificationStatus(user.uid, false)
-                }
-            }
     }
 
     private fun clearErrors(){
