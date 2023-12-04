@@ -14,15 +14,13 @@ import com.example.plantastic.utilities.DateTimeUtils
 
 class calendarAdapter(private var calendarElementList: List<CalendarElement>) :
     RecyclerView.Adapter<calendarAdapter.CalendarViewHolder>() {
-    private val groupsRepository = GroupsRepository()
-
 
     inner class CalendarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val calType: TextView = itemView.findViewById(R.id.calendarEventOrTodo)
         val calTime: TextView = itemView.findViewById(R.id.calGroupTimeText)
         val calTitle: TextView = itemView.findViewById(R.id.calTitleText)
         val calGroupName: TextView = itemView.findViewById(R.id.calGroupNameText)
-        val timeLayout:LinearLayout = itemView.findViewById(R.id.calGroupTimeLayout)
+        val timeLayout: LinearLayout = itemView.findViewById(R.id.calGroupTimeLayout)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
@@ -34,11 +32,9 @@ class calendarAdapter(private var calendarElementList: List<CalendarElement>) :
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         val calendar = calendarElementList[position]
         holder.calType.text = calendar.type
-        if(calendar.type == "Todo")
-        {
+        if (calendar.type == "Todo") {
             holder.timeLayout.visibility = View.GONE
-        }
-        else {
+        } else {
             holder.calTime.text = DateTimeUtils.getTimeString(calendar.date!!)
         }
         holder.calTitle.text = calendar.title

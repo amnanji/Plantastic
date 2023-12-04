@@ -35,8 +35,6 @@ class GroupsRepository {
     private var firebaseDatabase = FirebaseDatabase.getInstance()
     private var groupsReference = firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
     private var usersRepository = UsersRepository()
-    private val eventsReference: DatabaseReference =
-        firebaseDatabase.getReference(FirebaseNodes.EVENTS_NODE)
 
     fun getGroupById(id: String, callback: (Groups?) -> Unit) {
         val reference = groupsReference.child(id)
@@ -76,11 +74,10 @@ class GroupsRepository {
         }
     }
 
-    // Your existing function with a callback
     private fun getAllGroupsByUserWithChatNames(userId: String, callback: (List<Groups>?) -> Unit) {
         val groups = ArrayList<Groups>()
 
-        getAllGroupsQueryForUser(userId).addListenerForSingleValueEvent(object : ValueEventListener {
+        getAllGroupsQueryForUser(userId).addListenerForSingleValueEvent (object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 // Create a list to hold deferred tasks for user retrieval
                 val deferredList = mutableListOf<Deferred<Unit>>()

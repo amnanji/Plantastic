@@ -45,6 +45,7 @@ class AddTodoItemDialog : DialogFragment() {
     private var groupId: String? = null
     private var groups: List<Groups?> = ArrayList()
     private var participants: List<String> = ArrayList()
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Referenced from: https://stackoverflow.com/questions/27965662/how-can-i-change-default-dialog-button-text-color-in-android-5
         val builder = AlertDialog.Builder(requireActivity(), R.style.DialogBoxTheme)

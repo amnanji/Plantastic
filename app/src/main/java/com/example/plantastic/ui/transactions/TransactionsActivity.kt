@@ -2,6 +2,7 @@ package com.example.plantastic.ui.transactions
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +31,9 @@ class TransactionsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transactions)
+
+        supportActionBar?.title = getString(R.string.transactions)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         transactionsRepository = TransactionsRepository()
         usersAuthRepository = UsersAuthRepository()
@@ -81,6 +85,15 @@ class TransactionsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         adapter?.startListening()
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressedDispatcher.onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 }

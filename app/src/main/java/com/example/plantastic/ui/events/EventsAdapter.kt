@@ -36,10 +36,9 @@ class EventsAdapter(private val eventsList: List<Events>, private val userID: St
                     val participants = groups.participants!!.keys.toList()
                     val otherParticipantId =
                         if (participants[0] == userID) participants[1] else participants[0]
-                    var chatName = "Plantastic"
                     usersRepository.getUserById(otherParticipantId) {
                         if (it != null) {
-                            chatName = "${it.firstName} ${it.lastName}"
+                            val chatName = "${it.firstName} ${it.lastName}"
                             holder.groupName.text = chatName
                         }
                     }

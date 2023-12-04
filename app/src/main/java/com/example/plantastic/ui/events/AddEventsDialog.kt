@@ -9,7 +9,6 @@ import android.icu.util.Calendar
 import android.net.ParseException
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
@@ -19,12 +18,9 @@ import androidx.fragment.app.DialogFragment
 import com.example.plantastic.R
 import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
-import com.example.plantastic.models.ToDoItem
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.ToDoRepository
 import com.example.plantastic.repository.UsersAuthRepository
-import com.example.plantastic.repository.UsersRepository
-import com.example.plantastic.ui.toDo.AddTodoItemDialog
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +42,6 @@ class AddEventsDialog: DialogFragment() {
     private lateinit var btnCancel: Button
 
     private val groupsRepository = GroupsRepository()
-    private val toDoRepository = ToDoRepository()
     private var groups: List<Groups?> = ArrayList()
 
     companion object {

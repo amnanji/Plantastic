@@ -3,6 +3,7 @@ package com.example.plantastic.ui.conversation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.core.widget.addTextChangedListener
@@ -38,10 +39,8 @@ class ConversationActivity : AppCompatActivity() {
         btnAdd = findViewById(R.id.btnAdd)
 
         val chatName = intent.getStringExtra(KEY_GROUP_NAME)
-        Log.d(TAG, "chatName --> $chatName")
-        supportActionBar?.title = if (chatName == null) chatName else getString(R.string.app_name)
-        actionBar?.title = if (chatName == null) chatName else getString(R.string.app_name)
-
+        supportActionBar?.title = chatName ?: getString(R.string.app_name)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         btnSend.isEnabled = false
 
@@ -121,6 +120,16 @@ class ConversationActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         adapter?.startListening()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressedDispatcher.onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     companion object {
