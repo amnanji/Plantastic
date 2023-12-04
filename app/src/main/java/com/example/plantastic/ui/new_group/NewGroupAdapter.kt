@@ -45,9 +45,9 @@ class NewGroupAdapter (
         holder.usernameTextView.text = model.username
         "${model.firstName} ${model.lastName}".also { holder.nameTextView.text = it }
         holder.checkBox.visibility = View.VISIBLE
+        holder.checkBox.isChecked = newGroupViewModel.isUserInMembersList(model)
         holder.checkBox.setOnClickListener{
             if (newGroupViewModel.isUserInMembersList(model)){
-                holder.checkBox.isChecked = false
                 newGroupViewModel.removeFromMembersList(model)
             }
             else{

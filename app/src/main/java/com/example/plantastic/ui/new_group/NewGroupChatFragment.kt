@@ -1,5 +1,7 @@
 package com.example.plantastic.ui.new_group
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,16 +11,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.databinding.FragmentNewGroupBinding
 import com.example.plantastic.models.Users
+import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
+import com.example.plantastic.ui.conversation.ConversationActivity
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 
 class NewGroupChatFragment : Fragment() {
@@ -35,11 +41,13 @@ class NewGroupChatFragment : Fragment() {
     private lateinit var noUsersEditText: TextView
     private lateinit var editTextSearch: EditText
     private lateinit var groupMembersRecyclerView: RecyclerView
+    private lateinit var groupsRepository: GroupsRepository
 
-    private lateinit var allFriendsList: ArrayList<Users>
     private lateinit var filteredFriendsList: ArrayList<Users>
     private lateinit var groupMembers: ArrayList<Users>
 
+
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,6 +57,7 @@ class NewGroupChatFragment : Fragment() {
 
         usersRepository = UsersRepository()
         usersAuthRepository = UsersAuthRepository()
+        groupsRepository = GroupsRepository()
 
         val currUser = usersAuthRepository.getCurrentUser()
 
@@ -66,6 +75,8 @@ class NewGroupChatFragment : Fragment() {
 
         adapter = NewGroupAdapter(filteredFriendsList, currUser.uid, newGroupViewModel)
         recyclerView.adapter = adapter
+
+        val submitButton = root.findViewById<Button>(R.id.createGroupButton)
 
         // Set up TextWatcher to filter data based on search input
         editTextSearch.addTextChangedListener(object : TextWatcher {
@@ -131,6 +142,42 @@ class NewGroupChatFragment : Fragment() {
             }
         }
 
+        submitButton.setOnClickListener{
+            var isValidGroup = true
+            val groupNameEditText = root.findViewById<EditText>(R.id.newGroupNameEditText)
+            val groupName = groupNameEditText.text.toString()
+            if(groupNameEditText.text.toString().isEmpty()){
+                groupNameEditText.error = getString(R.string.group_name_cannot_be_empty)
+                isValidGroup = false
+            }
+
+            if(groupMembers.size < 2){
+                Toast.makeText(requireContext(),
+                    getString(R.string.group_participants_error),
+                    Toast.LENGTH_SHORT).show()
+                 isValidGroup = false
+            }
+
+            if (isValidGroup){
+                val userIdForGroup = ArrayList<String>()
+                userIdForGroup.add(currUser.uid)
+                groupMembers.forEach {
+                    it.id?.let { it1 -> userIdForGroup.add(it1) }
+                }
+                groupsRepository.createGroupForUsers(userIdForGroup, groupName){
+                    if(it != null){
+                        navigateToConversationsActivity(it.toString(), groupName)
+                    }
+                }
+            }
+        }
         return root
+    }
+
+    private fun navigateToConversationsActivity(id: String, groupName: String){
+        val intent = Intent(requireContext(), ConversationActivity::class.java)
+        intent.putExtra(ConversationActivity.KEY_GROUP_ID, id)
+        intent.putExtra(ConversationActivity.KEY_GROUP_NAME, groupName)
+        requireContext().startActivity(intent)
     }
 }

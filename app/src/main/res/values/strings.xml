@@ -102,4 +102,6 @@
     <string name="group_name">Group Name</string>
     <string name="group_name_colon">Group Name:</string>
     <string name="create_group">Create Group</string>
+    <string name="group_name_cannot_be_empty">Group name cannot be empty</string>
+    <string name="group_participants_error">Please add at least 2 friends to the group</string>
 </resources>
