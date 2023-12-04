@@ -88,4 +88,5 @@
     <!--  Colors for new chat fragment  -->
     <color name="tab_layout_background">@color/pastel_marigold</color>
 
+    <color name="default_text_color">#75706A</color>
 </resources>
