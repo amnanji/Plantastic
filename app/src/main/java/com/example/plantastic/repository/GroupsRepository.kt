@@ -22,7 +22,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import java.util.Calendar
 
 interface EventsCallback {
     fun onEventsLoaded(events: List<Events>)
@@ -143,10 +142,7 @@ class GroupsRepository {
     }
 
     fun getAllEventsListForUser(userId: String, callback: EventsCallback) {
-        val eventsReference = FirebaseDatabase.getInstance().getReference(FirebaseNodes.GROUPS_NODE)
-        val query = eventsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/$userId").equalTo(true)
-
-        query.addValueEventListener(object : ValueEventListener {
+        getAllGroupsQueryForUser(userId).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val eventsList = mutableListOf<Events>()
 
@@ -160,44 +156,6 @@ class GroupsRepository {
                 }
                 val sortedList =  ArrayList(eventsList.sortedWith(compareBy { it.date ?: Long.MAX_VALUE }))
                 callback.onEventsLoaded(sortedList)
-
-                callback.onEventsLoaded(eventsList)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Handle error
-            }
-        })
-    }
-
-    fun getCalendarForUserAndDate(userId: String, targetDate: Long, callback: CalendarCallback) {
-        val query = getAllGroupsQueryForUser(userId)
-
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val calendarList = mutableListOf<CalendarElement>()
-
-                for (groupSnapshot in snapshot.children) {
-                    val grp = groupSnapshot.getValue(Groups::class.java)
-                    if (grp != null) {
-                        val events = grp.events ?: emptyMap()
-
-                        for ((eventId, event) in events) {
-                            // Check if the event date matches the target date
-                            if (isSameDate(event.date, targetDate)) {
-                                val calendarEvent = CalendarElement(
-                                    title = event.name,
-                                    type = "Event", // will switch up in TO-DO
-                                    date = event.date,
-                                    GID = event.GID
-                                )
-                                calendarList.add(calendarEvent)
-                            }
-                        }
-                    }
-                }
-
-                callback.onCalendarLoaded(calendarList)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -266,7 +224,7 @@ class GroupsRepository {
         val reference: DatabaseReference = groupsReference.push()
         val groupId: String? = reference.key
 
-        val group: Groups = Groups(
+        val group = Groups(
             groupId,
             groupType,
             participants,
