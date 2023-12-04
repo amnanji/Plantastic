@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.Users
@@ -22,7 +21,6 @@ class AddFriendsAdapter(
     FirebaseRecyclerAdapter<Users, AddFriendsAdapter.SearchUsersViewHolder>(options) {
 
     private var usersRepository = UsersRepository()
-    private var groupsRepository = GroupsRepository()
 
     inner class SearchUsersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val usernameTextView: TextView = itemView.findViewById(R.id.searchUsernameTextView)

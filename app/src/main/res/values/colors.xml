@@ -78,10 +78,14 @@
     <color name="todo_list_item_color_2">@color/pastel_lilac</color>
     <color name="todo_list_item_color_3">@color/pastel_red_var</color>
     <color name="todo_list_item_checkbox_color">@color/yellow</color>
+    <color name="card_title_color">@color/yellow_var</color>
 
     <color name="dialog_positive_button_disabled_state">#E87E7C</color>
 
     <!--  Colors for balances fragment  -->
     <color name="i_am_owed_green">#00BD07</color>
+
+    <!--  Colors for new chat fragment  -->
+    <color name="tab_layout_background">@color/pastel_marigold</color>
 
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context
 import com.amulyakhare.textdrawable.TextDrawable
 import com.example.plantastic.R
 
+@Suppress("DEPRECATION")
 class IconUtil(private val context: Context) {
 
     val colorList = arrayListOf(

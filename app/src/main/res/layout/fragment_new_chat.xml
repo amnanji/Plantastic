@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="?attr/colorPrimary"/>
+        android:background="@color/tab_layout_background"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

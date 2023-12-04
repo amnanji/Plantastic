@@ -8,12 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.CalendarElement
-import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.utilities.DateTimeUtils
 
 
-class calendarAdapter(private var calendarElementList: List<CalendarElement>) :
-    RecyclerView.Adapter<calendarAdapter.CalendarViewHolder>() {
+class CalendarAdapter(private var calendarElementList: List<CalendarElement>) :
+    RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
 
     inner class CalendarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val calType: TextView = itemView.findViewById(R.id.calendarEventOrTodo)
@@ -21,6 +20,8 @@ class calendarAdapter(private var calendarElementList: List<CalendarElement>) :
         val calTitle: TextView = itemView.findViewById(R.id.calTitleText)
         val calGroupName: TextView = itemView.findViewById(R.id.calGroupNameText)
         val timeLayout: LinearLayout = itemView.findViewById(R.id.calGroupTimeLayout)
+        val locationLayout: LinearLayout = itemView.findViewById(R.id.calEventLocationLayout)
+        val calLocation: TextView = itemView.findViewById(R.id.calEventLocationName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
@@ -34,8 +35,10 @@ class calendarAdapter(private var calendarElementList: List<CalendarElement>) :
         holder.calType.text = calendar.type
         if (calendar.type == "Todo") {
             holder.timeLayout.visibility = View.GONE
+            holder.locationLayout.visibility = View.GONE
         } else {
             holder.calTime.text = DateTimeUtils.getTimeString(calendar.date!!)
+            holder.calLocation.text = calendar.location
         }
         holder.calTitle.text = calendar.title
         holder.calGroupName.text = calendar.groupName

@@ -23,12 +23,9 @@ class NewGroupAdapter (
 ) :
     RecyclerView.Adapter<NewGroupAdapter.NewGroupViewHolder>() {
 
-    private val groupsRepository = GroupsRepository()
-
     inner class NewGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val usernameTextView: TextView = itemView.findViewById(R.id.searchUsernameTextView)
         val nameTextView: TextView = itemView.findViewById(R.id.searchNameTextView)
-        val searchContainer: RelativeLayout = itemView.findViewById(R.id.searchContainer)
         val checkBox: CheckBox = itemView.findViewById(R.id.checkBoxSearchUsers)
         val profileIconImageView: ImageView = itemView.findViewById(R.id.profileIconImageView)
     }
@@ -62,12 +59,5 @@ class NewGroupAdapter (
                 newGroupViewModel.addToMembersList(model)
             }
         }
-    }
-
-    private fun navigateToConversationsActivity(context: Context, id: String, username: String){
-        val intent = Intent(context, ConversationActivity::class.java)
-        intent.putExtra(ConversationActivity.KEY_GROUP_ID, id)
-        intent.putExtra(ConversationActivity.KEY_GROUP_NAME, username)
-        context.startActivity(intent)
     }
 }

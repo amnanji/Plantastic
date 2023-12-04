@@ -26,6 +26,9 @@ import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.conversation.ConversationActivity
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import androidx.core.widget.addTextChangedListener
 
 class NewGroupChatFragment : Fragment() {
 
@@ -42,6 +45,8 @@ class NewGroupChatFragment : Fragment() {
     private lateinit var editTextSearch: EditText
     private lateinit var groupMembersRecyclerView: RecyclerView
     private lateinit var groupsRepository: GroupsRepository
+    private lateinit var groupNameEditText: TextInputEditText
+    private lateinit var groupNameInputLayout: TextInputLayout
 
     private lateinit var filteredFriendsList: ArrayList<Users>
     private lateinit var groupMembers: ArrayList<Users>
@@ -69,6 +74,12 @@ class NewGroupChatFragment : Fragment() {
         recyclerView.layoutManager = WrapContentLinearLayoutManager(requireContext())
         noUsersEditText = root.findViewById(R.id.noGroupFoundTextView)
         editTextSearch = root.findViewById(R.id.editTextSearchGroup)
+        groupNameEditText = root.findViewById(R.id.newGroupNameEditText)
+        groupNameInputLayout = root.findViewById(R.id.newGroupNameInputLayout)
+
+        groupNameEditText.addTextChangedListener {
+            groupNameInputLayout.error = null
+        }
 
         filteredFriendsList = ArrayList()
         groupMembers = ArrayList()
@@ -144,10 +155,9 @@ class NewGroupChatFragment : Fragment() {
 
         submitButton.setOnClickListener{
             var isValidGroup = true
-            val groupNameEditText = root.findViewById<EditText>(R.id.newGroupNameEditText)
             val groupName = groupNameEditText.text.toString()
             if(groupNameEditText.text.toString().isEmpty()){
-                groupNameEditText.error = getString(R.string.group_name_cannot_be_empty)
+                groupNameInputLayout.error = getString(R.string.group_name_cannot_be_empty)
                 isValidGroup = false
             }
 

@@ -4,8 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
@@ -18,7 +16,6 @@ import com.example.plantastic.R
 import com.example.plantastic.ui.login.LoginActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseUser
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -113,8 +110,8 @@ class SignUpActivity : AppCompatActivity() {
                                 lastName,
                                 username,
                                 email
-                            ) { isSuccessful ->
-                                if (isSuccessful) {
+                            ) { x ->
+                                if (x) {
                                     navigateToLoginActivity()
                                 }
 

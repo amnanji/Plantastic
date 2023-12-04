@@ -14,7 +14,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.FirebaseApp
 import androidx.core.widget.addTextChangedListener
-import com.example.plantastic.repository.UsersRepository
 import com.google.android.material.snackbar.Snackbar
 
 

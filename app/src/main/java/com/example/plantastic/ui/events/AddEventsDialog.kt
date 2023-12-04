@@ -28,7 +28,6 @@ import com.example.plantastic.R
 import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.GroupsRepository
-import com.example.plantastic.repository.ToDoRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope

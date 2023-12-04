@@ -49,8 +49,6 @@ class ToDoRepository {
                         }
                     }
                     todoListsHashmap[groupId] = data
-                    Log.d(TAG, "todos --> $data")
-                    Log.d(TAG, "todo hashmap --> $todoListsHashmap")
                     callback(todoListsHashmap, groupsHashmap)
                 }
 
