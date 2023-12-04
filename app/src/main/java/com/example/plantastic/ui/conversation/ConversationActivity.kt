@@ -1,13 +1,11 @@
 package com.example.plantastic.ui.conversation
 
-import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.ImageButton
-import androidx.activity.addCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R

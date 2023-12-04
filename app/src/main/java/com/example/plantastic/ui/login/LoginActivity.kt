@@ -4,20 +4,23 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import com.example.plantastic.MainActivity
 import com.example.plantastic.R
 import com.example.plantastic.ui.signup.SignUpActivity
 import android.widget.Toast
 import com.example.plantastic.repository.UsersAuthRepository
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.FirebaseApp
+import androidx.core.widget.addTextChangedListener
 
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var emailEditText: TextInputEditText
     private lateinit var passwordEditText: TextInputEditText
+    private lateinit var emailInputLayout: TextInputLayout
+    private lateinit var passwordInputLayout: TextInputLayout
     private lateinit var submitButton: Button
     private lateinit var signUpButton: Button
 
@@ -37,6 +40,8 @@ class LoginActivity : AppCompatActivity() {
 
         emailEditText = findViewById(R.id.editTextLoginId)
         passwordEditText = findViewById(R.id.editTextPasswordLogin)
+        emailInputLayout = findViewById(R.id.emailTextInputLayoutLogin)
+        passwordInputLayout= findViewById(R.id.passwordTextInputLayoutLogin)
         submitButton = findViewById(R.id.buttonSubmitLogin)
         signUpButton = findViewById(R.id.buttonSignUp)
 
@@ -52,7 +57,14 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
 
+        passwordEditText.addTextChangedListener{
+            passwordInputLayout.error = null
+        }
+
+        emailEditText.addTextChangedListener{
+            emailInputLayout.error = null
         }
 
         signUpButton.setOnClickListener {
@@ -79,31 +91,34 @@ class LoginActivity : AppCompatActivity() {
         val password = passwordEditText.text.toString()
         var flag = true
 
+        emailInputLayout.error = null
+        passwordInputLayout.error = null
+
         if(email.isBlank()){
-            setNotBlankError(emailEditText)
+            setNotBlankError(emailInputLayout)
             flag = false
         }
 
         if(password.isBlank()){
-            setNotBlankError(passwordEditText)
+            setNotBlankError(passwordInputLayout)
             flag = false
         }
 
         //checking validity of an email
         //help from https://stackoverflow.com/questions/1819142/how-should-i-validate-an-e-mail-address
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            setEmailInvalidError(emailEditText)
+            setEmailInvalidError(emailInputLayout)
             flag = false
         }
 
         return flag
     }
 
-    private fun setEmailInvalidError(editText: EditText) {
-        editText.error = getString(R.string.error_email_invalid)
+    private fun setEmailInvalidError(inputLayout: TextInputLayout) {
+        inputLayout.error = getString(R.string.error_email_invalid)
     }
 
-    private fun setNotBlankError(editText: EditText){
-        editText.error = getString(R.string.error_blank)
+    private fun setNotBlankError(inputLayout: TextInputLayout){
+        inputLayout.error = getString(R.string.error_blank)
     }
 }
