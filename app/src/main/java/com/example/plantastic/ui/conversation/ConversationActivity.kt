@@ -1,22 +1,29 @@
 package com.example.plantastic.ui.conversation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
+import com.example.plantastic.ai.requests.ChatGptMessaging
 import com.example.plantastic.models.Groups
 import com.example.plantastic.models.Message
+import com.example.plantastic.models.Users
 import com.example.plantastic.repository.GroupsRepository
+import com.example.plantastic.repository.PreferencesRepository
 import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class ConversationActivity : AppCompatActivity() {
@@ -27,6 +34,8 @@ class ConversationActivity : AppCompatActivity() {
     private lateinit var messageEditText: EditText
     private lateinit var btnSend: ImageButton
     private lateinit var btnAdd: ImageButton
+    private var usersList: ArrayList<Users> = ArrayList<Users>()
+    private var chatGPT: ChatGptMessaging = ChatGptMessaging(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +60,10 @@ class ConversationActivity : AppCompatActivity() {
         val groupsRepository = GroupsRepository()
         val groupsReference: DatabaseReference =
             firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
+        val usersRepository: UsersRepository = UsersRepository()
+        val preferencesRepository: PreferencesRepository = PreferencesRepository()
+        val preferencesReference: DatabaseReference =
+            firebaseDatabase.getReference(FirebaseNodes.PREFERENCES_NODE)
         val messagesReference: DatabaseReference =
             firebaseDatabase.getReference(FirebaseNodes.MESSAGES_NODE)
         val messagesQuery = messagesReference.child(groupId!!)
@@ -80,16 +93,27 @@ class ConversationActivity : AppCompatActivity() {
                     ScrollToBottomObserver(recyclerView, adapter!!, manager)
                 )
 
+                var userIds = ArrayList<String>()
+                for(userId in group.participants?.keys!!){
+                    userIds.add(userId)
+                }
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    Log.d("step 1", "conversationActivity:CoroutineScope")
+                    usersList = usersRepository.getUsersById(userIds)
+                    chatGPT.setPreferences(chatGPT.context, usersList)
+                }
                 adapter?.startListening()
             }
         }
+
+
 
         messageEditText.addTextChangedListener {
             if (it != null) {
                 btnSend.isEnabled = it.isNotBlank()
             }
         }
-
         btnSend.setOnClickListener {
             val msg = Message(
                 "text",
@@ -97,6 +121,9 @@ class ConversationActivity : AppCompatActivity() {
                 messageEditText.text.toString(),
                 Calendar.getInstance().timeInMillis
             )
+            CoroutineScope(Dispatchers.IO).launch {
+                chatGPT.getResponse(msg)
+            }
             val msgRef = messagesQuery.push()
             msgRef.setValue(msg).addOnSuccessListener {
                 groupsReference.child(groupId).child(FirebaseNodes.GROUPS_LATEST_MESSAGE_NODE)

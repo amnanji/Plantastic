@@ -2,14 +2,17 @@ package com.example.plantastic.ui.chats
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.plantastic.databinding.FragmentChatsBinding
 import com.example.plantastic.models.Groups
+import com.example.plantastic.repository.GroupsRepository
+import com.example.plantastic.repository.PreferencesRepository
 import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -25,13 +28,17 @@ class ChatsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
+    private var usersRepository: UsersRepository = UsersRepository()
+    private var groupsRepository: GroupsRepository = GroupsRepository()
+    private var preferencesRepository: PreferencesRepository = PreferencesRepository()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val chatsViewModel =
-            ViewModelProvider(this).get(ChatsViewModel::class.java)
+        val chatsViewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
 
         _binding = FragmentChatsBinding.inflate(inflater, container, false)
         val root: View = binding.root
