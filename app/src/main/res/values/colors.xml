@@ -3,7 +3,7 @@
     <color name="card_background">#F2D5C3</color>
     <color name="icon_color">#2B2B2B</color>
     <color name="window_background_color">#FFF5E6</color>
-    <color name="bottom_navigation_background_color">#E1E1E1</color>
+    <color name="bottom_navigation_background_color">#FFFFFF</color>
 
     <color name="pastel_red">#EB5552</color>
     <color name="pastel_green">#66cc66</color>
