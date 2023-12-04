@@ -52,7 +52,6 @@ class EventsAdapter(private val eventsList: List<Events>, private val userID: St
     override fun getItemCount(): Int {
         return eventsList.size
     }
-
     inner class EventsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val eventName: TextView = itemView.findViewById(R.id.eventName)
         val eventDate: TextView = itemView.findViewById(R.id.eventDate)

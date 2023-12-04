@@ -18,9 +18,7 @@ import java.util.*
 class CalendarViewModel() : ViewModel() {
 
     private val _calendarEvents = MutableLiveData<List<CalendarElement>>()
-    var groupsList: List<Groups?> = ArrayList()
-
-
+    private var groupsList: List<Groups?> = ArrayList()
 
     init {
         val currUser = UsersAuthRepository().getCurrentUser()

@@ -45,17 +45,11 @@ class AddEventsDialog: DialogFragment() {
     private lateinit var btnSave: Button
     private lateinit var btnCancel: Button
 
-    private val usersRepository = UsersRepository()
     private val groupsRepository = GroupsRepository()
     private val toDoRepository = ToDoRepository()
-    private var userId: String? = null
-    private var groupId: String? = null
     private var groups: List<Groups?> = ArrayList()
 
     companion object {
-        private const val TAG = "Pln ToDoDialog"
-        const val KEY_USER_ID = "EVENTS_KEY_USER_ID"
-        const val KEY_GROUP_ID = "EVENTS_KEY_GROUP_ID"
         const val TAG_ADD_TODO_ITEM = "ADD_EVENTS_ITEM"
     }
 
@@ -77,8 +71,6 @@ class AddEventsDialog: DialogFragment() {
         descriptionTextView = view.findViewById(R.id.eventsAddDescription)
         btnCancel = view.findViewById(R.id.eventsCancelButton)
         btnSave = view.findViewById(R.id.eventsSaveButton)
-
-        val bundle = arguments
 
         val currUser = UsersAuthRepository().getCurrentUser()
 

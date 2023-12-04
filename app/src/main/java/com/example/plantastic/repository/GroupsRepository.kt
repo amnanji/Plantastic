@@ -166,60 +166,6 @@ class GroupsRepository {
         })
     }
 
-    fun getCalendarForUserAndDate(userId: String, targetDate: Long, callback: CalendarCallback) {
-        val eventsReference = FirebaseDatabase.getInstance().getReference(FirebaseNodes.GROUPS_NODE)
-        val query = eventsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/$userId").equalTo(true)
-
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val calendarList = mutableListOf<CalendarElement>()
-
-                for (groupSnapshot in snapshot.children) {
-                    val grp = groupSnapshot.getValue(Groups::class.java)
-                    if (grp != null) {
-                        val events = grp.events ?: emptyMap()
-
-                        for ((eventId, event) in events) {
-                            // Check if the event date matches the target date
-                            if (isSameDate(event.date, targetDate)) {
-                                val calendarEvent = CalendarElement(
-                                    title = event.name,
-                                    type = "Event", // will switch up in TO-DO
-                                    date = event.date,
-                                    GID = event.GID
-                                )
-                                calendarList.add(calendarEvent)
-                            }
-                        }
-                    }
-                }
-
-                callback.onCalendarLoaded(calendarList)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Handle error
-            }
-        })
-    }
-    // Function to check if two dates are the same (ignoring time)
-    fun isSameDate(eventDate: Long?, targetDate: Long): Boolean {
-        if (eventDate == null) {
-            return false
-        }
-
-        val eventCalendar = Calendar.getInstance().apply {
-            timeInMillis = eventDate
-        }
-
-        val targetCalendar = Calendar.getInstance().apply {
-            timeInMillis = targetDate
-        }
-
-        return (eventCalendar.get(Calendar.YEAR) == targetCalendar.get(Calendar.YEAR) &&
-                eventCalendar.get(Calendar.MONTH) == targetCalendar.get(Calendar.MONTH) &&
-                eventCalendar.get(Calendar.DAY_OF_MONTH) == targetCalendar.get(Calendar.DAY_OF_MONTH))
-    }
     fun addEventsItem(eventsItem: Events, groupId: String?) {
         if (groupId != null) {
             groupsReference.child(groupId).child(FirebaseNodes.EVENTS_NODE).push().setValue(eventsItem)

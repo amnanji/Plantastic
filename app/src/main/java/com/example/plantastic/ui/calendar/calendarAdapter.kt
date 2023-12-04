@@ -48,8 +48,5 @@ class calendarAdapter(private var calendarElementList: List<CalendarElement>) :
     override fun getItemCount(): Int {
         return calendarElementList.size
     }
-    fun updateCalendarElements(newCalendarElements: List<CalendarElement>) {
-        calendarElementList = newCalendarElements
-        notifyDataSetChanged()
-    }
+
 }

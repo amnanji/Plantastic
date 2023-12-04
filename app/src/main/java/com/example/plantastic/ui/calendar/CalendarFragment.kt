@@ -36,7 +36,6 @@ class CalendarFragment : Fragment(), CalendarCallback{
     ): View {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         calendarViewModel =
             ViewModelProvider(this)[CalendarViewModel::class.java]
 
@@ -54,11 +53,7 @@ class CalendarFragment : Fragment(), CalendarCallback{
             calendarAdapter = calendarAdapter(calendarViewModel.loadEventsForSelectedDay(selectedDay))
             binding.calendarRecyclerView.adapter = calendarAdapter
             binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-
-
         }
-
         return root
     }
 
@@ -69,7 +64,6 @@ class CalendarFragment : Fragment(), CalendarCallback{
 
 
     override fun onCalendarLoaded(calendarList: List<CalendarElement>) {
-
         calendarAdapter = calendarAdapter(calendarList)
         binding.calendarRecyclerView.adapter = calendarAdapter
         binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
