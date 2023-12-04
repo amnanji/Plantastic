@@ -81,7 +81,7 @@ class AddEventsDialog: DialogFragment() {
         val currUser = UsersAuthRepository().getCurrentUser()
 
         CoroutineScope(Dispatchers.IO).launch {
-            groups = groupsRepository.getAllGroupsByUserWithChatNames(currUser!!.uid)
+            groups = groupsRepository.getAllGroupsByUserWithChatNamesAsync(currUser!!.uid)
             withContext(Dispatchers.Main) {
                 val groupNames = groups.map { it!!.name }
                 val groupsAdapter = ArrayAdapter(

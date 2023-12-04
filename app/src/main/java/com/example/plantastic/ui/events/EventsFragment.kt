@@ -46,6 +46,8 @@ class EventsFragment : Fragment(), EventsCallback {
             groupsRepository.getAllEventsListForUser(currUser!!.uid, this)
         }
 
+//        eventsAdapter = EventsAdapter(ArrayList(), currUser!!.uid)
+
         fabAddBtn = binding.EventsfabAdd
         fabAddBtn.setOnClickListener{
 
@@ -67,13 +69,24 @@ class EventsFragment : Fragment(), EventsCallback {
         requireActivity().finish()
     }
 
+//    override fun onStart() {
+//        super.onStart()
+//        binding.eventsRecyclerView.adapter = eventsAdapter
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        binding.eventsRecyclerView.adapter = null
+//    }
+
     override fun onEventsLoaded(events: List<Events>) {
-        eventsAdapter = EventsAdapter(events, currUser!!.uid)
-        if (binding != null) {
-            Log.d("Pln", "binding is null --> ${binding == null}")
-            Log.d("Pln", "binding.eventsRecyclerView is null --> ${binding.eventsRecyclerView == null}")
-            Log.d("Pln", "binding.eventsRecyclerView.layoutManager is null --> ${binding.eventsRecyclerView.layoutManager == null}")
-            Log.d("Pln", "binding.eventsRecyclerView.adapter is null --> ${binding.eventsRecyclerView.adapter == null}")
+
+        if (_binding != null) {
+            eventsAdapter = EventsAdapter(events, currUser!!.uid)
+            Log.d("Pln", "binding is null --> ${_binding == null}")
+            Log.d("Pln", "binding.eventsRecyclerView is null --> ${_binding!!.eventsRecyclerView == null}")
+            Log.d("Pln", "binding.eventsRecyclerView.layoutManager is null --> ${_binding!!.eventsRecyclerView.layoutManager == null}")
+            Log.d("Pln", "binding.eventsRecyclerView.adapter is null --> ${_binding!!.eventsRecyclerView.adapter == null}")
             Log.d("Pln", "context is null --> ${context == null}")
             Log.d("Pln", "events is null --> ${events == null}")
             Log.d("Pln", "currUser is null --> ${currUser == null}")

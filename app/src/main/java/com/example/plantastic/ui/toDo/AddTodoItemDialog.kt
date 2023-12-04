@@ -75,7 +75,7 @@ class AddTodoItemDialog : DialogFragment() {
         }
 
         CoroutineScope(Dispatchers.IO).launch {
-            groups = groupsRepository.getAllGroupsByUserWithChatNames(userId!!)
+            groups = groupsRepository.getAllGroupsByUserWithChatNamesAsync(userId!!)
             withContext(Dispatchers.Main) {
                 val groupNames = groups.map { it!!.name }
                 val groupsAdapter = ArrayAdapter(
