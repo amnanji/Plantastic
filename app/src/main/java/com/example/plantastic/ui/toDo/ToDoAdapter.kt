@@ -3,6 +3,7 @@ package com.example.plantastic.ui.toDo
 // ToDoAdapter.kt
 import android.graphics.Paint
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,12 +56,12 @@ class ToDoAdapter(private val todoList: List<ToDoItemForDisplay>) :
             holder.itemView.context.resources.getColor(cardBackgroundColors[position % cardBackgroundColors.size])
         holder.cardView.setCardBackgroundColor(backgroundColor)
 
-        if (todoItem.isCompleted != null) {
+        if (todoItem.completed != null) {
             // Setting setOnCheckedChangeListener to null to avoid triggering the OnCheckedChangeListener
             // Referenced from: https://stackoverflow.com/questions/15523157/change-checkbox-value-without-triggering-oncheckchanged
             holder.checkbox.setOnCheckedChangeListener(null)
-            holder.checkbox.isChecked = todoItem.isCompleted
-            updateTodoItemTitleStyle(todoItem.isCompleted, holder.titleTextView)
+            holder.checkbox.isChecked = todoItem.completed
+            updateTodoItemTitleStyle(todoItem.completed, holder.titleTextView)
         }
         holder.checkbox.setOnCheckedChangeListener(checkedChangeListener(todoItem, holder))
     }
