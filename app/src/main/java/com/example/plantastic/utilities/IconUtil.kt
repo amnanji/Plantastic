@@ -15,9 +15,7 @@ class IconUtil(private val context: Context) {
         context.resources.getColor(R.color.pastel_lime_green),
         context.resources.getColor(R.color.pastel_blue),
         context.resources.getColor(R.color.pastel_indigo),
-        context.resources.getColor(R.color.pastel_purple),
         context.resources.getColor(R.color.pastel_lilac),
-        context.resources.getColor(R.color.pastel_red_var_dark),
         context.resources.getColor(R.color.pastel_hot_pink_dark),
         context.resources.getColor(R.color.pastel_green_dark),
         context.resources.getColor(R.color.pastel_teal_dark),
@@ -29,13 +27,11 @@ class IconUtil(private val context: Context) {
         context.resources.getColor(R.color.pastel_salmon),
         context.resources.getColor(R.color.pastel_mint),
         context.resources.getColor(R.color.pastel_coral),
-        context.resources.getColor(R.color.pastel_sky_blue),
         context.resources.getColor(R.color.pastel_mauve),
         context.resources.getColor(R.color.pastel_olive),
         context.resources.getColor(R.color.pastel_gray),
         context.resources.getColor(R.color.pastel_turquoise),
         context.resources.getColor(R.color.pastel_violet),
-        context.resources.getColor(R.color.pastel_salmon_dark),
         context.resources.getColor(R.color.pastel_mint_dark),
         context.resources.getColor(R.color.pastel_coral_dark),
         context.resources.getColor(R.color.pastel_sky_blue_dark),
@@ -43,7 +39,15 @@ class IconUtil(private val context: Context) {
         context.resources.getColor(R.color.pastel_olive_dark),
         context.resources.getColor(R.color.pastel_gray_dark),
         context.resources.getColor(R.color.pastel_turquoise_dark),
-        context.resources.getColor(R.color.pastel_violet_dark)
+        context.resources.getColor(R.color.pastel_violet_dark),
+
+
+        context.resources.getColor(R.color.pastel_blue),
+        context.resources.getColor(R.color.pastel_indigo),
+        context.resources.getColor(R.color.pastel_mauve_dark),
+        context.resources.getColor(R.color.pastel_olive_dark),
+        context.resources.getColor(R.color.pastel_gray_dark),
+
     )
 
     fun getRandomColour(): Int {
