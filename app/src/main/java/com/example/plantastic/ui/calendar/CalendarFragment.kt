@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.plantastic.databinding.FragmentCalendarBinding
 import com.example.plantastic.models.CalendarElement
@@ -14,6 +15,7 @@ import com.example.plantastic.repository.CalendarCallback
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.ui.calendar.calendarAdapter
+import com.example.plantastic.ui.toDo.ToDoViewModel
 import java.util.*
 
 class CalendarFragment : Fragment(), CalendarCallback{
@@ -25,6 +27,7 @@ class CalendarFragment : Fragment(), CalendarCallback{
     private lateinit var groupsRepository: GroupsRepository
     private lateinit var usersAuthRepository: UsersAuthRepository
     private lateinit var calendarAdapter: calendarAdapter
+    private lateinit var calendarViewModel: CalendarViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +36,9 @@ class CalendarFragment : Fragment(), CalendarCallback{
     ): View {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        calendarViewModel =
+            ViewModelProvider(this)[CalendarViewModel::class.java]
+
         calendarView = binding.calendarView
         usersAuthRepository = UsersAuthRepository()
         val currUser = usersAuthRepository.getCurrentUser()
@@ -43,12 +49,11 @@ class CalendarFragment : Fragment(), CalendarCallback{
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val selectedDay = Calendar.getInstance().apply {
                 set(year, month, dayOfMonth)
-            }.time
-            groupsRepository.getCalendarForUserAndDate(currUser!!.uid,selectedDay.time,this)
-
-
+            }.timeInMillis
+            calendarAdapter = calendarAdapter(calendarViewModel.loadEventsForSelectedDay(selectedDay))
+            binding.calendarRecyclerView.adapter = calendarAdapter
+            binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         }
-
         return root
     }
 
@@ -59,7 +64,6 @@ class CalendarFragment : Fragment(), CalendarCallback{
 
 
     override fun onCalendarLoaded(calendarList: List<CalendarElement>) {
-
         calendarAdapter = calendarAdapter(calendarList)
         binding.calendarRecyclerView.adapter = calendarAdapter
         binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())

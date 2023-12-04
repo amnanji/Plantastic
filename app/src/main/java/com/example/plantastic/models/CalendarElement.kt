@@ -8,5 +8,6 @@ data class CalendarElement(
     val title: String? = null,
     val type: String? = null,
     val date: Long? = null,
-    var GID: String? = null
+    var GID: String? = null,
+    var groupName: String? = null
 )

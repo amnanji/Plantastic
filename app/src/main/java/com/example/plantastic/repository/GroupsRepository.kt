@@ -7,6 +7,7 @@ import com.example.plantastic.models.Groups
 import com.example.plantastic.utilities.FirebaseNodes
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.Query
@@ -19,7 +20,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import java.util.Date
 import java.util.Calendar
 
 interface EventsCallback {
@@ -34,6 +34,8 @@ class GroupsRepository {
     private var firebaseDatabase = FirebaseDatabase.getInstance()
     private var groupsReference = firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
     private var usersRepository = UsersRepository()
+    private val eventsReference: DatabaseReference =
+        firebaseDatabase.getReference(FirebaseNodes.EVENTS_NODE)
 
     fun getGroupById(id: String, callback: (Groups?) -> Unit) {
         val reference = groupsReference.child(id)
@@ -77,7 +79,7 @@ class GroupsRepository {
     private fun getAllGroupsByUserWithChatNames(userId: String, callback: (List<Groups>?) -> Unit) {
         val groups = ArrayList<Groups>()
 
-        getAllGroupsQueryForUser(userId).addValueEventListener(object : ValueEventListener {
+        getAllGroupsQueryForUser(userId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 // Create a list to hold deferred tasks for user retrieval
                 val deferredList = mutableListOf<Deferred<Unit>>()
@@ -138,11 +140,11 @@ class GroupsRepository {
         })
     }
 
-    fun getAllEventsQueryForUser(userId: String, callback: EventsCallback) {
+    fun getAllEventsListForUser(userId: String, callback: EventsCallback) {
         val eventsReference = FirebaseDatabase.getInstance().getReference(FirebaseNodes.GROUPS_NODE)
         val query = eventsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/$userId").equalTo(true)
 
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+        query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val eventsList = mutableListOf<Events>()
 
@@ -154,8 +156,8 @@ class GroupsRepository {
                         eventsList.addAll(events)
                     }
                 }
-
-                callback.onEventsLoaded(eventsList)
+                val sortedList =  ArrayList(eventsList.sortedWith(compareBy { it.date ?: Long.MAX_VALUE }))
+                callback.onEventsLoaded(sortedList)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -164,59 +166,10 @@ class GroupsRepository {
         })
     }
 
-    fun getCalendarForUserAndDate(userId: String, targetDate: Long, callback: CalendarCallback) {
-        val eventsReference = FirebaseDatabase.getInstance().getReference(FirebaseNodes.GROUPS_NODE)
-        val query = eventsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/$userId").equalTo(true)
-
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val calendarList = mutableListOf<CalendarElement>()
-
-                for (groupSnapshot in snapshot.children) {
-                    val grp = groupSnapshot.getValue(Groups::class.java)
-                    if (grp != null) {
-                        val events = grp.events ?: emptyMap()
-
-                        for ((eventId, event) in events) {
-                            // Check if the event date matches the target date
-                            if (isSameDate(event.date, targetDate)) {
-                                val calendarEvent = CalendarElement(
-                                    title = event.name,
-                                    type = "Event", // will switch up in TO-DO
-                                    date = event.date,
-                                    GID = event.GID
-                                )
-                                calendarList.add(calendarEvent)
-                            }
-                        }
-                    }
-                }
-
-                callback.onCalendarLoaded(calendarList)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Handle error
-            }
-        })
-    }
-    // Function to check if two dates are the same (ignoring time)
-    fun isSameDate(eventDate: Long?, targetDate: Long): Boolean {
-        if (eventDate == null) {
-            return false
+    fun addEventsItem(eventsItem: Events, groupId: String?) {
+        if (groupId != null) {
+            groupsReference.child(groupId).child(FirebaseNodes.EVENTS_NODE).push().setValue(eventsItem)
         }
-
-        val eventCalendar = Calendar.getInstance().apply {
-            timeInMillis = eventDate
-        }
-
-        val targetCalendar = Calendar.getInstance().apply {
-            timeInMillis = targetDate
-        }
-
-        return (eventCalendar.get(Calendar.YEAR) == targetCalendar.get(Calendar.YEAR) &&
-                eventCalendar.get(Calendar.MONTH) == targetCalendar.get(Calendar.MONTH) &&
-                eventCalendar.get(Calendar.DAY_OF_MONTH) == targetCalendar.get(Calendar.DAY_OF_MONTH))
     }
 
     companion object {
