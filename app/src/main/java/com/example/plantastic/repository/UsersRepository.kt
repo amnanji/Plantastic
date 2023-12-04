@@ -191,7 +191,7 @@ class UsersRepository {
     }
 
     fun updateUserVerificationStatus(userId: String, status: Boolean) {
-        usersReference.child("userId").child(FirebaseNodes.VERIFIED_NODE).setValue(status)
+        usersReference.child(userId).child(FirebaseNodes.VERIFIED_NODE).setValue(status)
     }
 
     companion object {
