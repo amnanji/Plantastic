@@ -33,9 +33,6 @@ class ToDoFragment : Fragment() {
         _binding = FragmentToDoBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        requireActivity().findViewById<Toolbar>(R.id.toolbar)
-//        setHasOptionsMenu(true)
-
         fabAddBtn = binding.TodoFabAdd
         fabAddBtn.setOnClickListener{
             val currUser = UsersAuthRepository().getCurrentUser()

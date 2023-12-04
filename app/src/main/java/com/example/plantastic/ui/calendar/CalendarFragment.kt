@@ -1,7 +1,6 @@
 package com.example.plantastic.ui.calendar
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +23,7 @@ class CalendarFragment : Fragment(), CalendarCallback{
     private lateinit var calendarView: CalendarView
     private lateinit var groupsRepository: GroupsRepository
     private lateinit var usersAuthRepository: UsersAuthRepository
-    private lateinit var calendarAdapter: calendarAdapter
+    private lateinit var calendarAdapter: CalendarAdapter
     private lateinit var calendarViewModel: CalendarViewModel
 
     override fun onCreateView(
@@ -40,14 +39,14 @@ class CalendarFragment : Fragment(), CalendarCallback{
         calendarView = binding.calendarView
         usersAuthRepository = UsersAuthRepository()
         groupsRepository = GroupsRepository()
-        calendarAdapter = calendarAdapter(emptyList())
+        calendarAdapter = CalendarAdapter(emptyList())
 
         // REFERENCED: https://developer.android.com/reference/android/widget/CalendarView.OnDateChangeListener
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val selectedDay = Calendar.getInstance().apply {
                 set(year, month, dayOfMonth)
             }.timeInMillis
-            calendarAdapter = calendarAdapter(calendarViewModel.loadEventsForSelectedDay(selectedDay))
+            calendarAdapter = CalendarAdapter(calendarViewModel.loadEventsForSelectedDay(selectedDay))
             binding.calendarRecyclerView.adapter = calendarAdapter
             binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         }
@@ -61,7 +60,7 @@ class CalendarFragment : Fragment(), CalendarCallback{
 
 
     override fun onCalendarLoaded(calendarList: List<CalendarElement>) {
-        calendarAdapter = calendarAdapter(calendarList)
+        calendarAdapter = CalendarAdapter(calendarList)
         binding.calendarRecyclerView.adapter = calendarAdapter
         binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 

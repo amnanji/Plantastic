@@ -12,13 +12,17 @@
     <color name="write_msg_background">#1F1F21</color>
 
     <!-- Colors for To Do List Items -->
-    <color name="todo_list_item_color_1">@color/pastel_orange_dark</color>
+    <color name="todo_list_item_color_1">#2B2B2B</color>
     <color name="todo_list_item_color_2">@color/pastel_lilac_dark</color>
     <color name="todo_list_item_color_3">@color/pastel_red_var_dark</color>
-    <color name="todo_list_item_checkbox_color">@color/pastel_orange</color>
+    <color name="todo_list_item_checkbox_color">@color/yellow_var</color>
+    <color name="card_title_color">@color/yellow</color>
 
     <color name="dialog_positive_button_disabled_state">#782F2D</color>
 
     <!--  Colors for balances fragment  -->
     <color name="i_am_owed_green">#009105</color>
+
+    <!--  Colors for new chat fragment  -->
+    <color name="tab_layout_background">#2B2B2B</color>
 </resources>

@@ -1,120 +1,127 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:background="#ccc"
-    android:padding="10dp">
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        app:cardBackgroundColor="@color/todo_list_item_color_1"
         app:cardCornerRadius="8dp"
-        app:cardElevation="8dp">
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/calendarEventOrTodo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                tools:text="Type Name"
-                android:textColor="@android:color/black"
-                android:textSize="20sp" />
-
-            <LinearLayout
-                android:id="@+id/calTitleLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="@string/calendar_icon"
-                    android:src="@drawable/baseline_arrow_right_24" />
-
-                <TextView
-                    android:id="@+id/calTitleText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:gravity="center_vertical"
-                    tools:text="Event title"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/groupNameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/baseline_groups_24"
-                    android:contentDescription="@string/group_icon" />
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/calTitleText">
 
                 <TextView
                     android:id="@+id/calGroupNameText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    tools:text="Group Name"
+                    android:gravity="center_vertical"
                     android:textSize="18sp"
-                    android:textColor="@android:color/black"
-                    android:gravity="center_vertical"/>
+                    tools:text="Group Name" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/calendarEventOrTodo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    tools:text="Type Name" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/calTitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/card_title_color"
+                android:textSize="30sp"
+                tools:text="Event title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/groupNameLayout"
+                app:layout_constraintBottom_toTopOf="@id/calGroupTimeLayout"/>
 
             <LinearLayout
                 android:id="@+id/calGroupTimeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginBottom = "5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/calTitleText"
+                app:layout_constraintBottom_toTopOf="@id/calEventLocationLayout">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/baseline_access_time_filled_24"
-                    android:contentDescription="@string/group_icon" />
+                    android:contentDescription="@string/group_icon"
+                    android:src="@drawable/baseline_access_time_filled_24" />
 
                 <TextView
                     android:id="@+id/calGroupTimeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    tools:text="time"
+                    android:gravity="center_vertical"
                     android:textSize="18sp"
-                    android:textColor="@android:color/black"
-                    android:gravity="center_vertical"/>
+                    tools:text="time" />
             </LinearLayout>
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/calEventLocationLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/calGroupTimeLayout">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/baseline_pin_drop_24" />
+
+                <TextView
+                    android:id="@+id/calEventLocationName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center_vertical"
+                    android:textSize="18sp"
+                    tools:text="Event Location" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 

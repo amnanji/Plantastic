@@ -42,14 +42,14 @@ class TransactionsAdapter(
         holder.transactionDescription.text = model.description
         holder.transactionDate.text = DateTimeUtils.getDateString(model.timestamp!!)
         if(model.moneyOwedTo == userId){
-            "You lent ${roundedAmountDue * (numParticipants - 1)}".also {
+            "You lent $ ${roundedAmountDue * (numParticipants - 1)}".also {
                 holder.transactionSentence.text = it
             }
         }
         else{
             usersRepository.getUserById(model.moneyOwedTo!!){ user ->
                 if (user != null){
-                    "You borrowed $roundedAmountDue from ${user.username}".also {
+                    "You borrowed $ $roundedAmountDue from ${user.username}".also {
                         holder.transactionSentence.text = it
                     }
                 }

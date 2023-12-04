@@ -2,6 +2,7 @@ package com.example.plantastic.ui.events
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,7 +69,17 @@ class EventsFragment : Fragment(), EventsCallback {
 
     override fun onEventsLoaded(events: List<Events>) {
         eventsAdapter = EventsAdapter(events, currUser!!.uid)
-        binding.eventsRecyclerView.layoutManager = LinearLayoutManager(context)
-        binding.eventsRecyclerView.adapter = eventsAdapter
+        if (binding != null) {
+            Log.d("Pln", "binding is null --> ${binding == null}")
+            Log.d("Pln", "binding.eventsRecyclerView is null --> ${binding.eventsRecyclerView == null}")
+            Log.d("Pln", "binding.eventsRecyclerView.layoutManager is null --> ${binding.eventsRecyclerView.layoutManager == null}")
+            Log.d("Pln", "binding.eventsRecyclerView.adapter is null --> ${binding.eventsRecyclerView.adapter == null}")
+            Log.d("Pln", "context is null --> ${context == null}")
+            Log.d("Pln", "events is null --> ${events == null}")
+            Log.d("Pln", "currUser is null --> ${currUser == null}")
+            Log.d("Pln", "eventsAdapter is null --> ${eventsAdapter == null}")
+            binding.eventsRecyclerView.layoutManager = LinearLayoutManager(context)
+            binding.eventsRecyclerView.adapter = eventsAdapter
+        }
     }
 }

@@ -38,7 +38,8 @@ class CalendarViewModel() : ViewModel() {
                                 type = "Event", // will switch up in TO-DO
                                 date = event.date,
                                 GID = event.GID,
-                                groupName = groupName
+                                groupName = groupName,
+                                location = event.location
                             )
                             data.add(calendarEvent)
                     }

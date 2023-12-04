@@ -21,6 +21,8 @@
                     android:id="@+id/transactionsGroupImageView"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginTop="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -31,10 +33,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:textSize="20sp"
+                    android:textSize="40sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/transactionsGroupImageView"
                     app:layout_constraintTop_toTopOf="parent"
@@ -45,11 +49,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="View Balance"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/view_balance"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/transactionsGroupImageView"
-                    app:layout_constraintTop_toBottomOf="@id/transactionsGroupNameTextView"
-                    app:layout_constraintWidth_percent="0.5" />
+                    app:layout_constraintTop_toBottomOf="@id/transactionsGroupNameTextView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
