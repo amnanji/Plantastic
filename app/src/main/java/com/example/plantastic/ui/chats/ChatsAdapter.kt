@@ -12,6 +12,7 @@ import com.example.plantastic.databinding.ChatIndividualBinding
 import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.conversation.ConversationActivity
+import com.example.plantastic.utilities.IconUtil
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import java.util.Calendar
@@ -78,6 +79,10 @@ class ChatsAdapter(
                 binding.lastMsgTimestamp.text = item.timestampGroupCreated?.let { getDate(it) }
             }
 
+            val iconUtil = IconUtil(itemView.context)
+            val drawable = iconUtil.getIcon(item.name!!, "", item.color!!)
+            binding.messengerImageView.setImageDrawable(drawable)
+
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ConversationActivity::class.java)
                 intent.putExtra(ConversationActivity.KEY_GROUP_ID, item.id)
@@ -102,7 +107,12 @@ class ChatsAdapter(
                         it.lastName
                     )
                     binding.chatName.text = chatName
+
+                    val iconUtil= IconUtil(itemView.context)
+                    val drawable = iconUtil.getIcon(it.firstName!!, it.lastName!!, it.color!!)
+                    binding.messengerImageView.setImageDrawable(drawable)
                 }
+
             }
 
             if (item.latestMessage != null) {

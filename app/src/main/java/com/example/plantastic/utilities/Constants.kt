@@ -12,6 +12,8 @@ object FirebaseNodes {
 
     // Users Child Nodes
     const val EMAIL_NODE = "email"
+    const val COLORS_NODE = "colors"
+    const val VERIFIED_NODE = "isEmailVerified"
 
     // Group Child Nodes
     const val GROUPS_PARTICIPANTS_NODE = "participants"
@@ -28,5 +30,6 @@ object FirebaseNodes {
     // Transactions Child Nodes
     const val TRANSACTIONS_GROUP_NODE = "groupId"
     const val USERS_FRIENDS_NODE = "friends"
+    const val USERS_COLOUR_NODE = "color"
 
 }

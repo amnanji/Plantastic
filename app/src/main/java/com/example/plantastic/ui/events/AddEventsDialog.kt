@@ -1,25 +1,33 @@
 package com.example.plantastic.ui.events
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.content.ContentValues
+import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.net.ParseException
+import android.net.Uri
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
+import android.Manifest
+import android.util.Log
+import androidx.core.app.ActivityCompat
 import com.example.plantastic.R
 import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.GroupsRepository
-import com.example.plantastic.repository.ToDoRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +35,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
+import java.util.TimeZone
+
 
 class AddEventsDialog: DialogFragment() {
     private lateinit var groupsSpinner: Spinner
@@ -53,6 +63,7 @@ class AddEventsDialog: DialogFragment() {
         val builder = AlertDialog.Builder(requireActivity(), R.style.DialogBoxTheme)
         val view: View =
             requireActivity().layoutInflater.inflate(R.layout.dialog_add_new_event, null)
+
 
         groupsSpinner = view.findViewById(R.id.eventSpinnerGroup)
 
@@ -140,6 +151,43 @@ class AddEventsDialog: DialogFragment() {
                     descriptionTextView.text.toString()
                 )
                 groupsRepository.addEventsItem(eventItem,groups[groupsSpinner.selectedItemPosition]?.id,)
+
+
+                val readCalendarPermission = ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.READ_CALENDAR
+                ) == PackageManager.PERMISSION_GRANTED
+
+                val writeCalendarPermission = ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.WRITE_CALENDAR
+                ) == PackageManager.PERMISSION_GRANTED
+                if(readCalendarPermission && writeCalendarPermission) {
+                    addEventToCalendar(eventItem)
+                }
+                else
+                {
+                    Log.d("Revs", "no permission!!!!!!!!!!!!!!!!")
+                    // Request permissions
+                    val permissionsToRequest = mutableListOf<String>()
+
+                    if (!readCalendarPermission) {
+                        permissionsToRequest.add(Manifest.permission.READ_CALENDAR)
+                    }
+
+                    if (!writeCalendarPermission) {
+                        permissionsToRequest.add(Manifest.permission.WRITE_CALENDAR)
+                    }
+
+                    ActivityCompat.requestPermissions(
+                        requireActivity(),
+                        permissionsToRequest.toTypedArray(),
+                        123
+                    )
+                }
+
+
+
                 dialog?.dismiss()
             }
         }
@@ -169,6 +217,7 @@ class AddEventsDialog: DialogFragment() {
         }
 
         builder.setView(view)
+        builder.setTitle("Add New Event")
         val dialog = builder.create()
         // Referenced from: https://stackoverflow.com/questions/18346920/change-the-background-color-of-a-pop-up-dialog
         dialog.window?.decorView?.setBackgroundResource(R.drawable.rounded_borders_15dp)
@@ -223,4 +272,54 @@ class AddEventsDialog: DialogFragment() {
         btnSave.setTextColor(textColor)
         return flag
     }
+
+    private fun addEventToCalendar(event: Events): Uri? {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = event.date!!
+
+        val startMillis = calendar.timeInMillis
+        calendar.add(Calendar.HOUR_OF_DAY, 1)
+        val endMillis = calendar.timeInMillis
+        val contentValues = ContentValues().apply {
+            put(CalendarContract.Events.CALENDAR_ID, getDefaultCalendarId()) //Getting calendar ID
+            put(CalendarContract.Events.TITLE, event.name)
+            put(CalendarContract.Events.EVENT_LOCATION, event.location)
+            put(CalendarContract.Events.DTSTART, startMillis)
+            put(CalendarContract.Events.DTEND, endMillis)
+            put(CalendarContract.Events.DESCRIPTION, event.description)
+            put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
+
+
+        }
+
+        return requireContext().contentResolver.insert(CalendarContract.Events.CONTENT_URI, contentValues)
+    }
+
+    @SuppressLint("Range")
+    private fun getDefaultCalendarId(): Long? {
+        val projection = arrayOf(
+            CalendarContract.Calendars._ID,
+            CalendarContract.Calendars.CALENDAR_DISPLAY_NAME
+        )
+
+        val selection = "${CalendarContract.Calendars.IS_PRIMARY} = ?"
+        val selectionArgs = arrayOf("1") // 1 for true, indicating the primary calendar
+
+        val cursor = requireContext().contentResolver.query(
+            CalendarContract.Calendars.CONTENT_URI,
+            projection,
+            selection,
+            selectionArgs,
+            null
+        )
+
+        cursor?.use {
+            if (it.moveToFirst()) {
+                return it.getLong(it.getColumnIndex(CalendarContract.Calendars._ID))
+            }
+        }
+
+        return null
+    }
+
 }

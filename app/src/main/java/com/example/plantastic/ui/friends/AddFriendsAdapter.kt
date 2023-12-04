@@ -5,12 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.Users
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersRepository
+import com.example.plantastic.utilities.IconUtil
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 
@@ -21,7 +21,6 @@ class AddFriendsAdapter(
     FirebaseRecyclerAdapter<Users, AddFriendsAdapter.SearchUsersViewHolder>(options) {
 
     private var usersRepository = UsersRepository()
-    private var groupsRepository = GroupsRepository()
 
     inner class SearchUsersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val usernameTextView: TextView = itemView.findViewById(R.id.searchUsernameTextView)
@@ -29,6 +28,7 @@ class AddFriendsAdapter(
         // the two image views overlap and are hidden by default
         val iconImageViewFriend: ImageView = itemView.findViewById(R.id.iconImageViewFriend)
         val iconImageViewUser: ImageView = itemView.findViewById(R.id.iconImageViewUser)
+        val profileIconImageView: ImageView = itemView.findViewById(R.id.profileIconImageView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchUsersViewHolder {
@@ -40,6 +40,10 @@ class AddFriendsAdapter(
     override fun onBindViewHolder(holder: SearchUsersViewHolder, position: Int, model: Users) {
         holder.usernameTextView.text = model.username
         "${model.firstName} ${model.lastName}".also { holder.nameTextView.text = it }
+
+        val iconUtil = IconUtil(holder.itemView.context)
+        val drawable = iconUtil.getIcon(model.firstName!!, model.lastName!!, model.color!!)
+        holder.profileIconImageView.setImageDrawable(drawable)
 
         // checking if the user at this position is the current user
         if(model.id == userId){

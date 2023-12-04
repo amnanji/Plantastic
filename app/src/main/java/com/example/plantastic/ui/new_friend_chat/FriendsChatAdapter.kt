@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,7 @@ import com.example.plantastic.R
 import com.example.plantastic.models.Users
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.ui.conversation.ConversationActivity
+import com.example.plantastic.utilities.IconUtil
 
 class FriendsChatAdapter(
     private var dataList: List<Users>,
@@ -25,6 +27,7 @@ class FriendsChatAdapter(
         val usernameTextView: TextView = itemView.findViewById(R.id.searchUsernameTextView)
         val nameTextView: TextView = itemView.findViewById(R.id.searchNameTextView)
         val searchContainer: RelativeLayout = itemView.findViewById(R.id.searchContainer)
+        val profileIconImageView: ImageView = itemView.findViewById(R.id.profileIconImageView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchFriendsViewHolder {
@@ -41,6 +44,11 @@ class FriendsChatAdapter(
         val model = dataList[position]
         holder.usernameTextView.text = model.username
         "${model.firstName} ${model.lastName}".also { holder.nameTextView.text = it }
+
+        val iconUtil = IconUtil(holder.itemView.context)
+        val drawable = iconUtil.getIcon(model.firstName!!, model.lastName!!, model.color!!)
+        holder.profileIconImageView.setImageDrawable(drawable)
+
         holder.searchContainer.setOnClickListener {
             groupsRepository.getGroupIdForUsers(userId, model.id!!){
                 if (it == null){
