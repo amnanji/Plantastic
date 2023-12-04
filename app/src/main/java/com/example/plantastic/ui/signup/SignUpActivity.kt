@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import kotlinx.coroutines.CoroutineScope
@@ -15,18 +16,27 @@ import kotlinx.coroutines.withContext
 import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.R
 import com.example.plantastic.ui.login.LoginActivity
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 class SignUpActivity : AppCompatActivity() {
 
     private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
     private var usersRepository: UsersRepository = UsersRepository()
 
-    private lateinit var firstNameEditText: EditText
-    private lateinit var lastNameEditText: EditText
-    private lateinit var usernameEditText: EditText
-    private lateinit var emailEditText: EditText
-    private lateinit var passwordEditText: EditText
-    private lateinit var confirmPasswordEditText: EditText
+    private lateinit var firstNameEditText: TextInputEditText
+    private lateinit var lastNameEditText: TextInputEditText
+    private lateinit var usernameEditText: TextInputEditText
+    private lateinit var emailEditText: TextInputEditText
+    private lateinit var passwordEditText: TextInputEditText
+    private lateinit var confirmPasswordEditText: TextInputEditText
+
+    private lateinit var firstNameInputLayout: TextInputLayout
+    private lateinit var lastNameInputLayout: TextInputLayout
+    private lateinit var usernameInputLayout: TextInputLayout
+    private lateinit var emailInputLayout: TextInputLayout
+    private lateinit var passwordInputLayout: TextInputLayout
+    private lateinit var confirmPasswordInputLayout: TextInputLayout
     private lateinit var signUpButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +49,38 @@ class SignUpActivity : AppCompatActivity() {
         emailEditText = findViewById(R.id.editTextEmail)
         passwordEditText = findViewById(R.id.editTextPassword)
         confirmPasswordEditText= findViewById(R.id.editTextConfirmPassword)
+
+        firstNameInputLayout = findViewById(R.id.editTextInputLayoutFirstName)
+        lastNameInputLayout= findViewById(R.id.editTextInputLayoutLastName)
+        usernameInputLayout = findViewById(R.id.editTextInputLayoutUsername)
+        emailInputLayout = findViewById(R.id.editTextInputLayoutEmail)
+        passwordInputLayout= findViewById(R.id.editTextInputLayoutPassword)
+        confirmPasswordInputLayout= findViewById(R.id.editTextInputLayoutConfirmPassword)
         signUpButton = findViewById(R.id.buttonSubmitSignUp)
+
+        emailEditText.addTextChangedListener{
+            emailInputLayout.error = null
+        }
+
+        passwordEditText.addTextChangedListener{
+            passwordInputLayout.error = null
+        }
+
+        confirmPasswordEditText.addTextChangedListener{
+            confirmPasswordInputLayout.error = null
+        }
+
+        usernameEditText.addTextChangedListener{
+            usernameInputLayout.error = null
+        }
+
+        lastNameEditText.addTextChangedListener{
+            lastNameInputLayout.error = null
+        }
+
+        firstNameEditText.addTextChangedListener{
+            firstNameInputLayout.error = null
+        }
 
         signUpButton.setOnClickListener {
 
@@ -49,6 +90,8 @@ class SignUpActivity : AppCompatActivity() {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
             val cont = this
+
+            clearErrors()
 
             CoroutineScope(Dispatchers.IO).launch {
                 if (isValidSignUp()){
@@ -77,6 +120,15 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
+    private fun clearErrors(){
+        firstNameInputLayout.error = null
+        lastNameInputLayout.error = null
+        usernameInputLayout.error = null
+        emailInputLayout.error = null
+        passwordInputLayout.error = null
+        confirmPasswordInputLayout.error = null
+    }
+
     private suspend fun isValidSignUp(): Boolean {
 
         val firstName = firstNameEditText.text.toString()
@@ -90,49 +142,49 @@ class SignUpActivity : AppCompatActivity() {
 
         // checking if all edit texts have been filled
         if (firstName.isBlank()){
-            setNotBlankError(firstNameEditText)
+            setNotBlankError(firstNameInputLayout)
             flag = false
         }
 
         if (lastName.isBlank()){
-            setNotBlankError(lastNameEditText)
+            setNotBlankError(lastNameInputLayout)
             flag = false
         }
 
         if (username.isBlank()){
-            setNotBlankError(usernameEditText)
+            setNotBlankError(usernameInputLayout)
             flag = false
         }
 
         if (email.isBlank()){
-            setNotBlankError(emailEditText)
+            setNotBlankError(emailInputLayout)
             flag = false
         }
 
 
         if (password.isBlank()){
-            setNotBlankError(passwordEditText)
+            setNotBlankError(passwordInputLayout)
             flag = false
         }
 
 
         if (confirmPassword.isBlank()){
-            setNotBlankError(confirmPasswordEditText)
+            setNotBlankError(confirmPasswordInputLayout)
             flag = false
         }
 
         //checking validity of an email
         //help from https://stackoverflow.com/questions/1819142/how-should-i-validate-an-e-mail-address
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            setEmailInvalidError(emailEditText)
+            setEmailInvalidError(emailInputLayout)
             flag = false
         }
 
         // checking if passwords match
         if (password != confirmPassword){
             withContext(Dispatchers.Main){
-                confirmPasswordEditText.error = getString(R.string.error_password_mismatch)
-                passwordEditText.error = getString((R.string.error_password_mismatch))
+                confirmPasswordInputLayout.error = getString(R.string.error_password_mismatch)
+                passwordInputLayout.error = getString(R.string.error_password_mismatch)
             }
             flag = false
         }
@@ -140,22 +192,22 @@ class SignUpActivity : AppCompatActivity() {
         // checking password length requirements
         if (password.length < 6){
             withContext(Dispatchers.Main){
-                confirmPasswordEditText.error = getString(R.string.error_password_length)
-                passwordEditText.error = getString((R.string.error_password_length))
+                confirmPasswordInputLayout.error = getString(R.string.error_password_length)
+                passwordInputLayout.error = getString(R.string.error_password_length)
             }
             flag = false
         }
 
         if (email.isNotBlank() && !usersRepository.isFieldUnique(FirebaseNodes.EMAIL_NODE, email)) {
             withContext(Dispatchers.Main){
-                emailEditText.error = getString(R.string.error_duplicate_email)
+                emailInputLayout.error = getString(R.string.error_duplicate_email)
             }
             flag = false
         }
 
         if(username.isNotBlank() && !usersRepository.isFieldUnique(FirebaseNodes.USERNAME_NODE, username)){
             withContext(Dispatchers.Main){
-                usernameEditText.error = getString(R.string.error_duplicate_username)
+                usernameInputLayout.error = getString(R.string.error_duplicate_username)
             }
             flag = false
         }
@@ -169,23 +221,14 @@ class SignUpActivity : AppCompatActivity() {
         finish()
     }
 
-    private suspend fun setEmailInvalidError(editText: EditText) {
+    private suspend fun setEmailInvalidError(editText: TextInputLayout) {
         withContext(Dispatchers.Main){
             editText.error = getString(R.string.error_email_invalid)
         }
     }
-    private suspend fun setNotBlankError(editText: EditText){
+    private suspend fun setNotBlankError(editText: TextInputLayout){
         withContext(Dispatchers.Main){
             editText.error = getString(R.string.error_blank)
-        }
-    }
-
-    private suspend fun makeSignUpErrorToast(){
-        withContext(Dispatchers.Main){
-            Toast.makeText(this@SignUpActivity, getString(R.string.error_unexpected), Toast.LENGTH_SHORT).show()
-            if(usersAuthRepository.getCurrentUser() == null){
-                usersAuthRepository.logOutUser()
-            }
         }
     }
 }

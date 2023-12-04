@@ -60,6 +60,7 @@
 
     <string name="message_hint">Message…</string>
     <string name="save">Save</string>
+    <string name="transactions">Transactions</string>
     <string name="start_button_text">Start</string>
     <string name="end_button_text">End</string>
     <string name="busy_button_text">Busy</string>
@@ -97,6 +98,14 @@
     <string name="nav_new_individual_chat">New Individual Chat</string>
     <string name="nav_new_group">New Group</string>
     <string name="fab">FAB</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="you">"You: "</string>
+    <string name="name_placeholder_with_colon">"%1$s %2$s: "</string>
+    <string name="name_placeholder">%1$s %2$s</string>
+    <string name="balance_placeholder">$ %1$s</string>
+    <string name="you_are_owed">You are owed:</string>
+    <string name="you_owe_with_colon">You owe:</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="location">Location</string>

@@ -14,8 +14,6 @@ import com.example.plantastic.models.CalendarElement
 import com.example.plantastic.repository.CalendarCallback
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
-import com.example.plantastic.ui.calendar.calendarAdapter
-import com.example.plantastic.ui.toDo.ToDoViewModel
 import java.util.*
 
 class CalendarFragment : Fragment(), CalendarCallback{
@@ -41,7 +39,6 @@ class CalendarFragment : Fragment(), CalendarCallback{
 
         calendarView = binding.calendarView
         usersAuthRepository = UsersAuthRepository()
-        val currUser = usersAuthRepository.getCurrentUser()
         groupsRepository = GroupsRepository()
         calendarAdapter = calendarAdapter(emptyList())
 

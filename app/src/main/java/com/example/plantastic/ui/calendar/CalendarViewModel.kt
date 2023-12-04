@@ -1,13 +1,9 @@
 package com.example.plantastic.ui.calendar
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantastic.models.CalendarElement
 import com.example.plantastic.models.Groups
-import com.example.plantastic.models.ToDoItemForDisplay
 import com.example.plantastic.repository.ToDoRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import kotlinx.coroutines.CoroutineScope
@@ -33,11 +29,10 @@ class CalendarViewModel() : ViewModel() {
                 for ((groupId, toDoItems) in todoListsHashmap) {
                     if (!groupsHashmap.containsKey(groupId)) continue
                     val groupName = groupsHashmap[groupId]?.name
-                    val isGroup = groupsHashmap[groupId]?.groupType == "group"
 
                     val events = groupsHashmap[groupId]?.events ?: emptyMap()
 
-                    for ((eventId, event) in events) {
+                    for ((_, event) in events) {
                             val calendarEvent = CalendarElement(
                                 title = event.name,
                                 type = "Event", // will switch up in TO-DO

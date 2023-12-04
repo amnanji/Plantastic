@@ -17,7 +17,7 @@ class ToDoViewModel : ViewModel() {
     private val _toDoItems = MutableLiveData<ArrayList<ToDoItemForDisplay>>()
     val toDoItems: LiveData<ArrayList<ToDoItemForDisplay>> = _toDoItems
 
-    var groupsList: List<Groups?> = ArrayList()
+    private var groupsList: List<Groups?> = ArrayList()
 
     init {
         val currUser = UsersAuthRepository().getCurrentUser()

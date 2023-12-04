@@ -2,6 +2,7 @@
 <resources>
     <color name="card_background">#1F1F21</color>
     <color name="icon_color">#C1C1C1</color>
+    <color name="bottom_navigation_background_color">#2d2d2d</color>
 
     <!--  Chat Related Colors  -->
     <color name="curr_user_msg">#A67759</color>
@@ -17,4 +18,7 @@
     <color name="todo_list_item_checkbox_color">@color/pastel_orange</color>
 
     <color name="dialog_positive_button_disabled_state">#782F2D</color>
+
+    <!--  Colors for balances fragment  -->
+    <color name="i_am_owed_green">#009105</color>
 </resources>
