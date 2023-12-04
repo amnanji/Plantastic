@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/searchContainer">
 
     <TextView
         android:id="@+id/searchNameTextView"
@@ -27,7 +28,7 @@
         android:paddingStart="16dp"
         tools:text="Username" />
 
-    <!-- ImageView for Friend -->
+    <!-- ImageView for existing Friend -->
     <ImageView
         android:id="@+id/iconImageViewFriend"
         android:layout_width="40dp"
@@ -39,7 +40,7 @@
         tools:src="@drawable/ic_launcher_foreground"
         android:visibility="gone" />
 
-    <!-- ImageView for User -->
+    <!-- ImageView for any User -->
     <ImageView
         android:id="@+id/iconImageViewUser"
         android:layout_width="40dp"
@@ -49,6 +50,15 @@
         android:layout_marginEnd="16dp"
         android:src="@drawable/baseline_person_add_alt_1_24"
         tools:src="@drawable/ic_launcher_foreground"
+        android:visibility="gone" />
+
+    <CheckBox
+        android:id="@+id/checkBoxSearchUsers"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="16dp"
         android:visibility="gone" />
 
 </RelativeLayout>

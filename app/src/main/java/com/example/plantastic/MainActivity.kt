@@ -13,6 +13,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.core.view.GravityCompat
+import androidx.navigation.NavController
 import com.example.plantastic.databinding.ActivityMainBinding
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
@@ -26,6 +27,12 @@ class MainActivity : AppCompatActivity() {
     private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
     private var usersRepository: UsersRepository = UsersRepository()
 
+    lateinit var navController: NavController
+
+    var newChatsFragmentId: Int = -1
+    var newGroupChatFragmentId: Int = -1
+    var newIndividualChatFragmentId: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout = binding.drawerLayout
         val navDrawer = binding.navDrawer
         val navBottomBar = binding.appBarMain.bottomNavigationView
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        navController = findNavController(R.id.nav_host_fragment_content_main)
         val headerView = navDrawer.getHeaderView(0)
         val navHeaderLinearLayout = headerView.findViewById<LinearLayout>(R.id.navViewHeader)
         val currUserEmail = headerView.findViewById<TextView>(R.id.currUserEmail_textView)
@@ -70,7 +77,10 @@ class MainActivity : AppCompatActivity() {
                 destination.id == R.id.nav_calendar ||
                 destination.id == R.id.nav_settings ||
                 destination.id == R.id.nav_profile ||
-                destination.id == R.id.nav_add_friends
+                destination.id == R.id.nav_add_friends ||
+                destination.id == R.id.nav_new_chat ||
+                destination.id == R.id.nav_new_chat_individual ||
+                destination.id == R.id.nav_new_chat_group
             ) {
                 navBottomBar.visibility = View.GONE
             } else {
@@ -98,6 +108,10 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.closeDrawer(GravityCompat.START)
             navController.navigate(R.id.nav_profile)
         }
+
+        newChatsFragmentId = R.id.nav_new_chat
+        newIndividualChatFragmentId = R.id.nav_new_chat_individual
+        newGroupChatFragmentId = R.id.nav_new_chat_group
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -52,4 +52,23 @@
         android:name="com.example.plantastic.ui.friends.AddFriendsFragment"
         android:label="@string/nav_add_friends"
         tools:layout="@layout/fragment_add_friends" />
+
+    <fragment
+        android:id="@+id/nav_new_chat"
+        android:name="com.example.plantastic.ui.new_chat.NewChatFragment"
+        android:label="@string/nav_new_chat"
+        tools:layout="@layout/fragment_new_chat" />
+
+    <fragment
+        android:id="@+id/nav_new_chat_individual"
+        android:name="com.example.plantastic.ui.new_friend_chat.NewIndividualChatFragment"
+        android:label="@string/nav_new_individual_chat"
+        tools:layout="@layout/fragment_new_individual_chat" />
+
+    <fragment
+        android:id="@+id/nav_new_chat_group"
+        android:name="com.example.plantastic.ui.new_group.NewGroupChatFragment"
+        android:label="@string/nav_new_group"
+        tools:layout="@layout/fragment_new_group" />
+
 </navigation>

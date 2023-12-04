@@ -8,7 +8,6 @@ data class Groups(
     val groupType: String? = null, // Group, Individual, Event
     val participants: HashMap<String, Boolean>? = null,
     var name: String? = null,
-    val admins: ArrayList<String>? = null,
     val latestMessage: Message? = null,
     var balances:HashMap<String, HashMap<String, Double>>? = null,
     val timestampGroupCreated: Long? = null,
