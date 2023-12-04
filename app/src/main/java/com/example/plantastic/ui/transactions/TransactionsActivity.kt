@@ -13,8 +13,10 @@ import com.example.plantastic.repository.TransactionsRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.balancedialog.BalancesDialog
+import com.example.plantastic.ui.toDo.AddTodoItemDialog
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TransactionsActivity : AppCompatActivity() {
 
@@ -45,6 +47,7 @@ class TransactionsActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.transactionsRecyclerView)
         val groupNameTextView = findViewById<TextView>(R.id.transactionsGroupNameTextView)
         val viewBalanceButton = findViewById<Button>(R.id.transactionsViewBalancesButton)
+        val transactionsFab: FloatingActionButton = findViewById(R.id.addTransactionFab)
 
         val currUser = usersAuthRepository.getCurrentUser()
         if(currUser == null){
@@ -93,6 +96,18 @@ class TransactionsActivity : AppCompatActivity() {
                     dialog.show()
                 }
             }
+        }
+
+        transactionsFab.setOnClickListener{
+            val currUser = UsersAuthRepository().getCurrentUser()
+            val userId = currUser!!.uid
+
+            val dialog = TransactionDialog()
+            val bundle = Bundle()
+            bundle.putString(TransactionDialog.KEY_USER_ID, userId)
+            bundle.putString(TransactionDialog.KEY_GROUP_ID, groupId)
+            dialog.arguments = bundle
+            dialog.show(this.supportFragmentManager, TransactionDialog.TAG_ADD_EXPENSE)
         }
     }
 

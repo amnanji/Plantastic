@@ -4,6 +4,8 @@ import android.util.Log
 import com.example.plantastic.models.CalendarElement
 import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
+import com.example.plantastic.models.Transaction
+import com.example.plantastic.utilities.CurrencyFormatter
 import com.example.plantastic.utilities.DateTimeUtils
 import com.example.plantastic.utilities.FirebaseNodes
 import com.google.firebase.database.DataSnapshot
@@ -239,6 +241,26 @@ class GroupsRepository {
             .addOnFailureListener {
                 callback(null)
             }
+    }
+
+    fun updateBalanceForTransaction(transaction: Transaction) {
+        groupsReference.child(transaction.groupId!!).addListenerForSingleValueEvent(
+            object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val group = dataSnapshot.getValue(Groups::class.java)
+                val numParticipants = group!!.participants!!.size
+                val expenseUpdate = CurrencyFormatter.roundToTwoDecimalPlaces(transaction!!.totalAmount!!/numParticipants)
+                group.balances!![transaction.moneyOwedTo]!!.keys.forEach{
+                    group.balances!![transaction.moneyOwedTo]!![it] = group.balances!![transaction.moneyOwedTo]!![it]!! + expenseUpdate
+                    group.balances!![it]!![transaction.moneyOwedTo!!] = group.balances!![it]!![transaction!!.moneyOwedTo]!! - expenseUpdate
+                }
+                groupsReference.child(transaction.groupId!!).child(FirebaseNodes.GROUPS_BALANCES).setValue(group.balances)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle error
+            }
+        })
     }
 
     companion object {
