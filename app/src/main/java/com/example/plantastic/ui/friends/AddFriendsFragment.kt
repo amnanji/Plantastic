@@ -136,6 +136,7 @@ class AddFriendsFragment : Fragment() {
         })
         adapter.updateOptions(options)
         adapter.startListening()
+        adapter.notifyDataSetChanged()
     }
 
     fun checkItemCount() {

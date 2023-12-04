@@ -25,6 +25,7 @@ import com.example.plantastic.ui.login.LoginActivity
 import com.example.plantastic.utilities.IconUtil
 
 import android.Manifest
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -45,6 +46,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val currUser = usersAuthRepository.getCurrentUser()
+        if (currUser == null){
+            navigateToLoginActivity()
+        }
+
+        if(!currUser!!.isEmailVerified){
+            Toast.makeText(this, getString(R.string.a_verification_email_has_been_sent_please_verify_your_email), Toast.LENGTH_SHORT)
+            usersAuthRepository.logOutUser()
+            navigateToLoginActivity()
+            finish()
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -105,10 +118,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val currUser = usersAuthRepository.getCurrentUser()
-        if (currUser == null){
-            navigateToLoginActivity()
-        }
         currUserEmail.text = currUser!!.email
 
         val context = this

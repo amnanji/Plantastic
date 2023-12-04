@@ -1,6 +1,7 @@
 package com.example.plantastic.repository
 
 import android.content.Context
+import android.util.Log
 import com.example.plantastic.models.Users
 import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.utilities.IconUtil
@@ -187,6 +188,10 @@ class UsersRepository {
 
     fun setColor(userId: String, color: Int){
         usersReference.child(userId).child(FirebaseNodes.USERS_COLOUR_NODE).setValue(color)
+    }
+
+    fun updateUserVerificationStatus(userId: String, status: Boolean) {
+        usersReference.child("userId").child(FirebaseNodes.VERIFIED_NODE).setValue(status)
     }
 
     companion object {

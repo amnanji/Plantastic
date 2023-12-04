@@ -60,6 +60,17 @@
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Forgot Password TextView -->
+            <TextView
+                android:id="@+id/textViewForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/forgot_password"
+                android:textSize="18sp"/>
+
 
             <!--    TODO: make drawable for rounded button-->
             <Button

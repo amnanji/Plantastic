@@ -12,6 +12,8 @@ object FirebaseNodes {
 
     // Users Child Nodes
     const val EMAIL_NODE = "email"
+    const val COLORS_NODE = "colors"
+    const val VERIFIED_NODE = "isEmailVerified"
 
     // Group Child Nodes
     const val GROUPS_PARTICIPANTS_NODE = "participants"

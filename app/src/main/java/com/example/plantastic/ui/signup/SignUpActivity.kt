@@ -18,6 +18,7 @@ import com.example.plantastic.R
 import com.example.plantastic.ui.login.LoginActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseUser
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -99,7 +100,12 @@ class SignUpActivity : AppCompatActivity() {
                         if (isSuccessful) {
                             // Cannot be null because task was successful
                             // Help from - https://stackoverflow.com/questions/70283293/why-does-firebase-realtime-database-user-id-not-match-with-the-firebase-authenti
-                            val currUserUid = usersAuthRepository.getCurrentUser()!!.uid
+
+                            val currUser = usersAuthRepository.getCurrentUser()
+
+                            usersAuthRepository.sendEmailVerification(this@SignUpActivity)
+
+                            val currUserUid = currUser!!.uid
                             usersRepository.createNewUser(
                                 cont,
                                 currUserUid,
