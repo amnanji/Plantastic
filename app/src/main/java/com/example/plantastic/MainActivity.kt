@@ -1,9 +1,7 @@
 package com.example.plantastic
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -17,11 +15,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.amulyakhare.textdrawable.TextDrawable
 import com.example.plantastic.databinding.ActivityMainBinding
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.login.LoginActivity
+import com.example.plantastic.utilities.IconUtil
 
 
 class MainActivity : AppCompatActivity() {
@@ -100,23 +98,25 @@ class MainActivity : AppCompatActivity() {
         }
         currUserEmail.text = currUser!!.email
 
+        val context = this
+
         usersRepository.getUserById(currUser.uid) {
             if (it != null) {
                 currUserName.text = buildString {
                     append(it.firstName)
                     append(" ")
                     append(it.lastName)
-                    val hexColor = "#B3CC8E"  // Replace RR, GG, and BB with your hexadecimal values
-                    val intColor = hexColor.substring(1).toInt(16)
-                    Log.d("hellooo", "$intColor  ${Color.BLUE}")
-                    val drawable: TextDrawable = TextDrawable.Builder()
-                        .setColor(Color.BLUE)
-                        .setShape(TextDrawable.SHAPE_ROUND_RECT)
-                        .setText("AN")
-                        .setRadius(10000)
-                        .build()
 
-                    profileImageView.setImageDrawable(drawable)
+                    val iconUtils = IconUtil(context)
+                    val color: Int
+                    if (it.color == null){
+                        color = iconUtils.getRandomColour()
+                        usersRepository.setColor(currUser.uid, color)
+                    }else{
+                        color = it.color
+                    }
+                    val icon = iconUtils.getIcon(it.firstName!!, it.lastName!!, color)
+                    profileImageView.setImageDrawable(icon)
                 }
             }
         }

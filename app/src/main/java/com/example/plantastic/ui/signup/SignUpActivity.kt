@@ -48,6 +48,7 @@ class SignUpActivity : AppCompatActivity() {
             val username = usernameEditText.text.toString()
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
+            val cont = this
 
             CoroutineScope(Dispatchers.IO).launch {
                 if (isValidSignUp()){
@@ -57,6 +58,7 @@ class SignUpActivity : AppCompatActivity() {
                             // Help from - https://stackoverflow.com/questions/70283293/why-does-firebase-realtime-database-user-id-not-match-with-the-firebase-authenti
                             val currUserUid = usersAuthRepository.getCurrentUser()!!.uid
                             usersRepository.createNewUser(
+                                cont,
                                 currUserUid,
                                 firstName,
                                 lastName,
