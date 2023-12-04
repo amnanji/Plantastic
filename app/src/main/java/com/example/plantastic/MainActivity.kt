@@ -43,6 +43,15 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val currUser = usersAuthRepository.getCurrentUser()
+        if (currUser == null){
+            navigateToLoginActivity()
+        }
+
+        if(!currUser!!.isEmailVerified){
+
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -101,10 +110,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val currUser = usersAuthRepository.getCurrentUser()
-        if (currUser == null){
-            navigateToLoginActivity()
-        }
         currUserEmail.text = currUser!!.email
 
         usersRepository.getUserById(currUser.uid) {
