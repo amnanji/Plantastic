@@ -36,6 +36,8 @@ class GroupsRepository {
     private var firebaseDatabase = FirebaseDatabase.getInstance()
     private var groupsReference = firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
     private var usersRepository = UsersRepository()
+    private val eventsReference: DatabaseReference =
+        firebaseDatabase.getReference(FirebaseNodes.EVENTS_NODE)
 
     fun getGroupById(id: String, callback: (Groups?) -> Unit) {
         val reference = groupsReference.child(id)
@@ -79,7 +81,7 @@ class GroupsRepository {
     private fun getAllGroupsByUserWithChatNames(userId: String, callback: (List<Groups>?) -> Unit) {
         val groups = ArrayList<Groups>()
 
-        getAllGroupsQueryForUser(userId).addValueEventListener(object : ValueEventListener {
+        getAllGroupsQueryForUser(userId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 // Create a list to hold deferred tasks for user retrieval
                 val deferredList = mutableListOf<Deferred<Unit>>()
@@ -140,10 +142,11 @@ class GroupsRepository {
         })
     }
 
-    fun getAllEventsQueryForUser(userId: String, callback: EventsCallback) {
-        val query = getAllGroupsQueryForUser(userId)
+    fun getAllEventsListForUser(userId: String, callback: EventsCallback) {
+        val eventsReference = FirebaseDatabase.getInstance().getReference(FirebaseNodes.GROUPS_NODE)
+        val query = eventsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/$userId").equalTo(true)
 
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+        query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val eventsList = mutableListOf<Events>()
 
@@ -155,6 +158,8 @@ class GroupsRepository {
                         eventsList.addAll(events)
                     }
                 }
+                val sortedList =  ArrayList(eventsList.sortedWith(compareBy { it.date ?: Long.MAX_VALUE }))
+                callback.onEventsLoaded(sortedList)
 
                 callback.onEventsLoaded(eventsList)
             }
@@ -200,23 +205,11 @@ class GroupsRepository {
             }
         })
     }
-    // Function to check if two dates are the same (ignoring time)
-    fun isSameDate(eventDate: Long?, targetDate: Long): Boolean {
-        if (eventDate == null) {
-            return false
-        }
 
-        val eventCalendar = Calendar.getInstance().apply {
-            timeInMillis = eventDate
+    fun addEventsItem(eventsItem: Events, groupId: String?) {
+        if (groupId != null) {
+            groupsReference.child(groupId).child(FirebaseNodes.EVENTS_NODE).push().setValue(eventsItem)
         }
-
-        val targetCalendar = Calendar.getInstance().apply {
-            timeInMillis = targetDate
-        }
-
-        return (eventCalendar.get(Calendar.YEAR) == targetCalendar.get(Calendar.YEAR) &&
-                eventCalendar.get(Calendar.MONTH) == targetCalendar.get(Calendar.MONTH) &&
-                eventCalendar.get(Calendar.DAY_OF_MONTH) == targetCalendar.get(Calendar.DAY_OF_MONTH))
     }
 
     fun getGroupIdForUsers(userId1: String, userId2: String, callback: (String?) -> Unit){

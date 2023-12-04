@@ -81,6 +81,7 @@
     <string name="due_date">Due Date</string>
     <string name="add_new_todo_item">Add New Todo Item</string>
     <string name="date_placeholder">%d/%d/%d</string>
+    <string name="time_placeholder">%1$d:%2$02d</string>
     <string name="cancel">Cancel</string>
     <string name="nav_add_friends">Add friends</string>
     <string name="log_out">Log out</string>
@@ -96,6 +97,9 @@
     <string name="nav_new_individual_chat">New Individual Chat</string>
     <string name="nav_new_group">New Group</string>
     <string name="fab">FAB</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="location">Location</string>
     <string name="friends">Friends</string>
     <string name="no_friends_found">No friends found</string>
     <string name="group_members">Group members</string>
