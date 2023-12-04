@@ -103,6 +103,8 @@ class SignUpActivity : AppCompatActivity() {
 
                             val currUser = usersAuthRepository.getCurrentUser()
 
+                            usersAuthRepository.sendEmailVerification(this@SignUpActivity)
+
                             val currUserUid = currUser!!.uid
                             usersRepository.createNewUser(
                                 cont,

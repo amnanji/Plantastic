@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import com.example.plantastic.MainActivity
 import com.example.plantastic.R
 import com.example.plantastic.ui.signup.SignUpActivity
@@ -13,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.FirebaseApp
 import androidx.core.widget.addTextChangedListener
+import com.example.plantastic.repository.UsersRepository
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -24,6 +26,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordInputLayout: TextInputLayout
     private lateinit var submitButton: Button
     private lateinit var signUpButton: Button
+    private lateinit var forgotPasswordTextView: TextView
 
     private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
 
@@ -45,6 +48,18 @@ class LoginActivity : AppCompatActivity() {
         passwordInputLayout= findViewById(R.id.passwordTextInputLayoutLogin)
         submitButton = findViewById(R.id.buttonSubmitLogin)
         signUpButton = findViewById(R.id.buttonSignUp)
+        forgotPasswordTextView = findViewById(R.id.textViewForgotPassword)
+
+        val verificationSnackBar = Snackbar.make(
+            findViewById(android.R.id.content),
+            getString(R.string.verify_email),
+            Snackbar.LENGTH_SHORT
+        )
+        verificationSnackBar.setAction(getString(R.string.resend_verification_email)) {
+            usersAuthRepository.sendEmailVerification(this@LoginActivity)
+            usersAuthRepository.logOutUser()
+            verificationSnackBar.dismiss()
+        }
 
         submitButton.setOnClickListener {
             if (isValidData()){
@@ -54,8 +69,7 @@ class LoginActivity : AppCompatActivity() {
                             navigateToMainActivity()
                         }
                         else{
-                            // display snackbar here
-                            usersAuthRepository.logOutUser()
+                            verificationSnackBar.show()
                         }
                     }
                     else {
@@ -77,6 +91,28 @@ class LoginActivity : AppCompatActivity() {
         signUpButton.setOnClickListener {
             navigateToSignUpActivity()
         }
+
+        forgotPasswordTextView.setOnClickListener {
+            val email = emailEditText.text.toString()
+
+            var isValidData = true
+
+            if(email.isBlank()){
+                setNotBlankError(emailInputLayout)
+                isValidData = false
+            }
+
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                setEmailInvalidError(emailInputLayout)
+                isValidData = false
+            }
+
+            if(isValidData){
+                usersAuthRepository.sendPasswordResetEmail(this, email)
+            }
+        }
+
+
 
         FirebaseApp.initializeApp(this)
     }
@@ -119,19 +155,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         return flag
-    }
-
-    private fun setUpSnackBar(){
-        val snackbar = Snackbar.make(
-            findViewById(android.R.id.content),
-            getString(R.string.verify_email),
-            Snackbar.LENGTH_INDEFINITE
-        )
-        snackbar.setAction(getString(R.string.resend_verification_email)) {
-            usersAuthRepository.
-            snackbar.dismiss()
-        }
-        snackbar.show()
     }
 
     private fun setEmailInvalidError(inputLayout: TextInputLayout) {

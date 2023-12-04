@@ -53,9 +53,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if(!currUser!!.isEmailVerified){
-            Toast.makeText(this,
-                getString(R.string.a_verification_email_has_been_sent_please_verify_your_email),
-                Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.a_verification_email_has_been_sent_please_verify_your_email), Toast.LENGTH_SHORT)
             usersAuthRepository.logOutUser()
             navigateToLoginActivity()
             finish()

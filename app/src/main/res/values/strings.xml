@@ -118,5 +118,8 @@
     <string name="group_name_cannot_be_empty">Group name cannot be empty</string>
     <string name="group_participants_error">Please add at least 2 friends to the group</string>
     <string name="verify_email">Please verify your email before proceeding</string>
-    <string name="resend_verification_email">Resend verification email</string>
+    <string name="resend_verification_email">Resend email</string>
+    <string name="a_verification_email_has_been_sent_please_verify_your_email">A verification email has been sent to your email. Please verify your account before proceeding.</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="password_reset_email">An email with a password reset link has been sent</string>
 </resources>
