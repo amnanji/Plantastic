@@ -1,12 +1,16 @@
 package com.example.plantastic.ui.toDo
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.ContentValues
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.net.ParseException
+import android.net.Uri
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -27,6 +31,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 import androidx.core.widget.addTextChangedListener
+import java.util.TimeZone
 
 class AddTodoItemDialog : DialogFragment() {
     private lateinit var chatsSpinner: Spinner
