@@ -8,7 +8,7 @@ data class ToDoItemForDisplay(
     val title: String? = null,
     val description: String? = null,
     val dueDate: Long? = null,
-    val isCompleted: Boolean? = null,
+    val completed: Boolean? = null,
     val isGroup: Boolean? = null,
     val groupName: String? = null
 ) {
@@ -20,7 +20,7 @@ data class ToDoItemForDisplay(
         toDoItem.title,
         toDoItem.description,
         toDoItem.dueDate,
-        toDoItem.isCompleted,
+        toDoItem.completed,
         isGroup,
         groupName
     )

@@ -8,6 +8,6 @@ data class ToDoItem (
     val description: String? = null,
     val dueDate: Long? = null,
     val completedDate: Long? = null,
-    var isCompleted: Boolean? = null,
+    var completed: Boolean? = null,
     val assignedTo: String? = null
 )

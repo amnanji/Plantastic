@@ -27,7 +27,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 import androidx.core.widget.addTextChangedListener
-import java.util.TimeZone
 
 class AddTodoItemDialog : DialogFragment() {
     private lateinit var chatsSpinner: Spinner
@@ -150,7 +149,7 @@ class AddTodoItemDialog : DialogFragment() {
                     descriptionTextView.text.toString(),
                     parseDate(),
                     null,
-                    isCompleted = false,
+                    completed = false,
                     participants[participantsSpinner.selectedItemPosition]
                 )
                 toDoRepository.addTodoListItem(
