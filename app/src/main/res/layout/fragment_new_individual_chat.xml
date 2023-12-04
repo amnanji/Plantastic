@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.friends.AddFriendsFragment">
+    tools:context=".ui.new_friend_chat.NewIndividualChatFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,10 +16,10 @@
             android:layout_height="wrap_content"
             android:elevation="4dp"
             android:padding="8dp"
-            android:id="@+id/searchConstraintLayout">
+            android:id="@+id/searchFriendsConstraintLayout">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/searchInputLayout"
+                android:id="@+id/searchFriendsInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +29,7 @@
                 android:layout_marginEnd="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextSearch"
+                    android:id="@+id/editTextSearchFriends"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/search_users"
@@ -40,19 +40,20 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/addFriendsRecyclerView"
+            android:id="@+id/addFriendsChatRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/searchConstraintLayout"/>
+            android:layout_below="@id/searchFriendsConstraintLayout"/>
 
         <TextView
-            android:id="@+id/noUsersFoundTextView"
+            android:id="@+id/noFriendsFoundTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="gone"
-            android:text="@string/no_users_found"
+            android:text="@string/no_friends_found"
             android:textAppearance="?android:textAppearanceMedium"/>
 
     </RelativeLayout>
+
 </FrameLayout>

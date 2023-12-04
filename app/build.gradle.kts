@@ -63,4 +63,5 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth")
     implementation ("com.firebaseui:firebase-ui-database:8.0.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0-RC")
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
 }

@@ -25,8 +25,6 @@ class AddFriendsFragment : Fragment() {
     private var _binding: FragmentAddFriendsBinding? = null
     private val binding get() = _binding!!
     private val handler = Handler(Looper.getMainLooper())
-    private val debounceDelay = 50L // Adjust the delay as needed
-
 
     private lateinit var adapter: AddFriendsAdapter
     private lateinit var usersRepository: UsersRepository
@@ -99,12 +97,10 @@ class AddFriendsFragment : Fragment() {
                 // this is used because data change callbacks are not called
                 // when the database query is empty
                 backgroundThread.start()
-
             }
 
             override fun afterTextChanged(editable: Editable?) {}
         })
-
         return root
     }
 
