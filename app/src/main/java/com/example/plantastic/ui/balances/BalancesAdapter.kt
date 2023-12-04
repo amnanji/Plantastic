@@ -2,6 +2,7 @@ package com.example.plantastic.ui.balances
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +43,7 @@ class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
         }
         amountOwedByMe = kotlin.math.abs(amountOwedByMe)
         if(model.groupType == "individual"){
-            var participants = model.participants
+            val participants = model.participants
             participants?.forEach { (key, _) ->
                 if (key != userId){
                     usersRepository.getUserById(key){
@@ -54,8 +55,17 @@ class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
         else{
             holder.groupName.text = model.name
         }
-        holder.balanceOwedByYou.text = amountOwedByMe.toString()
-        holder.balanceOwedByOthers.text = amountOwedByOthers.toString()
+        holder.balanceOwedByYou.text =
+            holder.itemView.context.getString(R.string.balance_placeholder, amountOwedByOthers.toString())
+        if (amountOwedByMe > 0) holder.balanceOwedByYou.setTextColor(Color.RED)
+
+
+        holder.balanceOwedByOthers.text =
+            holder.itemView.context.getString(R.string.balance_placeholder, amountOwedByOthers.toString())
+        if (amountOwedByOthers > 0) {
+            val color = holder.itemView.context.getColor(R.color.i_am_owed_green)
+            holder.balanceOwedByOthers.setTextColor(color)
+        }
 
         holder.itemView.setOnClickListener{
             navigateToTransactionsActivity(holder.itemView.context, model.id!!, model.participants!!.size)

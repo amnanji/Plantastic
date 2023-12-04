@@ -11,6 +11,10 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!--  Background window color -->
+        <item name="android:windowBackground">@color/window_background_color</item>
+        <!--  Bottom navigation bar color -->
+<!--        <item name="android:navigationBarColor">@color/bottom_navigation_background_color</item>-->
         <!-- Customize your theme here. -->
 
         <!-- Got help from: https://stackoverflow.com/questions/68241378/unable-to-change-the-color-of-action-bar-in-the-app -->

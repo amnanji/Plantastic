@@ -8,15 +8,18 @@
 
     <TextView
         android:id="@+id/chat_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:maxWidth="250dp"
         android:paddingTop="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_on_background"
+        app:layout_constraintEnd_toStartOf="@+id/last_msg_timestamp"
         app:layout_constraintStart_toEndOf="@id/messengerImageView"
         app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@color/text_on_background"
         tools:text="Group xyz" />
 
     <TextView
@@ -25,19 +28,26 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:paddingStart="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:maxWidth="130dp"
         app:layout_constraintStart_toStartOf="@id/chat_name"
         app:layout_constraintTop_toBottomOf="@id/chat_name"
-        tools:text="Sahil: " />
+        app:layout_constraintEnd_toStartOf="@+id/last_msg_content"
+        tools:text="Sahil : " />
 
     <TextView
         android:id="@+id/last_msg_content"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:paddingHorizontal="10dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/last_msg_sender"
         app:layout_constraintTop_toBottomOf="@id/chat_name"
-        tools:text="Lest do something tom" />
+        tools:text="Lets do something tom" />
 
     <TextView
         android:id="@+id/last_msg_timestamp"
