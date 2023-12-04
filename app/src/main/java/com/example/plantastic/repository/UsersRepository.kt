@@ -20,6 +20,7 @@ class UsersRepository {
         firebaseDatabase.getReference(FirebaseNodes.USERS_NODE)
 
     fun createNewUser(
+        context: Context,
         userId: String,
         firstName: String,
         lastName: String,
@@ -28,7 +29,8 @@ class UsersRepository {
         onComplete: (Boolean) -> Unit
     ) {
 
-        val user = Users(userId, firstName, lastName, username, email, HashMap())
+        val iconUtil = IconUtil(context)
+        val user = Users(userId, firstName, lastName, username, email, HashMap(), iconUtil.getRandomColour())
         usersReference.child(userId).setValue(user)
             .addOnSuccessListener {
                 onComplete(true)
@@ -180,6 +182,10 @@ class UsersRepository {
         }
 
         query.addValueEventListener(postListener)
+    }
+
+    fun setColor(userId: String, color: Int){
+        usersReference.child(userId).child(FirebaseNodes.USERS_COLOUR_NODE).setValue(color)
     }
 
     fun updateUserVerificationStatus(userId: String, status: Boolean) {

@@ -6,12 +6,14 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.transactions.TransactionsActivity
+import com.example.plantastic.utilities.IconUtil
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 
@@ -41,6 +43,9 @@ class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
                 amountOwedByOthers += value
             }
         }
+
+        val iconUtil = IconUtil(holder.itemView.context)
+
         amountOwedByMe = kotlin.math.abs(amountOwedByMe)
         if(model.groupType == "individual"){
             val participants = model.participants
@@ -48,12 +53,20 @@ class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
                 if (key != userId){
                     usersRepository.getUserById(key){
                         holder.groupName.text = it?.username
+                        val drawable = iconUtil.getIcon(
+                            it!!.firstName!!,
+                            it.lastName!!,
+                            it.color!!
+                        )
+                        holder.imageViewHolder.setImageDrawable(drawable)
                     }
                 }
             }
         }
         else{
             holder.groupName.text = model.name
+            val drawable = iconUtil.getIcon(model.name!!, "", model.color!!)
+            holder.imageViewHolder.setImageDrawable(drawable)
         }
         holder.balanceOwedByYou.text =
             holder.itemView.context.getString(R.string.balance_placeholder, amountOwedByMe.toString())
@@ -76,6 +89,7 @@ class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
         val groupName: TextView = itemView.findViewById(R.id.balancesGroupName)
         val balanceOwedByYou: TextView = itemView.findViewById(R.id.balancesAmountOwedByYou)
         val balanceOwedByOthers: TextView = itemView.findViewById(R.id.balancesAmountOwedByOthers)
+        val imageViewHolder: ImageView = itemView.findViewById<ImageView>(R.id.balancesImageView)
     }
 
     private fun navigateToTransactionsActivity(context: Context, id: String, numParticpants: Int){

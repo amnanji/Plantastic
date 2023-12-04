@@ -90,6 +90,7 @@ class SignUpActivity : AppCompatActivity() {
             val username = usernameEditText.text.toString()
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
+            val cont = this
 
             clearErrors()
 
@@ -104,6 +105,7 @@ class SignUpActivity : AppCompatActivity() {
 
                             val currUserUid = currUser!!.uid
                             usersRepository.createNewUser(
+                                cont,
                                 currUserUid,
                                 firstName,
                                 lastName,

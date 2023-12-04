@@ -34,6 +34,18 @@
     <color name="pastel_indigo">#D5DEFD</color>
     <color name="pastel_purple">#E6D9F0</color>
     <color name="pastel_lilac">#E7CCF1</color>
+    <color name="pastel_salmon">#FBB4A7</color>
+    <color name="pastel_mint">#B6DFBF</color>
+    <color name="pastel_coral">#F9B7B2</color>
+    <color name="pastel_peach">#FED8B1</color>
+    <color name="pastel_sky_blue">#B0E2F2</color>
+    <color name="pastel_goldenrod">#FDDCA5</color>
+    <color name="pastel_mauve">#E8B4BB</color>
+    <color name="pastel_olive">#B5CC7E</color>
+    <color name="pastel_gray">#D0D0D0</color>
+    <color name="pastel_brown">#D5BFA6</color>
+    <color name="pastel_turquoise">#A4EFEF</color>
+    <color name="pastel_violet">#D8B4E2</color>
 
     <!-- Dark Mode Variations of Pastel Color -->
     <color name="pastel_red_var_dark">#E26666</color>
@@ -48,6 +60,18 @@
     <color name="pastel_indigo_dark">#A9ADDD</color>
     <color name="pastel_purple_dark">#C4B5D9</color>
     <color name="pastel_lilac_dark">#C7B5D9</color>
+    <color name="pastel_salmon_dark">#E66F62</color>
+    <color name="pastel_mint_dark">#8FBF9F</color>
+    <color name="pastel_coral_dark">#E78078</color>
+    <color name="pastel_peach_dark">#FDC69E</color>
+    <color name="pastel_sky_blue_dark">#7AAEDB</color>
+    <color name="pastel_goldenrod_dark">#E2B978</color>
+    <color name="pastel_mauve_dark">#C17E8A</color>
+    <color name="pastel_olive_dark">#8D9F57</color>
+    <color name="pastel_gray_dark">#A0A0A0</color>
+    <color name="pastel_brown_dark">#B38C75</color>
+    <color name="pastel_turquoise_dark">#6EBDBD</color>
+    <color name="pastel_violet_dark">#B57BB6</color>
 
     <!-- Colors for To Do List Items -->
     <color name="todo_list_item_color_1">@color/pastel_orange</color>
