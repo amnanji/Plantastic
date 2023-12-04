@@ -1,11 +1,13 @@
 package com.example.plantastic.ui.conversation
 
+import android.app.ActionBar.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.PopupWindow
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
@@ -56,10 +58,6 @@ class ConversationActivity : AppCompatActivity() {
         val orderedMessagesQuery =
             messagesReference.child(groupId).orderByChild(FirebaseNodes.MESSAGES_TIMESTAMP_NODE)
 
-        orderedMessagesQuery.get().addOnSuccessListener {
-            Log.d(TAG, "messages --> $it")
-        }
-
         val options = FirebaseRecyclerOptions.Builder<Message>()
             .setQuery(orderedMessagesQuery, Message::class.java).build()
 
@@ -87,6 +85,18 @@ class ConversationActivity : AppCompatActivity() {
             if (it != null) {
                 btnSend.isEnabled = it.isNotBlank()
             }
+        }
+
+        btnAdd.setOnClickListener{
+            val popupView = layoutInflater.inflate(R.layout.dialog_chat_add_new, null)
+            val popupWindow = PopupWindow(
+                popupView,
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT,
+                true
+            )
+
+            popupWindow.showAsDropDown(btnAdd, 0, -btnAdd.height - 210)
         }
 
         btnSend.setOnClickListener {
