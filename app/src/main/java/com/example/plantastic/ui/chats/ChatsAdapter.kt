@@ -56,15 +56,22 @@ class ChatsAdapter(
     inner class GroupChatViewHolder(private val binding: ChatGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Groups, ref: DatabaseReference) {
-            Log.i(TAG, "Curr chat item --> $item")
+           // Log.i(TAG, "Curr chat item --> $item")
             binding.chatName.text = item.name
             if (item.latestMessage != null) {
                 binding.lastMsgContent.text = item.latestMessage.content
                 binding.lastMsgTimestamp.text = getDate(item.latestMessage.timestamp!!)
 
-                usersRepository.getUserById(item.latestMessage.senderId!!) {
-                    if (it != null) {
-                        binding.lastMsgSender.text = "${it.firstName} ${it.lastName}: "
+                if(item.latestMessage.messageType == "AI Message")
+                {
+                    binding.lastMsgSender.text = "Plantastic bot: "
+
+                }
+                else {
+                    usersRepository.getUserById(item.latestMessage.senderId!!) {
+                        if (it != null) {
+                            binding.lastMsgSender.text = "${it.firstName} ${it.lastName}: "
+                        }
                     }
                 }
             } else {
@@ -83,7 +90,7 @@ class ChatsAdapter(
     inner class IndividualChatViewHolder(private val binding: ChatIndividualBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Groups, ref: DatabaseReference) {
-            Log.i(TAG, "Curr chat item ref --> $ref")
+            //Log.i(TAG, "Curr chat item ref --> $ref")
             val participants = item.participants!!.keys.toList()
             val otherParticipantId =
                 if (participants[0] == userId) participants[1] else participants[0]
@@ -96,7 +103,14 @@ class ChatsAdapter(
             }
 
             if (item.latestMessage != null) {
-                binding.lastMsgContent.text = item.latestMessage.content
+                if(item.latestMessage.messageType == "AI Message")
+                {
+                    binding.lastMsgContent.text = "Plantastic Bot: ${item.latestMessage.content}"
+
+                }
+                else {
+                    binding.lastMsgContent.text = item.latestMessage.content
+                }
                 binding.lastMsgTimestamp.text = getDate(item.latestMessage.timestamp!!)
             } else {
                 binding.lastMsgTimestamp.text = item.timestampGroupCreated?.let { getDate(it) }

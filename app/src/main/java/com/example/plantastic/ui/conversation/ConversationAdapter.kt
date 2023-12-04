@@ -30,7 +30,7 @@ class ConversationAdapter(
             val view = inflater.inflate(R.layout.message_curr_user, parent, false)
             val binding = MessageCurrUserBinding.bind(view)
             CurrUserMessageViewHolder(binding)
-        } else if (isGroup) {
+        } else if (isGroup || viewType == VIEW_TYPE_AI) {
             val view = inflater.inflate(R.layout.message_group, parent, false)
             val binding = MessageGroupBinding.bind(view)
             GroupChatMessagesViewHolder(binding)
@@ -44,7 +44,7 @@ class ConversationAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, model: Message) {
         if (model.senderId == userId) {
             (holder as CurrUserMessageViewHolder).bind(model, getRef(position))
-        } else if (isGroup) {
+        } else if (isGroup || model.messageType == "AI Message") {
             (holder as GroupChatMessagesViewHolder).bind(model, getRef(position))
         } else {
             (holder as IndividualChatMessagesViewHolder).bind(model, getRef(position))
@@ -55,9 +55,16 @@ class ConversationAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message, ref: DatabaseReference) {
             Log.i(TAG, "Curr msg item --> $item")
-            usersRepository.getUserById(item.senderId!!) {
-                if (it != null) {
-                    binding.messageSender.text = "${it.firstName} ${it.lastName}: "
+            if(item.messageType == "AI Message")
+            {
+                binding.messageSender.text = "Plantastic Bot"
+            }
+            else
+            {
+                usersRepository.getUserById(item.senderId!!) {
+                    if (it != null) {
+                        binding.messageSender.text = "${it.firstName} ${it.lastName}: "
+                    }
                 }
             }
             binding.messageText.text = item.content
@@ -84,12 +91,23 @@ class ConversationAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (options.snapshots[position].senderId == userId) VIEW_TYPE_CURR_USER else VIEW_TYPE_NOT_CURR_USER
+        return if(options.snapshots[position].messageType == "AI Message")
+        {
+            VIEW_TYPE_AI
+        }
+        else if (options.snapshots[position].senderId == userId)
+        {
+            VIEW_TYPE_CURR_USER
+        }
+        else {
+            VIEW_TYPE_NOT_CURR_USER
+        }
     }
 
     companion object {
         private const val TAG = "Pln MessagesAdapter"
         private const val VIEW_TYPE_CURR_USER = 1
         private const val VIEW_TYPE_NOT_CURR_USER = 0
+        private const val VIEW_TYPE_AI = 2
     }
 }

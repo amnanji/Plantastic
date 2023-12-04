@@ -107,8 +107,6 @@ class ConversationActivity : AppCompatActivity() {
             }
         }
 
-
-
         messageEditText.addTextChangedListener {
             if (it != null) {
                 btnSend.isEnabled = it.isNotBlank()
@@ -122,7 +120,12 @@ class ConversationActivity : AppCompatActivity() {
                 Calendar.getInstance().timeInMillis
             )
             CoroutineScope(Dispatchers.IO).launch {
-                chatGPT.getResponse(msg)
+                if(msg.content!!.contains("@AI",ignoreCase = true)) {
+                    chatGPT.getResponse(msg,groupId)
+                }
+                else{
+                    Log.d("revs","AI was not called")
+                }
             }
             val msgRef = messagesQuery.push()
             msgRef.setValue(msg).addOnSuccessListener {

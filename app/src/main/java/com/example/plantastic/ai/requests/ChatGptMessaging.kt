@@ -13,9 +13,17 @@ import com.example.plantastic.R
 import com.example.plantastic.models.Message
 import com.example.plantastic.models.Preferences
 import com.example.plantastic.models.Users
+import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.PreferencesRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
+import com.example.plantastic.ui.conversation.ConversationActivity
+import com.example.plantastic.utilities.FirebaseNodes
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import kotlin.time.Duration.Companion.seconds
 
@@ -94,51 +102,67 @@ class ChatGptMessaging(context: Context) {
         return dietaryRestrictionArray[dietaryRestrictionIndex]
     }
 
-    suspend fun setPreferences(context: Context, userArray: ArrayList<Users>){
+    fun setPreferences(context: Context, userArray: ArrayList<Users>) {
         Log.d("step 2", "chatGPT:setPreferences")
         var counter = 0
         val uid = usersAuthRepository.getCurrentUser()?.uid
         val preferencesArrayList = ArrayList<Preferences>()
-        for (user in userArray){
+
+        for (user in userArray) {
             Log.d("step 3", "chatGPT:setPreferences:user: $user")
-            user.id?.let { preferencesRepository.getPreferenceById(it){preferences ->
-                if (preferences != null) {
-                    Log.d("step 4", "chatGPT:setPreferences:user: $user")
-                    preferencesArrayList.add(preferences)
-                    preferencesString += "\nUse this knowledge to answer any questions about Person $counter"
-                    preferencesString += "\n ${userArray[counter].firstName} has the following preferences: \n"
-                    preferencesString += "${userArray[counter].firstName} likes ${preferences?.foodPreferences} food, \n"
-                    preferencesString += "${userArray[counter].firstName}'s dietary restrictions are: ${
-                        preferences?.dietaryRestrictionIndex?.let {index ->
-                            getDietaryRestriction(context,
-                                index
-                            )
-                        }}\n"
-                    preferencesString += " ${userArray[counter].firstName} enjoys ${preferences?.activityPreferences} activities, "
-                    preferencesString += "${userArray[counter].firstName}'s availability is: ${
-                        preferences?.availability?.let {availability ->
-                            intToStringAvailability(context,
-                                availability
-                            )
-                        }}. \n"
-                    counter += 1
+            user.id?.let { userId ->
+                preferencesRepository.getPreferenceById(userId) { preferences ->
+                    if (preferences != null) {
+                        Log.d("step 4", "chatGPT:setPreferences:user: $user")
+
+                        // Log user preferences
+                        Log.d("User Preferences", "${user.firstName}'s preferences:")
+                        Log.d("Food Preferences", "${user.firstName} likes: ${preferences.foodPreferences}")
+                        Log.d("Dietary Restrictions", "${user.firstName}'s dietary restrictions: ${
+                            preferences.dietaryRestrictionIndex?.let { index ->
+                                getDietaryRestriction(context, index)
+                            }
+                        }")
+                        Log.d("Activity Preferences", "${user.firstName} enjoys: ${preferences.activityPreferences}")
+                        Log.d("Availability", "${user.firstName}'s availability: ${
+                            preferences.availability?.let { availability ->
+                                intToStringAvailability(context, availability)
+                            }
+                        }")
+
+                        preferencesArrayList.add(preferences)
+                        preferencesString += "\nUse this knowledge to answer any questions about Person $counter"
+                        preferencesString += "\n ${userArray[counter].firstName} has the following preferences: \n"
+                        preferencesString += "${userArray[counter].firstName} likes ${preferences.foodPreferences} food, \n"
+                        preferencesString += "${userArray[counter].firstName}'s dietary restrictions are: ${
+                            preferences.dietaryRestrictionIndex?.let { index ->
+                                getDietaryRestriction(context, index)
+                            }
+                        }\n"
+                        preferencesString += " ${userArray[counter].firstName} enjoys ${preferences.activityPreferences} activities, "
+                        preferencesString += "${userArray[counter].firstName}'s availability is: ${
+                            preferences.availability?.let { availability ->
+                                intToStringAvailability(context, availability)
+                            }
+                        }. \n"
+                        counter += 1
+                    }
                 }
-            } }
+            }
         }
         val message = Message("text", uid, preferencesString, Calendar.getInstance().timeInMillis)
         Log.d("step 5", "chatGPT:setPreferences:returnedOptimizedMessage: ${message.content}")
         addUserMessage(message)
-//
-//        val optimizedMessageString = getOptimizedMessage(message)
-//        val optimizedMessage = Message(message.messageType, message.senderId, optimizedMessageString, message.timestamp)
-//        getResponse(message)
+
     }
+
+
 
     private fun createChatMessage(message: String) : ChatMessage{
         return ChatMessage(role = ChatRole.User, content = message)
     }
 
-    suspend fun getResponse(message: Message){
+    suspend fun getResponse(message: Message, groupID: String){
         Log.d("step 6", "chatGPT:getResponse")
         var currentMessage = ""
         var optimizedMessageString = getOptimizedMessage(message)
@@ -149,11 +173,11 @@ class ChatGptMessaging(context: Context) {
             addUserMessage(optimizedMessage)
             var chatHistory = getChatHistory()
 
-            chatHistory.forEach {
-                currentMessage += "$it "
+            chatHistory.forEach { _ ->
+                currentMessage += " "
             }
             Log.d("step 11", "chatGPT:getResponse:currentMessage: $currentMessage")
-            chatMessages.add(createChatMessage(currentMessage))
+            chatMessages.add(createChatMessage(optimizedMessageString))
             for (message in chatMessages){
                 Log.d("step 12","chatGPT:chatMessage in chatMessages: ${message.content}")
             }
@@ -170,19 +194,26 @@ class ChatGptMessaging(context: Context) {
                 val shortenString = "Shorten and summarize this message $currentMessage"
                 val shortenMessage = Message(optimizedMessage.messageType, optimizedMessage.senderId, shortenString, optimizedMessage.timestamp)
                 val newMessageString = getOptimizedMessage(shortenMessage)
-                Log.d("step 14","chatGPT:newMessageString: $newMessageString")
+               // Log.d("step 14","chatGPT:newMessageString: $newMessageString")
+                Log.d("revs","is new msg null? ${newMessageString == null}")
+                if(newMessageString!=null) {
+                    addChatGPTMessageToDB(newMessageString, groupID)
+                }
                 newMessageString?.let { createChatMessage(it) }?.let { chatMessages.add(it) }
             } else {
                 var response = completion.choices.first().message.content
                 if (response != null) {
                     Log.d("step 14", "response: $response")
+                    if(response!=null) {
+                        addChatGPTMessageToDB(response, groupID)
+                    }
                     addModelResponse(response)
                 }
             }
         }
     }
 
-    suspend fun getOptimizedMessage(message: Message): String? {
+    private suspend fun getOptimizedMessage(message: Message): String? {
         Log.d("step 7", "chatGPT:getOptimizedMessage")
 
 //        Log.d("chatgpt: User prompt sent", "prompt: $message")
@@ -205,22 +236,40 @@ class ChatGptMessaging(context: Context) {
             Log.d("step 9", "chatGPT:optimizedResponse: $response")
 
         }
-        return "Given the this chat history, $response. Don't justify your answers, don't give information not mentioned in the CONTEXT INFORMATION"
+
+        return "$response. suggest a list of things, don't separate by user in Location: Vancouver $preferencesString"
     }
 
-//    suspend fun getResponses(listOfMessages: ArrayList<String>){
-//        chatMessages = ArrayList<ChatMessage>(1)
-//        chatMessages.add(createChatMessage("Don't respond to this message, and answer concisely to all messages after this"))
-//        for (message in listOfMessages){
-//            chatMessages.add(createChatMessage(message))
-//        }
-//        val chatCompletionRequest = ChatCompletionRequest(
-//            model = ModelId("gpt-3.5-turbo"),
-//            messages = chatMessages
-//        )
-//
-//        openAI.chatCompletion(chatCompletionRequest).choices.forEach(){
-//            it.message.content?.let { it1 -> Log.d("ListMessages", it1) }
-//        }
-//    }
+    private fun addChatGPTMessageToDB(message: String, groupID: String)
+    {
+        Log.d("revs","I am in add gpt message to db func")
+        val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
+        val groupsReference: DatabaseReference =
+            firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
+        val messagesReference: DatabaseReference =
+            firebaseDatabase.getReference(FirebaseNodes.MESSAGES_NODE)
+        val messagesQuery = messagesReference.child(groupID)
+
+        val msg = Message(
+            "AI Message",
+            null,
+            message,
+            java.util.Calendar.getInstance().timeInMillis
+        )
+
+        val msgRef = messagesQuery.push()
+        msgRef.setValue(msg).addOnSuccessListener {
+            groupsReference.child(groupID).child(FirebaseNodes.GROUPS_LATEST_MESSAGE_NODE)
+                .setValue(msg).addOnFailureListener {
+                    Log.d("PLN", "Failed to set new msg to group's latest message --> $msgRef")
+                    it.printStackTrace()
+                }
+
+        }.addOnFailureListener {
+            Log.d("PLN", "Could not set new msg --> $msgRef")
+            it.printStackTrace()
+        }
+
+    }
+
 }
