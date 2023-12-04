@@ -7,7 +7,6 @@ object FirebaseNodes {
     const val GROUPS_NODE = "groups"
     const val MESSAGES_NODE = "messages"
     const val TODO_LISTS_NODE = "toDoLists"
-    const val EVENTS_NODE = "events"
     const val PREFERENCES_NODE = "preferences"
     const val TRANSACTIONS_NODE = "transactions"
 
@@ -17,6 +16,7 @@ object FirebaseNodes {
     // Group Child Nodes
     const val GROUPS_PARTICIPANTS_NODE = "participants"
     const val GROUPS_LATEST_MESSAGE_NODE = "latestMessage"
+    const val EVENTS_NODE = "events"
 
     // Messages Child Nodes
     const val MESSAGES_TIMESTAMP_NODE = "timestamp"

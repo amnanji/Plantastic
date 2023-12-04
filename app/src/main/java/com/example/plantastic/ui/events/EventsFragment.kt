@@ -13,13 +13,17 @@ import com.example.plantastic.repository.EventsCallback
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.ui.login.LoginActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseUser
 
 class EventsFragment : Fragment(), EventsCallback {
 
     private var _binding: FragmentEventsBinding? = null
     private lateinit var groupsRepository: GroupsRepository
     private lateinit var usersAuthRepository: UsersAuthRepository
+    private lateinit var fabAddBtn: FloatingActionButton
     private val binding get() = _binding!!
+    private var currUser: FirebaseUser? = null
 
     private lateinit var eventsAdapter: EventsAdapter
 
@@ -32,13 +36,23 @@ class EventsFragment : Fragment(), EventsCallback {
         val root: View = binding.root
 
         usersAuthRepository = UsersAuthRepository()
-        val currUser = usersAuthRepository.getCurrentUser()
+        currUser = usersAuthRepository.getCurrentUser()
         groupsRepository = GroupsRepository()
         if(currUser == null) {
             navigateToLoginActivity()
         }
         if (currUser != null) {
-            groupsRepository.getAllEventsQueryForUser(currUser.uid, this)
+            groupsRepository.getAllEventsListForUser(currUser!!.uid, this)
+        }
+
+        fabAddBtn = binding.EventsfabAdd
+        fabAddBtn.setOnClickListener{
+
+            val dialog = AddEventsDialog()
+            val bundle = Bundle()
+
+            dialog.arguments = bundle
+            dialog.show(requireActivity().supportFragmentManager, AddEventsDialog.TAG_ADD_TODO_ITEM)
         }
         return root
     }
@@ -53,7 +67,7 @@ class EventsFragment : Fragment(), EventsCallback {
     }
 
     override fun onEventsLoaded(events: List<Events>) {
-        eventsAdapter = EventsAdapter(events)
+        eventsAdapter = EventsAdapter(events, currUser!!.uid)
         binding.eventsRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.eventsRecyclerView.adapter = eventsAdapter
     }
