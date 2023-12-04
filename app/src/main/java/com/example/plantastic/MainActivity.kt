@@ -1,23 +1,28 @@
 package com.example.plantastic
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.core.view.GravityCompat
-import androidx.navigation.NavController
+import com.amulyakhare.textdrawable.TextDrawable
 import com.example.plantastic.databinding.ActivityMainBinding
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.login.LoginActivity
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         navController = findNavController(R.id.nav_host_fragment_content_main)
         val headerView = navDrawer.getHeaderView(0)
         val navHeaderLinearLayout = headerView.findViewById<LinearLayout>(R.id.navViewHeader)
+        val profileImageView = headerView.findViewById<ImageView>(R.id.profileImageView)
         val currUserEmail = headerView.findViewById<TextView>(R.id.currUserEmail_textView)
         val currUserName = headerView.findViewById<TextView>(R.id.currUserName_textView)
 
@@ -100,6 +106,17 @@ class MainActivity : AppCompatActivity() {
                     append(it.firstName)
                     append(" ")
                     append(it.lastName)
+                    val hexColor = "#B3CC8E"  // Replace RR, GG, and BB with your hexadecimal values
+                    val intColor = hexColor.substring(1).toInt(16)
+                    Log.d("hellooo", "$intColor  ${Color.BLUE}")
+                    val drawable: TextDrawable = TextDrawable.Builder()
+                        .setColor(Color.BLUE)
+                        .setShape(TextDrawable.SHAPE_ROUND_RECT)
+                        .setText("AN")
+                        .setRadius(10000)
+                        .build()
+
+                    profileImageView.setImageDrawable(drawable)
                 }
             }
         }

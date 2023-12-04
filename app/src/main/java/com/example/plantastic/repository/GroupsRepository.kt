@@ -35,8 +35,6 @@ class GroupsRepository {
     private var firebaseDatabase = FirebaseDatabase.getInstance()
     private var groupsReference = firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
     private var usersRepository = UsersRepository()
-    private val eventsReference: DatabaseReference =
-        firebaseDatabase.getReference(FirebaseNodes.EVENTS_NODE)
 
     fun getGroupById(id: String, callback: (Groups?) -> Unit) {
         val reference = groupsReference.child(id)

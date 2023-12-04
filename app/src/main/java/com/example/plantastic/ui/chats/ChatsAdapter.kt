@@ -1,10 +1,12 @@
 package com.example.plantastic.ui.chats
 
 import android.content.Intent
+import android.graphics.Color
 import android.text.format.DateFormat
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
+import com.amulyakhare.textdrawable.TextDrawable
 import com.example.plantastic.R
 import com.example.plantastic.databinding.ChatGroupBinding
 import com.example.plantastic.databinding.ChatIndividualBinding
@@ -97,6 +99,17 @@ class ChatsAdapter(
             } else {
                 binding.lastMsgTimestamp.text = item.timestampGroupCreated?.let { getDate(it) }
             }
+
+            val color = itemView.context.resources.getColor(R.color.pastel_blue_dark)
+
+            val drawable: TextDrawable = TextDrawable.Builder()
+                .setColor(color)
+                .setShape(TextDrawable.SHAPE_ROUND_RECT)
+                .setText("AN")
+                .setRadius(10000)
+                .build()
+
+            binding.messengerImageView.setImageDrawable(drawable)
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ConversationActivity::class.java)
