@@ -223,6 +223,7 @@ class AddEventsDialog: DialogFragment() {
         }
 
         builder.setView(view)
+        builder.setTitle("Add New Event")
         val dialog = builder.create()
         // Referenced from: https://stackoverflow.com/questions/18346920/change-the-background-color-of-a-pop-up-dialog
         dialog.window?.decorView?.setBackgroundResource(R.drawable.rounded_borders_15dp)
