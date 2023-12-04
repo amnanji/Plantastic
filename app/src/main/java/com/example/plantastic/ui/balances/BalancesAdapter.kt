@@ -56,7 +56,7 @@ class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
             holder.groupName.text = model.name
         }
         holder.balanceOwedByYou.text =
-            holder.itemView.context.getString(R.string.balance_placeholder, amountOwedByOthers.toString())
+            holder.itemView.context.getString(R.string.balance_placeholder, amountOwedByMe.toString())
         if (amountOwedByMe > 0) holder.balanceOwedByYou.setTextColor(Color.RED)
 
 
