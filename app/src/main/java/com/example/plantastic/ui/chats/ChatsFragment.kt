@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import com.example.plantastic.MainActivity
 import com.example.plantastic.R
@@ -34,8 +33,6 @@ class ChatsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val chatsViewModel =
-            ViewModelProvider(this).get(ChatsViewModel::class.java)
 
         _binding = FragmentChatsBinding.inflate(inflater, container, false)
         val root: View = binding.root

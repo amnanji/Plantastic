@@ -44,7 +44,7 @@ class AddFriendsFragment : Fragment() {
         recyclerView.layoutManager = WrapContentLinearLayoutManager(requireContext())
         noUsersEditText = root.findViewById(R.id.noUsersFoundTextView)
 
-        editTextSearch = root.findViewById<EditText>(R.id.editTextSearch)
+        editTextSearch = root.findViewById(R.id.editTextSearch)
 
         usersRepository = UsersRepository()
         usersAuthRepository = UsersAuthRepository()

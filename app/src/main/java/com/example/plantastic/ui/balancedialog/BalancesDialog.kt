@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class BalancesDialog(context: Context, currUserId: String, balances: HashMap<String, Double>) {
+class BalancesDialog(context: Context, balances: HashMap<String, Double>) {
 
     private val alertDialog: AlertDialog
 

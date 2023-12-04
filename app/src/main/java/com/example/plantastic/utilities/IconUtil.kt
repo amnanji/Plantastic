@@ -5,9 +5,9 @@ import com.amulyakhare.textdrawable.TextDrawable
 import com.example.plantastic.R
 
 @Suppress("DEPRECATION")
-class IconUtil(private val context: Context) {
+class IconUtil(context: Context) {
 
-    val colorList = arrayListOf(
+    private val colorList = arrayListOf(
         context.resources.getColor(R.color.pastel_blue_dark),
         context.resources.getColor(R.color.pastel_red_var),
         context.resources.getColor(R.color.pastel_hot_pink),
@@ -56,7 +56,7 @@ class IconUtil(private val context: Context) {
     }
 
 
-    fun concatenateFirstLetters(firstString: String, secondString: String): String {
+    private fun concatenateFirstLetters(firstString: String, secondString: String): String {
 
         // Get the first letter of each string
         val firstLetterFirstString = if (firstString.isNotEmpty()) firstString[0].toString().uppercase() else ""
@@ -68,7 +68,6 @@ class IconUtil(private val context: Context) {
 
     fun getIcon(firstString: String, secondString: String, colourPos: Int): TextDrawable? {
 
-        println("Concatenated Text: ${concatenateFirstLetters(firstString, secondString)}")
         return TextDrawable.Builder()
             .setColor(colorList[colourPos])
             .setShape(TextDrawable.SHAPE_ROUND_RECT)

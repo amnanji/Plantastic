@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.Users
-import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.utilities.IconUtil
 import com.firebase.ui.database.FirebaseRecyclerAdapter
@@ -50,7 +49,7 @@ class AddFriendsAdapter(
             holder.iconImageViewFriend.visibility = View.GONE
             holder.iconImageViewUser.visibility = View.GONE
             holder.iconImageViewUser.setOnClickListener{
-                usersRepository.addFriends(userId, model.id!!)
+                usersRepository.addFriends(userId, model.id)
             }
         }
         // if the friends object is null, user has no friends

@@ -38,6 +38,7 @@ import java.util.Locale
 import java.util.TimeZone
 
 
+@Suppress("DEPRECATION")
 class AddEventsDialog: DialogFragment() {
     private lateinit var groupsSpinner: Spinner
 
@@ -150,7 +151,7 @@ class AddEventsDialog: DialogFragment() {
                     groups[groupsSpinner.selectedItemPosition]?.id,
                     descriptionTextView.text.toString()
                 )
-                groupsRepository.addEventsItem(eventItem,groups[groupsSpinner.selectedItemPosition]?.id,)
+                groupsRepository.addEventsItem(eventItem,groups[groupsSpinner.selectedItemPosition]?.id)
 
 
                 val readCalendarPermission = ContextCompat.checkSelfPermission(

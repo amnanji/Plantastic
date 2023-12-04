@@ -17,8 +17,9 @@ import com.example.plantastic.utilities.IconUtil
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 
-class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
-                      private val userId: String
+class BalancesAdapter(
+    options: FirebaseRecyclerOptions<Groups>,
+    private val userId: String
 ) :
     FirebaseRecyclerAdapter<Groups, BalancesAdapter.BalancesViewHolder>(options) {
 
@@ -32,9 +33,9 @@ class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
 
     override fun onBindViewHolder(holder: BalancesViewHolder, position: Int, model: Groups) {
         // money you have to pay
-        var amountOwedByMe: Double = 0.0
+        var amountOwedByMe = 0.0
         //money you'll get
-        var amountOwedByOthers: Double = 0.0
+        var amountOwedByOthers = 0.0
         model.balances?.get(userId)?.forEach { (_, value) ->
             if (value < 0){
                 amountOwedByMe += value
@@ -89,13 +90,13 @@ class BalancesAdapter(private var options: FirebaseRecyclerOptions<Groups>,
         val groupName: TextView = itemView.findViewById(R.id.balancesGroupName)
         val balanceOwedByYou: TextView = itemView.findViewById(R.id.balancesAmountOwedByYou)
         val balanceOwedByOthers: TextView = itemView.findViewById(R.id.balancesAmountOwedByOthers)
-        val imageViewHolder: ImageView = itemView.findViewById<ImageView>(R.id.balancesImageView)
+        val imageViewHolder: ImageView = itemView.findViewById(R.id.balancesImageView)
     }
 
-    private fun navigateToTransactionsActivity(context: Context, id: String, numParticpants: Int){
+    private fun navigateToTransactionsActivity(context: Context, id: String, numParticipants: Int){
         val intent = Intent(context, TransactionsActivity::class.java)
         intent.putExtra(TransactionsActivity.GROUP_ID, id)
-        intent.putExtra(TransactionsActivity.NUMBER_OF_MEMBERS, numParticpants)
+        intent.putExtra(TransactionsActivity.NUMBER_OF_MEMBERS, numParticipants)
         context.startActivity(intent)
     }
 }

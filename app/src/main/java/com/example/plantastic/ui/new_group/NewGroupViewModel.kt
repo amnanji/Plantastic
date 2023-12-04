@@ -11,7 +11,6 @@ class NewGroupViewModel : ViewModel() {
     private val usersRepository = UsersRepository()
 
     private val _friendsList = MutableLiveData<List<Users>>()
-    val friendsList: LiveData<List<Users>> = _friendsList
 
     private val _filteredFriendsList = MutableLiveData<List<Users>>()
     val filteredFriendsList: LiveData<List<Users>> = _filteredFriendsList

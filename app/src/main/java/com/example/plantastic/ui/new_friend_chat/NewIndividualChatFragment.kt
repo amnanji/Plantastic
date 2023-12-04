@@ -1,11 +1,11 @@
 package com.example.plantastic.ui.new_friend_chat
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +20,6 @@ import com.example.plantastic.models.Users
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
-import com.firebase.ui.database.FirebaseRecyclerOptions
 
 class NewIndividualChatFragment : Fragment() {
 
@@ -35,10 +34,9 @@ class NewIndividualChatFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var noUsersEditText: TextView
     private lateinit var editTextSearch: EditText
-
-    private lateinit var allFriendsList: ArrayList<Users>
     private lateinit var filteredFriendsList: ArrayList<Users>
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,11 +56,11 @@ class NewIndividualChatFragment : Fragment() {
         recyclerView = root.findViewById(R.id.addFriendsChatRecyclerView)
         recyclerView.layoutManager = WrapContentLinearLayoutManager(requireContext())
         noUsersEditText = root.findViewById(R.id.noFriendsFoundTextView)
-        editTextSearch = root.findViewById<EditText>(R.id.editTextSearchFriends)
+        editTextSearch = root.findViewById(R.id.editTextSearchFriends)
 
         filteredFriendsList = ArrayList()
 
-        adapter = FriendsChatAdapter(filteredFriendsList, currUser!!.uid)
+        adapter = FriendsChatAdapter(filteredFriendsList, currUser.uid)
         recyclerView.adapter = adapter
 
         // Set up TextWatcher to filter data based on search input

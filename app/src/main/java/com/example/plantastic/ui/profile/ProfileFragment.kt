@@ -74,7 +74,7 @@ class ProfileFragment : Fragment() {
         initializeAvailabilityTextViews()
         initializeButtons()
 
-        // When data is changed, update variables with viewmodel data
+        // When data is changed, update variables with view model data
         profileViewModel.user.observe(viewLifecycleOwner) { user ->
             if (user != null) {
                 currentUser = user
@@ -237,7 +237,7 @@ class ProfileFragment : Fragment() {
         return String.format("%02d:%02d", startHours, startMinutes)
     }
 
-    // Dynamically add textviews to a list so they can be index by day of the week
+    // Dynamically add textview to a list so they can be index by day of the week
     private fun initializeAvailabilityTextViews() {
         availabilityTextViewList.add(binding.mondayAvailabilityTextview)
         availabilityTextViewList.add(binding.tuesdayAvailabilityTextview)

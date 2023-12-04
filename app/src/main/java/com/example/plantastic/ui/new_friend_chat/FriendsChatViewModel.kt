@@ -3,16 +3,14 @@ package com.example.plantastic.ui.new_friend_chat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.plantastic.models.Users
 import com.example.plantastic.repository.UsersRepository
 
-class FriendsChatViewModel() : ViewModel() {
+class FriendsChatViewModel: ViewModel() {
 
     private val usersRepository = UsersRepository()
 
     private val _friendsList = MutableLiveData<List<Users>>()
-    val friendsList: LiveData<List<Users>> = _friendsList
 
     private val _filteredFriendsList = MutableLiveData<List<Users>>()
     val filteredFriendsList: LiveData<List<Users>> = _filteredFriendsList

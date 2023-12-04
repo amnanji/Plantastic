@@ -89,7 +89,7 @@ class TransactionsActivity : AppCompatActivity() {
                 }
                 val balances = group.balances!![currUser.uid]
                 viewBalanceButton.setOnClickListener {
-                    val dialog = BalancesDialog(this, currUser.uid, balances!!)
+                    val dialog = BalancesDialog(this, balances!!)
                     dialog.show()
                 }
             }
@@ -98,12 +98,12 @@ class TransactionsActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        adapter?.stopListening()
+        adapter.stopListening()
     }
 
     override fun onResume() {
         super.onResume()
-        adapter?.startListening()
+        adapter.startListening()
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

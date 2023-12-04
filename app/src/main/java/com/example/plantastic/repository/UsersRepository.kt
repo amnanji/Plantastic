@@ -1,7 +1,6 @@
 package com.example.plantastic.repository
 
 import android.content.Context
-import android.util.Log
 import com.example.plantastic.models.Users
 import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.utilities.IconUtil
@@ -170,7 +169,7 @@ class UsersRepository {
                         callback(null)
                     }
                     val userList = ArrayList<Users>()
-                    usersHashMap!!.forEach { (key, value) ->
+                    usersHashMap!!.forEach { (_, value) ->
                         userList.add(value)
                     }
                     callback(userList)

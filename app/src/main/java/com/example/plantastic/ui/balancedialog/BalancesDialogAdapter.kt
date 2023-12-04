@@ -31,7 +31,7 @@ class BalancesDialogAdapter(private val context: Context, private val itemList: 
         fun bind(id: String) {
 
             usersRepository.getUserById(id){
-                var st: String
+                val st: String
                 if (it != null && balances[id]!! != 0.0){
                     if (balances[id]!! > 0){
                         // you get money
