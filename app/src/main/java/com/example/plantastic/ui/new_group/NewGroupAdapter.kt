@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import com.example.plantastic.R
 import com.example.plantastic.models.Users
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.ui.conversation.ConversationActivity
+import com.example.plantastic.utilities.IconUtil
 
 class NewGroupAdapter (
     private var dataList: List<Users>,
@@ -28,6 +30,7 @@ class NewGroupAdapter (
         val nameTextView: TextView = itemView.findViewById(R.id.searchNameTextView)
         val searchContainer: RelativeLayout = itemView.findViewById(R.id.searchContainer)
         val checkBox: CheckBox = itemView.findViewById(R.id.checkBoxSearchUsers)
+        val profileIconImageView: ImageView = itemView.findViewById(R.id.profileIconImageView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewGroupViewHolder {
@@ -46,6 +49,11 @@ class NewGroupAdapter (
         "${model.firstName} ${model.lastName}".also { holder.nameTextView.text = it }
         holder.checkBox.visibility = View.VISIBLE
         holder.checkBox.isChecked = newGroupViewModel.isUserInMembersList(model)
+
+        val iconUtil = IconUtil(holder.itemView.context)
+        val drawable = iconUtil.getIcon(model.firstName!!, model.lastName!!, model.color!!)
+        holder.profileIconImageView.setImageDrawable(drawable)
+
         holder.checkBox.setOnClickListener{
             if (newGroupViewModel.isUserInMembersList(model)){
                 newGroupViewModel.removeFromMembersList(model)

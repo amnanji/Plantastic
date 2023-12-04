@@ -5,9 +5,12 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.navigation.NavController
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
@@ -15,12 +18,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.core.view.GravityCompat
-import androidx.navigation.NavController
 import com.example.plantastic.databinding.ActivityMainBinding
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.login.LoginActivity
+import com.example.plantastic.utilities.IconUtil
+
 import android.Manifest
 
 class MainActivity : AppCompatActivity() {
@@ -54,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         navController = findNavController(R.id.nav_host_fragment_content_main)
         val headerView = navDrawer.getHeaderView(0)
         val navHeaderLinearLayout = headerView.findViewById<LinearLayout>(R.id.navViewHeader)
+        val profileImageView = headerView.findViewById<ImageView>(R.id.profileImageView)
         val currUserEmail = headerView.findViewById<TextView>(R.id.currUserEmail_textView)
         val currUserName = headerView.findViewById<TextView>(R.id.currUserName_textView)
 
@@ -107,12 +111,25 @@ class MainActivity : AppCompatActivity() {
         }
         currUserEmail.text = currUser!!.email
 
+        val context = this
+
         usersRepository.getUserById(currUser.uid) {
             if (it != null) {
                 currUserName.text = buildString {
                     append(it.firstName)
                     append(" ")
                     append(it.lastName)
+
+                    val iconUtils = IconUtil(context)
+                    val color: Int
+                    if (it.color == null){
+                        color = iconUtils.getRandomColour()
+                        usersRepository.setColor(currUser.uid, color)
+                    }else{
+                        color = it.color
+                    }
+                    val icon = iconUtils.getIcon(it.firstName!!, it.lastName!!, color)
+                    profileImageView.setImageDrawable(icon)
                 }
             }
         }
