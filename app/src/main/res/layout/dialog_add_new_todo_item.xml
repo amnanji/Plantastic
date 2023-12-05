@@ -58,6 +58,7 @@
                 android:id="@+id/spinnerGroupTodo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="48dp"
                 android:popupBackground="@color/card_background" />
         </LinearLayout>
 
@@ -77,6 +78,7 @@
                 android:id="@+id/spinnerAssignToTodo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="48dp"
                 android:popupBackground="@color/card_background" />
         </LinearLayout>
     </LinearLayout>

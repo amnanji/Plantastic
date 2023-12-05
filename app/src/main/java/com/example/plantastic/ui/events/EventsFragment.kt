@@ -55,7 +55,7 @@ class EventsFragment : Fragment(), EventsCallback {
             val bundle = Bundle()
 
             dialog.arguments = bundle
-            dialog.show(requireActivity().supportFragmentManager, AddEventsDialog.TAG_ADD_TODO_ITEM)
+            dialog.show(requireActivity().supportFragmentManager, AddEventsDialog.TAG_ADD_EVENT)
         }
         return root
     }

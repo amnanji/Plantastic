@@ -49,27 +49,24 @@ class ConversationAdapter(
     }
 
     inner class GroupChatMessagesViewHolder(
-        private val context: Context,
-        private val binding: MessageGroupBinding
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
+        private val context: Context, private val binding: MessageGroupBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
             if (item.messageType == "AI Message") {
                 binding.messageSender.text = context.getString(R.string.msg_sender_ai_with_colon)
-                binding.root.backgroundTintList = ColorStateList.valueOf(context.getColor(R.color.ai_msg))
+                binding.root.backgroundTintList =
+                    ColorStateList.valueOf(context.getColor(R.color.ai_msg))
             } else {
                 usersRepository.getUserById(item.senderId!!) {
                     if (it != null) {
                         binding.messageSender.text = context.getString(
-                            R.string.name_placeholder_with_colon,
-                            it.firstName,
-                            it.lastName
+                            R.string.name_placeholder_with_colon, it.firstName, it.lastName
                         )
                     }
                 }
             }
             binding.messageText.text = item.content
-            DateTimeUtils.getDateString(item.timestamp!!).also { binding.messageTimestamp.text = it }
+            binding.messageTimestamp.text = item.timestamp?.let { DateTimeUtils.getDateString(it) }
         }
     }
 
@@ -77,7 +74,7 @@ class ConversationAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
             binding.messageText.text = item.content
-            DateTimeUtils.getDateString(item.timestamp!!).also { binding.messageTimestamp.text = it }
+            binding.messageTimestamp.text = item.timestamp?.let { DateTimeUtils.getDateString(it) }
         }
     }
 
@@ -85,7 +82,7 @@ class ConversationAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
             binding.messageText.text = item.content
-            DateTimeUtils.getDateString(item.timestamp!!).also { binding.messageTimestamp.text = it }
+            binding.messageTimestamp.text = item.timestamp?.let { DateTimeUtils.getDateString(it) }
         }
     }
 

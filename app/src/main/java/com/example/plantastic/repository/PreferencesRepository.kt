@@ -65,8 +65,14 @@ class PreferencesRepository {
         return ret
     }
 
-    fun updatePreference(userId: String, foodPreferences: String, dietaryRestrictionIndex: Int,
-                         activityPreferences: String, availability: MutableList<Int>, callback: (Preferences?) -> Unit){
+    fun updatePreference(
+        userId: String,
+        foodPreferences: String,
+        dietaryRestrictionIndex: Int,
+        activityPreferences: String,
+        availability: MutableList<Int>,
+        callback: (Preferences?) -> Unit
+    ) {
         val reference = preferencesReference.child(userId)
         reference.child("foodPreferences").setValue(foodPreferences)
         reference.child("dietaryRestrictionIndex").setValue(dietaryRestrictionIndex)

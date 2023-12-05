@@ -69,6 +69,10 @@
     <string name="content_desc_location_icon">location icon</string>
     <string name="content_desc_individual_icon">individual icon</string>
     <string name="content_desc_calendar_icon">Calendar Icon</string>
+    <string name="content_desc_add_new_event">Add new Event</string>
+    <string name="content_desc_add_new_todo_item">Add new Todo item</string>
+    <string name="content_desc_add_new_expenses">Add new Expenses</string>
+    <string name="content_desc_settle_balances">Settle Balances</string>
 
     <!--  All Other Strings  -->
     <string name="message_hint">Message…</string>
@@ -116,6 +120,7 @@
     <string name="you">"You: "</string>
     <string name="name_placeholder_with_colon">"%1$s %2$s: "</string>
     <string name="name_placeholder">%1$s %2$s</string>
+    <string name="individual_group_name_placeholder">Chat with %1$s %2$s</string>
     <string name="balance_placeholder">$ %1$s</string>
     <string name="you_are_owed">You are owed:</string>
     <string name="you_owe_with_colon">You owe:</string>

@@ -32,6 +32,7 @@ class ToDoViewModel : ViewModel() {
                     if (!groupsHashmap.containsKey(groupId)) continue
                     val groupName = groupsHashmap[groupId]?.name
                     val isGroup = groupsHashmap[groupId]?.groupType == "group"
+                    val groupColor = groupsHashmap[groupId]?.color
 
                     for (toDoItem in toDoItems) {
                         if (toDoItem.id != null) {
@@ -39,7 +40,8 @@ class ToDoViewModel : ViewModel() {
                                 toDoItem,
                                 groupId,
                                 isGroup,
-                                groupName
+                                groupName,
+                                groupColor
                             )
                             data.add(toDoItemForDisplay)
                         }
