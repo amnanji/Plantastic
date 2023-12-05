@@ -30,6 +30,7 @@ import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.toDo.AddTodoItemDialog
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
@@ -53,6 +54,7 @@ class AddEventsDialog : DialogFragment() {
     private var groupId: String? = null
 
     private val groupsRepository = GroupsRepository()
+    private val usersRepository = UsersRepository()
     private var groups: List<Groups?> = ArrayList()
 
     companion object {
@@ -85,7 +87,23 @@ class AddEventsDialog : DialogFragment() {
         if (groupId != null) {
             groupsRepository.getGroupById(groupId!!) {
                 groups = listOf(it)
-                updateGroupsSpinner()
+                if (groups[0]?.groupType == "group") {
+                    updateGroupsSpinner()
+                } else {
+                    val participants = groups[0]?.participants!!.keys.toList()
+                    val otherParticipantId =
+                        if (participants[0] == currUser!!.uid) participants[1] else participants[0]
+                    usersRepository.getUserById(otherParticipantId) { user ->
+                        if (user != null) {
+                            groups[0]?.name = view.context.getString(
+                                R.string.individual_group_name_placeholder,
+                                user.firstName,
+                                user.lastName
+                            )
+                            updateGroupsSpinner()
+                        }
+                    }
+                }
             }
         } else {
             CoroutineScope(Dispatchers.IO).launch {
