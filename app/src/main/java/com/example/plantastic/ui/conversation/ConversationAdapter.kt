@@ -50,17 +50,19 @@ class ConversationAdapter(
     inner class GroupChatMessagesViewHolder(private val context: Context, private val binding: MessageGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
-            usersRepository.getUserById(item.senderId!!) {
-                if (it != null) {
-                    binding.messageSender.text = context.getString(
-                        R.string.name_placeholder_with_colon,
-                        it.firstName,
-                        it.lastName
-                    )
+            if (item.senderId != null) {
+                usersRepository.getUserById(item.senderId) {
+                    if (it != null) {
+                        binding.messageSender.text = context.getString(
+                            R.string.name_placeholder_with_colon,
+                            it.firstName,
+                            it.lastName
+                        )
+                    }
                 }
             }
             binding.messageText.text = item.content
-            binding.messageTimestamp.text = DateTimeUtils.getDateString(item.timestamp!!)
+            binding.messageTimestamp.text = item.timestamp?.let { DateTimeUtils.getDateString(it) }
         }
     }
 
@@ -68,7 +70,7 @@ class ConversationAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
             binding.messageText.text = item.content
-            binding.messageTimestamp.text = DateTimeUtils.getDateString(item.timestamp!!)
+            binding.messageTimestamp.text = item.timestamp?.let { DateTimeUtils.getDateString(it) }
         }
     }
 
@@ -76,7 +78,7 @@ class ConversationAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
             binding.messageText.text = item.content
-            binding.messageTimestamp.text = DateTimeUtils.getDateString(item.timestamp!!)
+            binding.messageTimestamp.text = item.timestamp?.let { DateTimeUtils.getDateString(it) }
         }
     }
 

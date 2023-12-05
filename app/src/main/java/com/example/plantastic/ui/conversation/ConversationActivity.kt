@@ -1,9 +1,11 @@
 package com.example.plantastic.ui.conversation
 
 import android.app.ActionBar.LayoutParams
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.ImageButton
@@ -15,6 +17,9 @@ import com.example.plantastic.models.Groups
 import com.example.plantastic.models.Message
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.ui.events.AddEventsDialog
+import com.example.plantastic.ui.login.LoginActivity
+import com.example.plantastic.ui.toDo.AddTodoItemDialog
 import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -25,6 +30,7 @@ import java.util.Calendar
 class ConversationActivity : AppCompatActivity() {
     private lateinit var group: Groups
     private var adapter: ConversationAdapter? = null
+    private var userId: String? = null
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var messageEditText: EditText
@@ -62,12 +68,15 @@ class ConversationActivity : AppCompatActivity() {
             .setQuery(orderedMessagesQuery, Message::class.java).build()
 
         val currUser = UsersAuthRepository().getCurrentUser()
-        val userId = currUser!!.uid
+        if (currUser == null) {
+            navigateToLoginActivity()
+        }
+        userId = currUser!!.uid
 
         groupsRepository.getGroupById(groupId) {
             if (it != null) {
                 group = it
-                adapter = ConversationAdapter(options, userId, group.groupType == "group")
+                adapter = ConversationAdapter(options, userId!!, group.groupType == "group")
                 recyclerView.adapter = adapter
                 val manager = WrapContentLinearLayoutManager(this)
                 manager.stackFromEnd = true
@@ -87,7 +96,7 @@ class ConversationActivity : AppCompatActivity() {
             }
         }
 
-        btnAdd.setOnClickListener{
+        btnAdd.setOnClickListener {
             val popupView = layoutInflater.inflate(R.layout.dialog_chat_add_new, null)
             val popupWindow = PopupWindow(
                 popupView,
@@ -96,7 +105,28 @@ class ConversationActivity : AppCompatActivity() {
                 true
             )
 
-            popupWindow.showAsDropDown(btnAdd, 0, -btnAdd.height - 210)
+            popupView.findViewById<ImageButton>(R.id.addEventAddDialog).setOnClickListener {
+                popupWindow.dismiss()
+                openRelevantDialog(DIALOG_TYPE_NEW_EVENT)
+            }
+
+            popupView.findViewById<ImageButton>(R.id.addTodoAddDialog).setOnClickListener {
+                popupWindow.dismiss()
+                openRelevantDialog(DIALOG_TYPE_NEW_TODO)
+            }
+
+            popupView.findViewById<ImageButton>(R.id.addExpenseAddDialog).setOnClickListener {
+                popupWindow.dismiss()
+                openRelevantDialog(DIALOG_TYPE_NEW_EXPENSE)
+            }
+
+            popupView.findViewById<ImageButton>(R.id.settleBalanceAddDialog).setOnClickListener {
+                popupWindow.dismiss()
+                openRelevantDialog(DIALOG_TYPE_NEW_SETTLE_UP)
+            }
+
+
+            popupWindow.showAsDropDown(btnAdd, 0, -btnAdd.height - 210, Gravity.TOP)
         }
 
         btnSend.setOnClickListener {
@@ -138,13 +168,48 @@ class ConversationActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun openRelevantDialog(dialogType: String) {
+        if (userId == null || group.id == null) {
+            return
+        }
+        when (dialogType) {
+            DIALOG_TYPE_NEW_TODO -> {
+                val dialog = AddTodoItemDialog()
+                val bundle = Bundle()
+                bundle.putString(AddTodoItemDialog.KEY_USER_ID, userId)
+                bundle.putString(AddTodoItemDialog.KEY_GROUP_ID, group.id)
+                dialog.arguments = bundle
+
+                dialog.show(supportFragmentManager, AddTodoItemDialog.TAG_ADD_TODO_ITEM)
+            }
+            DIALOG_TYPE_NEW_EVENT -> {
+                val dialog = AddEventsDialog()
+                val bundle = Bundle()
+                bundle.putString(AddEventsDialog.KEY_GROUP_ID, group.id)
+                dialog.arguments = bundle
+                dialog.show(supportFragmentManager, AddEventsDialog.TAG_ADD_EVENT)
+            }
+        }
+    }
+
+    private fun navigateToLoginActivity() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     companion object {
         const val KEY_GROUP_ID = "KEY_GROUP_ID"
         const val KEY_GROUP_NAME = "KEY_GROUP_NAME"
+        private const val DIALOG_TYPE_NEW_EVENT = "DIALOG_TYPE_NEW_EVENT"
+        private const val DIALOG_TYPE_NEW_TODO = "DIALOG_TYPE_NEW_TODO"
+        private const val DIALOG_TYPE_NEW_EXPENSE = "DIALOG_TYPE_NEW_EXPENSE"
+        private const val DIALOG_TYPE_NEW_SETTLE_UP = "DIALOG_TYPE_NEW_SETTLE_UP"
         private const val TAG = "Pln ConversationActivity"
     }
 }

@@ -62,16 +62,18 @@ class ChatsAdapter(
                 binding.lastMsgContent.text = item.latestMessage.content
                 binding.lastMsgTimestamp.text = getDate(item.latestMessage.timestamp!!)
 
-                if (item.latestMessage.senderId!! == userId){
-                    binding.lastMsgSender.text = context.getString(R.string.you)
-                } else {
-                    usersRepository.getUserById(item.latestMessage.senderId) {
-                        if (it != null) {
-                            binding.lastMsgSender.text = context.getString(
-                                R.string.name_placeholder_with_colon,
-                                it.firstName,
-                                it.lastName
-                            )
+                if (item.latestMessage.senderId != null) {
+                    if (item.latestMessage.senderId == userId) {
+                        binding.lastMsgSender.text = context.getString(R.string.you)
+                    } else {
+                        usersRepository.getUserById(item.latestMessage.senderId) {
+                            if (it != null) {
+                                binding.lastMsgSender.text = context.getString(
+                                    R.string.name_placeholder_with_colon,
+                                    it.firstName,
+                                    it.lastName
+                                )
+                            }
                         }
                     }
                 }

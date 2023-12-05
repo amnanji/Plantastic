@@ -23,12 +23,14 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import android.Manifest
 import android.util.Log
+import android.widget.AdapterView
 import androidx.core.app.ActivityCompat
 import com.example.plantastic.R
 import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.ui.toDo.AddTodoItemDialog
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +42,6 @@ import java.util.TimeZone
 
 class AddEventsDialog: DialogFragment() {
     private lateinit var groupsSpinner: Spinner
-
     private lateinit var dateTextView: TextView
     private lateinit var dateBtn: Button
     private lateinit var timeTextView: TextView
@@ -51,11 +52,14 @@ class AddEventsDialog: DialogFragment() {
     private lateinit var btnSave: Button
     private lateinit var btnCancel: Button
 
+    private var groupId: String? = null
+
     private val groupsRepository = GroupsRepository()
     private var groups: List<Groups?> = ArrayList()
 
     companion object {
-        const val TAG_ADD_TODO_ITEM = "ADD_EVENTS_ITEM"
+        const val TAG_ADD_EVENT = "ADD_EVENTS_ITEM"
+        const val KEY_GROUP_ID = "KEY_GROUP_ID"
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -64,10 +68,10 @@ class AddEventsDialog: DialogFragment() {
         val view: View =
             requireActivity().layoutInflater.inflate(R.layout.dialog_add_new_event, null)
 
+        val bundle = arguments
+        groupId = bundle?.getString(AddTodoItemDialog.KEY_GROUP_ID)
 
         groupsSpinner = view.findViewById(R.id.eventSpinnerGroup)
-
-
         dateTextView = view.findViewById(R.id.eventsViewDate)
         dateBtn = view.findViewById(R.id.eventsBtnDate)
         titleTextView = view.findViewById(R.id.eventsAddTitle)
@@ -80,16 +84,32 @@ class AddEventsDialog: DialogFragment() {
 
         val currUser = UsersAuthRepository().getCurrentUser()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            groups = groupsRepository.getAllGroupsByUserWithChatNamesAsync(currUser!!.uid)
-            withContext(Dispatchers.Main) {
-                val groupNames = groups.map { it!!.name }
-                val groupsAdapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_spinner_item,
-                    groupNames
-                )
-                groupsSpinner.adapter = groupsAdapter
+        if (groupId != null) {
+            groupsRepository.getGroupById(groupId!!){
+                groups = listOf(it)
+                updateGroupsSpinner()
+            }
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+                groups = groupsRepository.getAllGroupsByUserWithChatNamesAsync(currUser!!.uid)
+                updateGroupsSpinner()
+            }
+        }
+
+        groupsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (groups.size < 2) {
+                    groupsSpinner.isEnabled = false
+                }
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+                // Do nothing
             }
         }
 
@@ -239,9 +259,6 @@ class AddEventsDialog: DialogFragment() {
         val time = timeTextView.text.toString()
         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.CANADA)
         return sdf.parse("$date $time").time
-
-
-
     }
     private fun validateData(): Boolean {
         var flag = true
@@ -288,8 +305,6 @@ class AddEventsDialog: DialogFragment() {
             put(CalendarContract.Events.DTEND, endMillis)
             put(CalendarContract.Events.DESCRIPTION, event.description)
             put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
-
-
         }
 
         return requireContext().contentResolver.insert(CalendarContract.Events.CONTENT_URI, contentValues)
@@ -318,8 +333,19 @@ class AddEventsDialog: DialogFragment() {
                 return it.getLong(it.getColumnIndex(CalendarContract.Calendars._ID))
             }
         }
-
         return null
+    }
+
+    private fun updateGroupsSpinner(){
+        CoroutineScope(Dispatchers.Main).launch {
+            val groupNames = groups.map { it!!.name }
+            val groupsAdapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                groupNames
+            )
+            groupsSpinner.adapter = groupsAdapter
+        }
     }
 
 }
