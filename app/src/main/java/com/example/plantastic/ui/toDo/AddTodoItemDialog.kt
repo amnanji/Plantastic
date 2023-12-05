@@ -27,7 +27,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 import androidx.core.widget.addTextChangedListener
-import java.util.TimeZone
 
 class AddTodoItemDialog : DialogFragment() {
     private lateinit var chatsSpinner: Spinner
@@ -76,7 +75,7 @@ class AddTodoItemDialog : DialogFragment() {
         }
 
         CoroutineScope(Dispatchers.IO).launch {
-            groups = groupsRepository.getAllGroupsByUserWithChatNames(userId!!)
+            groups = groupsRepository.getAllGroupsByUserWithChatNamesAsync(userId!!)
             withContext(Dispatchers.Main) {
                 val groupNames = groups.map { it!!.name }
                 val groupsAdapter = ArrayAdapter(
@@ -150,7 +149,7 @@ class AddTodoItemDialog : DialogFragment() {
                     descriptionTextView.text.toString(),
                     parseDate(),
                     null,
-                    isCompleted = false,
+                    completed = false,
                     participants[participantsSpinner.selectedItemPosition]
                 )
                 toDoRepository.addTodoListItem(

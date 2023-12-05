@@ -24,7 +24,7 @@ object FirebaseNodes {
     const val MESSAGES_TIMESTAMP_NODE = "timestamp"
 
     // TodoLists Child Nodes
-    const val TODO_LISTS_IS_COMPLETED_NODE = "isCompleted"
+    const val TODO_LISTS_IS_COMPLETED_NODE = "completed"
     const val TODO_LISTS_COMPLETED_DATE_NODE = "completedDate"
 
     // Transactions Child Nodes

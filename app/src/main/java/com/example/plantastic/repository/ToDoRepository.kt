@@ -17,7 +17,7 @@ class ToDoRepository {
     private val toDoListsReference: DatabaseReference =
         firebaseDatabase.getReference(FirebaseNodes.TODO_LISTS_NODE)
 
-    suspend fun getToDoItemsByUserId(userId: String, callback: (HashMap<String, ArrayList<ToDoItem>>, HashMap<String, Groups?>) -> Unit) {
+    fun getToDoItemsByUserId(userId: String, callback: (HashMap<String, ArrayList<ToDoItem>>, HashMap<String, Groups?>) -> Unit) {
         // Hashmap of <groupId, Groups object>
         val groupsHashmap = HashMap<String, Groups?>()
 
@@ -25,38 +25,40 @@ class ToDoRepository {
         val todoListsHashmap = HashMap<String, ArrayList<ToDoItem>>()
 
         // Getting all groups the user is a participant of
-        val groups = groupsRepository.getAllGroupsByUserWithChatNames(userId)
+        groupsRepository.getAllGroupsByUserWithChatNames(userId) { groups ->
+            if (groups != null) {
+                for (group in groups) {
+                    val groupId = group.id!!
+                    groupsHashmap[groupId] = group
 
-        for (group in groups){
-            val groupId = group.id!!
-            groupsHashmap[groupId] = group
+                    val toDoListsQuery = toDoListsReference.child(groupId)
 
-            val toDoListsQuery = toDoListsReference.child(groupId)
+                    // Using group id to get all the todoItems of each group
+                    toDoListsQuery.addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val data: ArrayList<ToDoItem> = ArrayList()
 
-            // Using group id to get all the todoItems of each group
-            toDoListsQuery.addValueEventListener(object: ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val data: ArrayList<ToDoItem> = ArrayList()
+                            // looping through all todoItems of the group
+                            for (toDoItemSnapshot in snapshot.children) {
+                                val toDoItem = toDoItemSnapshot.getValue(ToDoItem::class.java)
 
-                    // looping through all todoItems of the group
-                    for (toDoItemSnapshot in snapshot.children){
-                        val toDoItem = toDoItemSnapshot.getValue(ToDoItem::class.java)
-
-                        // We only keep todoItems that are assigned to the current user
-                        if(toDoItem != null && toDoItem.assignedTo == userId){
-                            toDoItem.id = toDoItemSnapshot.key
-                            data.add(toDoItem)
+                                // We only keep todoItems that are assigned to the current user
+                                if (toDoItem != null && toDoItem.assignedTo == userId) {
+                                    toDoItem.id = toDoItemSnapshot.key
+                                    data.add(toDoItem)
+                                }
+                            }
+                            todoListsHashmap[groupId] = data
+                            callback(todoListsHashmap, groupsHashmap)
                         }
-                    }
-                    todoListsHashmap[groupId] = data
-                    callback(todoListsHashmap, groupsHashmap)
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e(TAG, "Could not get todo list for group --> $groupId")
-                    error.toException().printStackTrace()
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.e(TAG, "Could not get todo list for group --> $groupId")
+                            error.toException().printStackTrace()
+                        }
+                    })
                 }
-            })
+            }
         }
     }
 
