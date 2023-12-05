@@ -123,4 +123,8 @@
     <string name="a_verification_email_has_been_sent_please_verify_your_email">A verification email has been sent to your email. Please verify your account before proceeding.</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="password_reset_email">An email with a password reset link has been sent</string>
+    <string name="content_desc_add_new_event">Add new Event</string>
+    <string name="content_desc_add_new_todo_item">Add new Todo item</string>
+    <string name="content_desc_add_new_expenses">Add new Expenses</string>
+    <string name="content_desc_settle_balances">Settle Balances</string>
 </resources>
