@@ -10,6 +10,7 @@ import com.example.plantastic.R
 import com.example.plantastic.models.Transaction
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.utilities.DateTimeUtils
+import com.example.plantastic.utilities.DisplayFormatter
 import com.example.plantastic.utilities.FirebaseNodes
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -82,7 +83,7 @@ class TransactionsAdapter(
                     if (user1 != null) {
                         usersRepository.getUserById(model.moneyPaidTo!!){ user2 ->
                             if(user2!= null){
-                                val st = "${user1.username} paid ${user2.username} $${abs(model.totalAmount!!)}"
+                                val st = "${user1.username} paid ${user2.username} $${DisplayFormatter.formatCurrency(model.totalAmount!!)}"
                                 holder.transactionSentence.text = st
                                 val color = holder.itemView.context.getColor(default_color)
                                 holder.transactionSentence.setTextColor(color)
@@ -95,7 +96,7 @@ class TransactionsAdapter(
             else if (model.moneyPaidTo == userId){
                 usersRepository.getUserById(model.moneyOwedTo!!) { user ->
                     if (user != null) {
-                        val st = "${user.username} paid you $${model.totalAmount}"
+                        val st = "${user.username} paid you $${DisplayFormatter.formatCurrency(model.totalAmount!!)}"
                         holder.transactionSentence.text = st
                         val color = holder.itemView.context.getColor(default_color)
                         holder.transactionSentence.setTextColor(color)
@@ -106,7 +107,7 @@ class TransactionsAdapter(
             else if (model.moneyOwedTo  == userId){
                 usersRepository.getUserById(model.moneyPaidTo!!) { user ->
                     if (user != null) {
-                        val st = "You paid ${user.username} $${model.totalAmount}"
+                        val st = "You paid ${user.username} $${DisplayFormatter.formatCurrency(model.totalAmount!!)}"
                         holder.transactionSentence.text = st
                         val color = holder.itemView.context.getColor(default_color)
                         holder.transactionSentence.setTextColor(color)

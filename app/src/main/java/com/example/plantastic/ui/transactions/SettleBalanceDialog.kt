@@ -127,7 +127,7 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
                                                 it.lastName
                                             )
                                             balanceTextView.setTextColor(neg_bal_color)
-                                            amount = thisBalance
+                                            amount = thisBalance * -1
                                         }
                                         updateButtonUI(true)
                                     }
