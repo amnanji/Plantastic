@@ -36,7 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
-            android:src="@drawable/add" />
+            android:contentDescription="@string/content_desc_plus_button"
+            android:src="@drawable/add_icon_pastel_red" />
 
         <EditText
             android:id="@+id/messageEditText"
@@ -48,6 +49,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:hint="@string/message_hint"
+            android:importantForAutofill="no"
             android:inputType="text"
             android:padding="10dp" />
 
@@ -57,8 +59,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
+            android:contentDescription="@string/content_desc_send_button"
             android:enabled="false"
-            android:src="@drawable/send_button_selector" />
+            android:src="@drawable/selector_send_button" />
 
     </LinearLayout>
 

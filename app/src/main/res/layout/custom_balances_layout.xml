@@ -3,29 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#ccc"
-    android:padding="10dp">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        app:cardBackgroundColor="@color/todo_list_item_color_1"
         app:cardCornerRadius="8dp"
-        app:cardElevation="8dp"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/balancesImageView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@string/content_desc_group_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -36,12 +37,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/balanacesOwedByOthers"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/card_title_color"
+                android:textSize="23sp"
+                app:layout_constraintBottom_toTopOf="@+id/balanacesOwedByYou"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/balancesImageView"
                 app:layout_constraintTop_toTopOf="parent"
@@ -51,31 +53,28 @@
                 android:id="@+id/balanacesOwedByOthers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:textColor="@color/pastel_red"
+                android:layout_marginStart="35dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/you_are_owed"
+                android:textColor="@color/text_on_background"
                 android:textSize="18sp"
-                android:text="You are owed: "
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/balancesImageView"
-                app:layout_constraintTop_toBottomOf="@+id/balancesGroupName"/>
+                app:layout_constraintTop_toBottomOf="@+id/balanacesOwedByYou" />
 
             <TextView
                 android:id="@+id/balancesAmountOwedByOthers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:textColor="@android:color/black"
+                android:layout_marginStart="4dp"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/balanacesOwedByOthers"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/balanacesOwedByOthers"
-                app:layout_constraintTop_toBottomOf="@+id/balancesGroupName"
+                app:layout_constraintTop_toTopOf="@+id/balanacesOwedByOthers"
                 app:layout_constraintVertical_bias="0.566"
                 tools:text="25 " />
 
@@ -83,31 +82,28 @@
                 android:id="@+id/balanacesOwedByYou"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:textColor="@color/pastel_red"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/you_owe_with_colon"
+                android:textColor="@color/text_on_background"
                 android:textSize="18sp"
-                android:text="You owe: "
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/balanacesOwedByOthers"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/balancesImageView"
-                app:layout_constraintTop_toBottomOf="@+id/balanacesOwedByOthers"/>
+                app:layout_constraintTop_toBottomOf="@+id/balancesGroupName" />
 
             <TextView
                 android:id="@+id/balancesAmountOwedByYou"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:textColor="@android:color/black"
+                android:layout_marginStart="4dp"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/balanacesOwedByYou"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/balanacesOwedByYou"
-                app:layout_constraintTop_toBottomOf="@+id/balanacesOwedByOthers"
+                app:layout_constraintTop_toTopOf="@+id/balanacesOwedByYou"
                 app:layout_constraintVertical_bias="0.566"
                 tools:text="25 " />
 

@@ -1,16 +1,13 @@
 package com.example.plantastic.ui.transactions
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
-import com.example.plantastic.models.Groups
 import com.example.plantastic.models.Transaction
 import com.example.plantastic.repository.UsersRepository
-import com.example.plantastic.ui.balances.BalancesAdapter
 import com.example.plantastic.utilities.DateTimeUtils
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -18,7 +15,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 class TransactionsAdapter(
-    private var options: FirebaseRecyclerOptions<Transaction>,
+    options: FirebaseRecyclerOptions<Transaction>,
     private val userId: String,
     private val numParticipants: Int
 ) :
@@ -45,14 +42,14 @@ class TransactionsAdapter(
         holder.transactionDescription.text = model.description
         holder.transactionDate.text = DateTimeUtils.getDateString(model.timestamp!!)
         if(model.moneyOwedTo == userId){
-            "You lent ${roundedAmountDue * (numParticipants - 1)}".also {
+            "You lent $ ${roundedAmountDue * (numParticipants - 1)}".also {
                 holder.transactionSentence.text = it
             }
         }
         else{
             usersRepository.getUserById(model.moneyOwedTo!!){ user ->
                 if (user != null){
-                    "You borrowed $roundedAmountDue from ${user.username}".also {
+                    "You borrowed $ $roundedAmountDue from ${user.username}".also {
                         holder.transactionSentence.text = it
                     }
                 }

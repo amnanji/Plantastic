@@ -2,6 +2,7 @@ package com.example.plantastic.ui.conversation
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +14,6 @@ import com.example.plantastic.models.Groups
 import com.example.plantastic.models.Message
 import com.example.plantastic.models.Users
 import com.example.plantastic.repository.GroupsRepository
-import com.example.plantastic.repository.PreferencesRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.utilities.FirebaseNodes
@@ -34,7 +34,7 @@ class ConversationActivity : AppCompatActivity() {
     private lateinit var messageEditText: EditText
     private lateinit var btnSend: ImageButton
     private lateinit var btnAdd: ImageButton
-    private var usersList: ArrayList<Users> = ArrayList<Users>()
+    private var usersList: ArrayList<Users> = ArrayList()
     private var chatGPT: ChatGptMessaging = ChatGptMessaging(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,10 +47,8 @@ class ConversationActivity : AppCompatActivity() {
         btnAdd = findViewById(R.id.btnAdd)
 
         val chatName = intent.getStringExtra(KEY_GROUP_NAME)
-        Log.d(TAG, "chatName --> $chatName")
-        supportActionBar?.title = if (chatName == null) chatName else getString(R.string.app_name)
-        actionBar?.title = if (chatName == null) chatName else getString(R.string.app_name)
-
+        supportActionBar?.title = chatName ?: getString(R.string.app_name)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         btnSend.isEnabled = false
 
@@ -60,19 +58,12 @@ class ConversationActivity : AppCompatActivity() {
         val groupsRepository = GroupsRepository()
         val groupsReference: DatabaseReference =
             firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
-        val usersRepository: UsersRepository = UsersRepository()
-        val preferencesRepository: PreferencesRepository = PreferencesRepository()
-        val preferencesReference: DatabaseReference =
-            firebaseDatabase.getReference(FirebaseNodes.PREFERENCES_NODE)
+        val usersRepository = UsersRepository()
         val messagesReference: DatabaseReference =
             firebaseDatabase.getReference(FirebaseNodes.MESSAGES_NODE)
         val messagesQuery = messagesReference.child(groupId!!)
         val orderedMessagesQuery =
             messagesReference.child(groupId).orderByChild(FirebaseNodes.MESSAGES_TIMESTAMP_NODE)
-
-        orderedMessagesQuery.get().addOnSuccessListener {
-            Log.d(TAG, "messages --> $it")
-        }
 
         val options = FirebaseRecyclerOptions.Builder<Message>()
             .setQuery(orderedMessagesQuery, Message::class.java).build()
@@ -93,9 +84,9 @@ class ConversationActivity : AppCompatActivity() {
                     ScrollToBottomObserver(recyclerView, adapter!!, manager)
                 )
 
-                var userIds = ArrayList<String>()
-                for(userId in group.participants?.keys!!){
-                    userIds.add(userId)
+                val userIds = ArrayList<String>()
+                for (participantId in group.participants?.keys!!) {
+                    userIds.add(participantId)
                 }
 
                 CoroutineScope(Dispatchers.IO).launch {
@@ -120,11 +111,10 @@ class ConversationActivity : AppCompatActivity() {
                 Calendar.getInstance().timeInMillis
             )
             CoroutineScope(Dispatchers.IO).launch {
-                if(msg.content!!.contains("@AI",ignoreCase = true)) {
-                    chatGPT.getResponse(msg,groupId)
-                }
-                else{
-                    Log.d("revs","AI was not called")
+                if (msg.content!!.contains("@AI", ignoreCase = true)) {
+                    chatGPT.getResponse(msg, groupId)
+                } else {
+                    Log.d("revs", "AI was not called")
                 }
             }
             val msgRef = messagesQuery.push()
@@ -151,6 +141,16 @@ class ConversationActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         adapter?.startListening()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressedDispatcher.onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     companion object {

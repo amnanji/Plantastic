@@ -1,14 +1,16 @@
 package com.example.plantastic.repository
 
-import android.util.Log
+import android.content.Context
 import com.example.plantastic.models.Users
 import com.example.plantastic.utilities.FirebaseNodes
+import com.example.plantastic.utilities.IconUtil
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.runBlocking
 
@@ -19,6 +21,7 @@ class UsersRepository {
         firebaseDatabase.getReference(FirebaseNodes.USERS_NODE)
 
     fun createNewUser(
+        context: Context,
         userId: String,
         firstName: String,
         lastName: String,
@@ -27,7 +30,16 @@ class UsersRepository {
         onComplete: (Boolean) -> Unit
     ) {
 
-        val user = Users(userId, firstName, lastName, username, email, HashMap())
+        val iconUtil = IconUtil(context)
+        val user = Users(
+            userId,
+            firstName,
+            lastName,
+            username,
+            email,
+            HashMap(),
+            iconUtil.getRandomColour()
+        )
         usersReference.child(userId).setValue(user)
             .addOnSuccessListener {
                 onComplete(true)
@@ -39,16 +51,17 @@ class UsersRepository {
 
     fun isFieldUnique(nodeName: String, value: String): Boolean {
         val deferred = CompletableDeferred<Boolean>()
-        usersReference.orderByChild(nodeName).equalTo(value).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                deferred.complete(!snapshot.exists())
-            }
+        usersReference.orderByChild(nodeName).equalTo(value).addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    deferred.complete(!snapshot.exists())
+                }
 
-            override fun onCancelled(error: DatabaseError) {
-                deferred.completeExceptionally(error.toException())
+                override fun onCancelled(error: DatabaseError) {
+                    deferred.completeExceptionally(error.toException())
+                }
             }
-        })
+        )
         return runBlocking { deferred.await() }
     }
 
@@ -68,7 +81,7 @@ class UsersRepository {
         })
     }
 
-    fun getUsersById(ids: ArrayList<String>): ArrayList<Users> {
+    fun getUsersById(ids: List<String>): ArrayList<Users> {
         val ret = ArrayList<Users>()
 
         for (id in ids) {
@@ -77,7 +90,6 @@ class UsersRepository {
 
             reference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("Pln", "Received user --> $snapshot")
                     deferred.complete(snapshot.getValue(Users::class.java))
                 }
 
@@ -91,27 +103,28 @@ class UsersRepository {
     }
 
     // Update the username of a user
-    fun updateUsername(userId: String, username: String, callback: (Users?) -> Unit){
+    fun updateUsername(userId: String, username: String, callback: (Users?) -> Unit) {
         val reference = usersReference.child(userId)
         reference.child(FirebaseNodes.USERNAME_NODE).setValue(username)
     }
 
     // Query all users with the same username, ensure no one else has that username
-    fun isUsernameUnique(userId: String, username: String, callback: (Boolean?) -> Unit){
-        val query: Query = usersReference.orderByChild(FirebaseNodes.USERNAME_NODE).equalTo(username)
+    fun isUsernameUnique(userId: String, username: String, callback: (Boolean?) -> Unit) {
+        val query: Query =
+            usersReference.orderByChild(FirebaseNodes.USERNAME_NODE).equalTo(username)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     val count = dataSnapshot.children.count()
                     val users = dataSnapshot.children
-                    if (count == 0){
+                    if (count == 0) {
                         callback(true)
-                    } else if (count > 1){
+                    } else if (count > 1) {
                         callback(false)
                     } else {
                         var isOldUsername = false
-                        for(user in users){
-                            if(user.key.toString() == userId){
+                        for (user in users) {
+                            if (user.key.toString() == userId) {
                                 isOldUsername = true
                             }
                         }
@@ -134,23 +147,65 @@ class UsersRepository {
     }
 
     fun getInitialFriendsQuery(userId: String): Query {
-        return usersReference.orderByChild("${FirebaseNodes.USERS_FRIENDS_NODE}/$userId").equalTo(true)
+        return usersReference.orderByChild("${FirebaseNodes.USERS_FRIENDS_NODE}/$userId")
+            .equalTo(true)
     }
 
-    fun addFriends(userId1: String, userId2: String){
-        this.getUserById(userId1){
-            if (it != null){
-                val userReference = firebaseDatabase.getReference("${FirebaseNodes.USERS_NODE}/$userId1")
+    fun addFriends(userId1: String, userId2: String) {
+        this.getUserById(userId1) {
+            if (it != null) {
+                val userReference =
+                    firebaseDatabase.getReference("${FirebaseNodes.USERS_NODE}/$userId1")
                 it.friends?.put(userId2, true)
                 userReference.setValue(it)
             }
         }
-        this.getUserById(userId2){
-            if (it != null){
-                val userReference = firebaseDatabase.getReference("${FirebaseNodes.USERS_NODE}/$userId2")
+        this.getUserById(userId2) {
+            if (it != null) {
+                val userReference =
+                    firebaseDatabase.getReference("${FirebaseNodes.USERS_NODE}/$userId2")
                 it.friends?.put(userId1, true)
                 userReference.setValue(it)
             }
         }
+    }
+
+    fun getFriendsList(id: String, callback: (ArrayList<Users>?) -> Unit) {
+        val query = getInitialFriendsQuery(id)
+
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    val usersHashMap = dataSnapshot.getValue<HashMap<String, Users>>()
+                    if (usersHashMap == null) {
+                        callback(null)
+                    }
+                    val userList = ArrayList<Users>()
+                    usersHashMap!!.forEach { (_, value) ->
+                        userList.add(value)
+                    }
+                    callback(userList)
+                }
+                callback(null)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                callback(null)
+            }
+        }
+
+        query.addValueEventListener(postListener)
+    }
+
+    fun setColor(userId: String, color: Int) {
+        usersReference.child(userId).child(FirebaseNodes.USERS_COLOUR_NODE).setValue(color)
+    }
+
+    fun updateUserVerificationStatus(userId: String, status: Boolean) {
+        usersReference.child(userId).child(FirebaseNodes.VERIFIED_NODE).setValue(status)
+    }
+
+    companion object {
+        private const val TAG = "Pln UsersRepository"
     }
 }

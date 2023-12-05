@@ -57,9 +57,23 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
+    <!--  Random Content Descriptions  -->
+    <string name="content_desc_hi_welcome">Hi! Welcome</string>
+    <string name="content_desc_user_icon">user icon</string>
+    <string name="content_desc_friend_added">friend added</string>
+    <string name="content_desc_add_friend">add friend</string>
+    <string name="content_desc_group_icon">group icon</string>
+    <string name="content_desc_plus_button">plus button</string>
+    <string name="content_desc_send_button">send button</string>
+    <string name="content_desc_time_icon">time icon</string>
+    <string name="content_desc_location_icon">location icon</string>
+    <string name="content_desc_individual_icon">individual icon</string>
+    <string name="content_desc_calendar_icon">Calendar Icon</string>
 
+    <!--  All Other Strings  -->
     <string name="message_hint">Message…</string>
     <string name="save">Save</string>
+    <string name="transactions">Transactions</string>
     <string name="start_button_text">Start</string>
     <string name="end_button_text">End</string>
     <string name="busy_button_text">Busy</string>
@@ -73,6 +87,16 @@
     <string name="username_updated_successfully">Username updated successfully!</string>
     <string name="busy_text_textview">Busy</string>
     <string name="username_availability_and_preferences_updated_successfully">Username, Availability and Preferences updated successfully!</string>
+    <string name="todo_list_individual_group_title">From chat with %1$s %2$s</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="group">Group</string>
+    <string name="assign_to">Assign to:</string>
+    <string name="due_date">Due Date</string>
+    <string name="add_new_todo_item">Add New Todo Item</string>
+    <string name="date_placeholder">%d/%d/%d</string>
+    <string name="time_placeholder">%1$d:%2$02d</string>
+    <string name="cancel">Cancel</string>
     <string name="nav_add_friends">Add friends</string>
     <string name="log_out">Log out</string>
     <string name="add_friends">Add friends</string>
@@ -83,4 +107,36 @@
     <string name="no_users_found">No users found</string>
     <string name="calendar_icon">Calendar Icon</string>
     <string name="group_icon">Group Icon</string>
+    <string name="nav_new_chat">New Chat</string>
+    <string name="nav_new_individual_chat">New Individual Chat</string>
+    <string name="nav_new_group">New Group</string>
+    <string name="fab">FAB</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="you">"You: "</string>
+    <string name="name_placeholder_with_colon">"%1$s %2$s: "</string>
+    <string name="name_placeholder">%1$s %2$s</string>
+    <string name="balance_placeholder">$ %1$s</string>
+    <string name="you_are_owed">You are owed:</string>
+    <string name="you_owe_with_colon">You owe:</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="location">Location</string>
+    <string name="friends">Friends</string>
+    <string name="no_friends_found">No friends found</string>
+    <string name="group_members">Group members</string>
+    <string name="group_name">Group Name</string>
+    <string name="group_name_colon">Group Name:</string>
+    <string name="create_group">Create Group</string>
+    <string name="group_name_cannot_be_empty">Group name cannot be empty</string>
+    <string name="group_participants_error">Please add at least 2 friends to the group</string>
+    <string name="view_balance">View Balance</string>
+    <string name="verify_email">Please verify your email before proceeding</string>
+    <string name="resend_verification_email">Resend email</string>
+    <string name="a_verification_email_has_been_sent_please_verify_your_email">A verification email has been sent to your email. Please verify your account before proceeding.</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="password_reset_email">An email with a password reset link has been sent</string>
+    <string name="msg_sender_ai_with_colon">"Plantastic Bot: "</string>
+    <string name="msg_sender_ai">"Plantastic Bot"</string>
+    <string name="msg_content_sender_ai_placeholder">Plantastic Bot:&#160; %1$s</string>
 </resources>

@@ -1,24 +1,35 @@
 package com.example.plantastic
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.core.view.GravityCompat
 import com.example.plantastic.databinding.ActivityMainBinding
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.login.LoginActivity
+import com.example.plantastic.utilities.IconUtil
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        const val MY_PERMISSIONS_REQUEST_CALENDAR = 123
+    }
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -26,8 +37,30 @@ class MainActivity : AppCompatActivity() {
     private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
     private var usersRepository: UsersRepository = UsersRepository()
 
+    lateinit var navController: NavController
+
+    var newChatsFragmentId: Int = -1
+    var newGroupChatFragmentId: Int = -1
+    var newIndividualChatFragmentId: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val currUser = usersAuthRepository.getCurrentUser()
+        if (currUser == null) {
+            navigateToLoginActivity()
+        }
+
+        if (!currUser!!.isEmailVerified) {
+            Toast.makeText(
+                this,
+                getString(R.string.a_verification_email_has_been_sent_please_verify_your_email),
+                Toast.LENGTH_SHORT
+            ).show()
+            usersAuthRepository.logOutUser()
+            navigateToLoginActivity()
+            finish()
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -37,11 +70,18 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout = binding.drawerLayout
         val navDrawer = binding.navDrawer
         val navBottomBar = binding.appBarMain.bottomNavigationView
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        navController = findNavController(R.id.nav_host_fragment_content_main)
         val headerView = navDrawer.getHeaderView(0)
         val navHeaderLinearLayout = headerView.findViewById<LinearLayout>(R.id.navViewHeader)
+        val profileImageView = headerView.findViewById<ImageView>(R.id.profileImageView)
         val currUserEmail = headerView.findViewById<TextView>(R.id.currUserEmail_textView)
         val currUserName = headerView.findViewById<TextView>(R.id.currUserName_textView)
+
+        //checkingPermissions
+        if (!areCalendarPermissionsGranted()) {
+            // Request calendar permissions
+            requestCalendarPermissions()
+        }
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -66,11 +106,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(
+            if (
                 destination.id == R.id.nav_calendar ||
                 destination.id == R.id.nav_settings ||
                 destination.id == R.id.nav_profile ||
-                destination.id == R.id.nav_add_friends
+                destination.id == R.id.nav_add_friends ||
+                destination.id == R.id.nav_new_chat ||
+                destination.id == R.id.nav_new_chat_individual ||
+                destination.id == R.id.nav_new_chat_group
             ) {
                 navBottomBar.visibility = View.GONE
             } else {
@@ -78,11 +121,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val currUser = usersAuthRepository.getCurrentUser()
-        if (currUser == null){
-            navigateToLoginActivity()
-        }
-        currUserEmail.text = currUser!!.email
+        currUserEmail.text = currUser.email
+
+        val context = this
 
         usersRepository.getUserById(currUser.uid) {
             if (it != null) {
@@ -90,14 +131,29 @@ class MainActivity : AppCompatActivity() {
                     append(it.firstName)
                     append(" ")
                     append(it.lastName)
+
+                    val iconUtils = IconUtil(context)
+                    val color: Int
+                    if (it.color == null) {
+                        color = iconUtils.getRandomColour()
+                        usersRepository.setColor(currUser.uid, color)
+                    } else {
+                        color = it.color
+                    }
+                    val icon = iconUtils.getIcon(it.firstName!!, it.lastName!!, color)
+                    profileImageView.setImageDrawable(icon)
                 }
             }
         }
 
-        navHeaderLinearLayout.setOnClickListener{
+        navHeaderLinearLayout.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.START)
             navController.navigate(R.id.nav_profile)
         }
+
+        newChatsFragmentId = R.id.nav_new_chat
+        newIndividualChatFragmentId = R.id.nav_new_chat_individual
+        newGroupChatFragmentId = R.id.nav_new_chat_group
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -109,5 +165,35 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun areCalendarPermissionsGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_CALENDAR
+        ) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.WRITE_CALENDAR
+                ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestCalendarPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.READ_CALENDAR,
+                Manifest.permission.WRITE_CALENDAR
+            ),
+            MY_PERMISSIONS_REQUEST_CALENDAR
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

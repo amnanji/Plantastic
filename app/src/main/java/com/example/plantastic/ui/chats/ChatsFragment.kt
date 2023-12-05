@@ -7,17 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import com.example.plantastic.MainActivity
+import com.example.plantastic.R
 import com.example.plantastic.databinding.FragmentChatsBinding
 import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.GroupsRepository
-import com.example.plantastic.repository.PreferencesRepository
 import com.example.plantastic.repository.UsersAuthRepository
-import com.example.plantastic.repository.UsersRepository
-import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ChatsFragment : Fragment() {
     private lateinit var adapter: ChatsAdapter
@@ -28,10 +27,7 @@ class ChatsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
-    private var usersRepository: UsersRepository = UsersRepository()
     private var groupsRepository: GroupsRepository = GroupsRepository()
-    private var preferencesRepository: PreferencesRepository = PreferencesRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,23 +39,33 @@ class ChatsFragment : Fragment() {
         _binding = FragmentChatsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val chatsFab: FloatingActionButton = root.findViewById(R.id.chatsFab)
+
         val currUser = UsersAuthRepository().getCurrentUser()
         val userId = currUser!!.uid
         Log.d(TAG, "Curr user id --> $userId")
 
-        val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
-        val groupsReference: DatabaseReference =
-            firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
-        val groupsQuery = groupsReference.orderByChild("participants/$userId").equalTo(true)
+        val groupsQuery = groupsRepository.getAllGroupsQueryForUser(userId)
 
         val options =
             FirebaseRecyclerOptions.Builder<Groups>().setQuery(groupsQuery, Groups::class.java)
                 .build()
+
         adapter = ChatsAdapter(options, userId)
         binding.chatsRecyclerView.adapter = adapter
         val manager = WrapContentLinearLayoutManager(requireContext())
         binding.chatsRecyclerView.layoutManager = manager
 
+        chatsFab.setOnClickListener {
+            val mainActivity: MainActivity = (requireActivity() as MainActivity)
+
+            // Get the nav controller from main activity
+            val navController: NavController = mainActivity.navController
+            val newChatFragmentId: Int = mainActivity.newChatsFragmentId
+            if (newChatFragmentId != -1) {
+                navController.navigate(newChatFragmentId)
+            }
+        }
         return root
     }
 

@@ -1,28 +1,40 @@
 package com.example.plantastic.repository
 
+import android.util.Log
 import com.example.plantastic.models.CalendarElement
 import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
+import com.example.plantastic.utilities.DateTimeUtils
 import com.example.plantastic.utilities.FirebaseNodes
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.Query
-import java.util.Date
-import java.util.Calendar
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 interface EventsCallback {
     fun onEventsLoaded(events: List<Events>)
 }
+
 interface CalendarCallback {
     fun onCalendarLoaded(calendarList: List<CalendarElement>)
 }
 
 class GroupsRepository {
-    private var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
-    private var groupsReference: DatabaseReference = firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
+    private var firebaseDatabase = FirebaseDatabase.getInstance()
+    private var groupsReference = firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
+    private var usersRepository = UsersRepository()
 
     fun getGroupById(id: String, callback: (Groups?) -> Unit) {
         val reference = groupsReference.child(id)
@@ -41,14 +53,157 @@ class GroupsRepository {
     }
 
     fun getAllGroupsQueryForUser(userId: String): Query {
-        return  groupsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/${userId}").equalTo(true)
+        return groupsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/${userId}")
+            .equalTo(true)
     }
 
-    fun getAllEventsQueryForUser(userId: String, callback: EventsCallback) {
-        val eventsReference = FirebaseDatabase.getInstance().getReference(FirebaseNodes.GROUPS_NODE)
-        val query = eventsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/$userId").equalTo(true)
+    // Suspending function to be called inside a coroutine to get all the groups a user is in
+    // and add the chat names for the individual group types.
+    // Got help from ChatGPT to avoid blocking the main thread
+    suspend fun getAllGroupsByUserWithChatNamesAsync(userId: String): List<Groups> {
+        return suspendCoroutine { continuation ->
+            // Calls the private call-back based function and handles the result
+            getAllGroupsByUserWithChatNamesSingleValue(userId) { groups ->
+                if (groups != null) {
+                    continuation.resume(groups)
+                } else {
+                    // Handle error or return an empty list
+                    continuation.resume(emptyList())
+                }
+            }
+        }
+    }
 
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+    private fun getAllGroupsByUserWithChatNamesSingleValue(userId: String, callback: (List<Groups>?) -> Unit) {
+        val groups = ArrayList<Groups>()
+
+        getAllGroupsQueryForUser(userId).addListenerForSingleValueEvent (object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // Create a list to hold deferred tasks for user retrieval
+                val deferredList = mutableListOf<Deferred<Unit>>()
+
+                // Looping through data snapshots received and adding the chat name if necessary
+                for (groupSnapshot in snapshot.children) {
+
+                    // If any of the snapshots are null, we don't add it to the list of groups and continue the loop
+                    val currGroup = groupSnapshot.getValue(Groups::class.java) ?: continue
+
+                    // If it is a group of type "group", we do not need to change the name
+                    if (currGroup.groupType == "group") {
+                        groups.add(currGroup)
+                        continue
+                    }
+
+                    // If the group is not of type "group", it must be of type "individual"
+                    // then we know it only has one other participant, so the group name will
+                    // be named after the other participant
+
+                    // Getting other participant's id
+                    val participants = currGroup.participants!!.keys.toList()
+                    val otherParticipantId =
+                        if (participants[0] == userId) participants[1] else participants[0]
+
+                    // Create a deferred task to get user's name
+                    val innerDeferred = CompletableDeferred<Unit>()
+
+                    usersRepository.getUserById(otherParticipantId) { user ->
+                        if (user != null) {
+                            currGroup.name = "Chat with ${user.firstName} ${user.lastName}"
+                        }
+                        // Mark inner deferred task as completed
+                        innerDeferred.complete(Unit)
+                        groups.add(currGroup)
+                    }
+
+                    // Add the inner deferred task to the list
+                    deferredList.add(innerDeferred)
+                }
+
+                // Use async and awaitAll to wait for all innerDeferred to complete
+                CoroutineScope(Dispatchers.IO).launch {
+                    deferredList.awaitAll()
+
+                    // Return the result using the callback on the main thread
+                    withContext(Dispatchers.Main) {
+                        callback(groups)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Could not get getAllGroupsByUserWithChatNames()")
+                error.toException().printStackTrace()
+                callback(null)
+            }
+        })
+    }
+
+    fun getAllGroupsByUserWithChatNames(userId: String, callback: (List<Groups>?) -> Unit) {
+        val groups = ArrayList<Groups>()
+
+        getAllGroupsQueryForUser(userId).addValueEventListener (object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // Create a list to hold deferred tasks for user retrieval
+                val deferredList = mutableListOf<Deferred<Unit>>()
+
+                // Looping through data snapshots received and adding the chat name if necessary
+                for (groupSnapshot in snapshot.children) {
+
+                    // If any of the snapshots are null, we don't add it to the list of groups and continue the loop
+                    val currGroup = groupSnapshot.getValue(Groups::class.java) ?: continue
+
+                    // If it is a group of type "group", we do not need to change the name
+                    if (currGroup.groupType == "group") {
+                        groups.add(currGroup)
+                        continue
+                    }
+
+                    // If the group is not of type "group", it must be of type "individual"
+                    // then we know it only has one other participant, so the group name will
+                    // be named after the other participant
+
+                    // Getting other participant's id
+                    val participants = currGroup.participants!!.keys.toList()
+                    val otherParticipantId =
+                        if (participants[0] == userId) participants[1] else participants[0]
+
+                    // Create a deferred task to get user's name
+                    val innerDeferred = CompletableDeferred<Unit>()
+
+                    usersRepository.getUserById(otherParticipantId) { user ->
+                        if (user != null) {
+                            currGroup.name = "Chat with ${user.firstName} ${user.lastName}"
+                        }
+                        // Mark inner deferred task as completed
+                        innerDeferred.complete(Unit)
+                        groups.add(currGroup)
+                    }
+
+                    // Add the inner deferred task to the list
+                    deferredList.add(innerDeferred)
+                }
+
+                // Use async and awaitAll to wait for all innerDeferred to complete
+                CoroutineScope(Dispatchers.IO).launch {
+                    deferredList.awaitAll()
+
+                    // Return the result using the callback on the main thread
+                    withContext(Dispatchers.Main) {
+                        callback(groups)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Could not get getAllGroupsByUserWithChatNames()")
+                error.toException().printStackTrace()
+                callback(null)
+            }
+        })
+    }
+
+    fun getAllEventsListForUser(userId: String, callback: EventsCallback) {
+        getAllGroupsQueryForUser(userId).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val eventsList = mutableListOf<Events>()
 
@@ -60,8 +215,8 @@ class GroupsRepository {
                         eventsList.addAll(events)
                     }
                 }
-
-                callback.onEventsLoaded(eventsList)
+                val sortedList =  ArrayList(eventsList.sortedWith(compareBy { it.date ?: Long.MAX_VALUE }))
+                callback.onEventsLoaded(sortedList)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -70,65 +225,87 @@ class GroupsRepository {
         })
     }
 
-    fun getCalendarForUserAndDate(userId: String, targetDate: Date, callback: CalendarCallback) {
-        val eventsReference = FirebaseDatabase.getInstance().getReference(FirebaseNodes.GROUPS_NODE)
-        val query = eventsReference.orderByChild("${FirebaseNodes.GROUPS_PARTICIPANTS_NODE}/$userId").equalTo(true)
+    fun addEventsItem(eventsItem: Events, groupId: String?) {
+        if (groupId != null) {
+            groupsReference.child(groupId).child(FirebaseNodes.EVENTS_NODE).push().setValue(eventsItem)
+        }
+    }
 
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val calendarList = mutableListOf<CalendarElement>()
-
-                for (groupSnapshot in snapshot.children) {
-                    val grp = groupSnapshot.getValue(Groups::class.java)
-                    if (grp != null) {
-                        val events = grp.events ?: emptyMap()
-
-                        for ((eventId, event) in events) {
-                            // Check if the event date matches the target date
-                            if (isSameDate(event.date, targetDate)) {
-                                val calendarEvent = CalendarElement(
-                                    title = event.name,
-                                    type = "Event", // or any other type you want
-                                    date = event.date,
-                                    GID = event.GID
-                                )
-                                calendarList.add(calendarEvent)
+    fun getGroupIdForUsers(userId1: String, userId2: String, callback: (String?) -> Unit){
+        getAllGroupsQueryForUser(userId1).addListenerForSingleValueEvent (
+            object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    var gId: String? = null
+                    if (dataSnapshot.exists()) {
+                        dataSnapshot.getValue<HashMap<String, Groups>>()?.forEach { (key, value) ->
+                            if (value.participants!!.size == 2 &&
+                                value.participants.containsKey(userId2) &&
+                                value.participants.containsKey(userId1) &&
+                                value.groupType == "individual"
+                            ) {
+                                gId = key
                             }
                         }
                     }
+                    callback(gId)
                 }
 
-                callback.onCalendarLoaded(calendarList)
+                override fun onCancelled(databaseError: DatabaseError) {
+                    callback(null)
+                }
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Handle error
-            }
-        })
+        )
     }
 
 
-    // Function to check if two dates are the same (ignoring time)
+    fun createGroupForUsers(userList: ArrayList<String>, groupName: String?, callback: (String?) -> Unit) {
+        val participants: HashMap<String, Boolean> = HashMap()
+        val timestampGroupCreated: Long = DateTimeUtils.getCurrentTimeStamp()
+        val balances: HashMap<String, HashMap<String, Double>> = HashMap()
 
-    fun isSameDate(eventDate: Long?, targetDate: Date): Boolean {
-        if (eventDate == null) {
-            return false
+        for (user in userList){
+            participants[user] = true
+            balances[user] = HashMap()
+            userList.forEach{
+                if (it != user){
+                    balances[user]!![it] = 0.0
+                }
+            }
         }
 
-        val eventCalendar = Calendar.getInstance().apply {
-            timeInMillis = eventDate
+        //create individual group
+        val groupType: String = if (userList.size == 2){
+            "individual"
+        }
+        //create big group
+        else {
+            "group"
         }
 
-        val targetCalendar = Calendar.getInstance().apply {
-            time = targetDate
-        }
+        val reference: DatabaseReference = groupsReference.push()
+        val groupId: String? = reference.key
 
-        return (eventCalendar.get(Calendar.YEAR) == targetCalendar.get(Calendar.YEAR) &&
-                eventCalendar.get(Calendar.MONTH) == targetCalendar.get(Calendar.MONTH) &&
-                eventCalendar.get(Calendar.DAY_OF_MONTH) == targetCalendar.get(Calendar.DAY_OF_MONTH))
+        val group = Groups(
+            groupId,
+            groupType,
+            participants,
+            groupName,
+            null,
+            balances,
+            timestampGroupCreated,
+            null
+        )
+
+        reference.setValue(group)
+            .addOnSuccessListener {
+                callback(groupId)
+            }
+            .addOnFailureListener {
+                callback(null)
+            }
     }
 
-
-
-
+    companion object {
+        private const val TAG = "Pln GroupsRepository"
+    }
 }

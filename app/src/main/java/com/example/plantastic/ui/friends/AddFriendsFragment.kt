@@ -6,12 +6,12 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.databinding.FragmentAddFriendsBinding
@@ -25,8 +25,6 @@ class AddFriendsFragment : Fragment() {
     private var _binding: FragmentAddFriendsBinding? = null
     private val binding get() = _binding!!
     private val handler = Handler(Looper.getMainLooper())
-    private val debounceDelay = 50L // Adjust the delay as needed
-
 
     private lateinit var adapter: AddFriendsAdapter
     private lateinit var usersRepository: UsersRepository
@@ -99,12 +97,10 @@ class AddFriendsFragment : Fragment() {
                 // this is used because data change callbacks are not called
                 // when the database query is empty
                 backgroundThread.start()
-
             }
 
             override fun afterTextChanged(editable: Editable?) {}
         })
-
         return root
     }
 
@@ -140,6 +136,7 @@ class AddFriendsFragment : Fragment() {
         })
         adapter.updateOptions(options)
         adapter.startListening()
+        adapter.notifyDataSetChanged()
     }
 
     fun checkItemCount() {

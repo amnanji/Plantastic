@@ -1,41 +1,95 @@
 package com.example.plantastic.ui.calendar
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import java.util.*
+import androidx.lifecycle.ViewModel
+import com.example.plantastic.models.CalendarElement
+import com.example.plantastic.models.Groups
+import com.example.plantastic.repository.ToDoRepository
+import com.example.plantastic.repository.UsersAuthRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.Calendar
 
-class CalendarViewModel(application: Application) : AndroidViewModel(application) {
+class CalendarViewModel() : ViewModel() {
 
-    private val _calendarEvents = MutableLiveData<List<CalendarEvent>>()
-
-    // New property to hold a list of events for the selected day
-    private val _eventsForSelectedDay = MutableLiveData<List<CalendarEvent>>()
-    val eventsForSelectedDay: LiveData<List<CalendarEvent>> = _eventsForSelectedDay
-
-
+    private val _calendarEvents = MutableLiveData<List<CalendarElement>>()
+    private var groupsList: List<Groups?> = ArrayList()
 
     init {
-        val events = mutableListOf<CalendarEvent>()
-        // sample events
-        events.add(CalendarEvent("Event 1", Date(), Date()))
-        events.add(CalendarEvent("Event 2", Date(), Date()))
-        _calendarEvents.value = events
+        val currUser = UsersAuthRepository().getCurrentUser()
+        val userId = currUser!!.uid
+
+        CoroutineScope(Dispatchers.IO).launch {
+            ToDoRepository().getToDoItemsByUserId(userId) { todoListsHashmap, groupsHashmap ->
+                // Getting all todoItems assigned to the user and using that list to create a new list of
+                // ToDoItemForDisplay which collects all the data needed in addition to todoItem to display the todoItem
+                val data = ArrayList<CalendarElement>()
+                groupsList = groupsHashmap.values.toList()
+                for ((groupId, toDoItems) in todoListsHashmap) {
+                    if (!groupsHashmap.containsKey(groupId)) continue
+                    val groupName = groupsHashmap[groupId]?.name
+
+                    val events = groupsHashmap[groupId]?.events ?: emptyMap()
+
+                    for ((_, event) in events) {
+                            val calendarEvent = CalendarElement(
+                                title = event.name,
+                                type = "Event", // will switch up in TO-DO
+                                date = event.date,
+                                GID = event.GID,
+                                groupName = groupName,
+                                location = event.location
+                            )
+                            data.add(calendarEvent)
+                    }
+
+                    for (toDoItem in toDoItems) {
+                        if (toDoItem.id != null) {
+                            val calendarEvent = CalendarElement(
+                                title = toDoItem.title,
+                                type = "Todo", // will switch up in TO-DO
+                                date = toDoItem.dueDate,
+                                GID = groupId,
+                                groupName = groupName
+                            )
+                            data.add(calendarEvent)
+                        }
+                    }
+                }
+                CoroutineScope(Dispatchers.Main).launch {
+                    // Sorting list by due date
+                    _calendarEvents.value =
+                        data.sortedWith(compareBy { it.date ?: Long.MAX_VALUE })
+                }
+            }
+        }
     }
 
     // load events for the selected day
-    fun loadEventsForSelectedDay(selectedDay: Date) {
+    fun loadEventsForSelectedDay(selectedDay: Long): List<CalendarElement> {
         val events = _calendarEvents.value ?: emptyList()
-        val eventsOnSelectedDay = events.filter { it.startDate.day == selectedDay.day }
-        _eventsForSelectedDay.value = eventsOnSelectedDay
-    }
-    fun addEvent(event: CalendarEvent) {
-        val currentEvents = _calendarEvents.value?.toMutableList() ?: mutableListOf()
-        currentEvents.add(event)
-        _calendarEvents.value = currentEvents
+        return events.filter { isSameDate(it.date, selectedDay) }
     }
 
-    data class CalendarEvent(val title: String, val startDate: Date, val endDate: Date)
+    // Function to check if two dates are the same (ignoring time)
+    private fun isSameDate(eventDate: Long?, targetDate: Long): Boolean {
+        if (eventDate == null) {
+            return false
+        }
+
+        val eventCalendar = Calendar.getInstance().apply {
+            timeInMillis = eventDate
+        }
+
+        val targetCalendar = Calendar.getInstance().apply {
+            timeInMillis = targetDate
+        }
+
+        return (eventCalendar.get(Calendar.YEAR) == targetCalendar.get(Calendar.YEAR) &&
+                eventCalendar.get(Calendar.MONTH) == targetCalendar.get(Calendar.MONTH) &&
+                eventCalendar.get(Calendar.DAY_OF_MONTH) == targetCalendar.get(Calendar.DAY_OF_MONTH))
+    }
+
 
 }

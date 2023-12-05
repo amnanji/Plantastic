@@ -1,5 +1,6 @@
+package com.example.plantastic.ui.calendar
+
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,12 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.plantastic.databinding.FragmentCalendarBinding
+import com.example.plantastic.models.CalendarElement
+import com.example.plantastic.repository.CalendarCallback
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
-import com.example.plantastic.ui.calendar.calendarAdapter
-import java.util.*
+import java.util.Calendar
 
-class CalendarFragment : Fragment() {
+class CalendarFragment : Fragment(), CalendarCallback{
 
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
@@ -21,7 +23,8 @@ class CalendarFragment : Fragment() {
     private lateinit var calendarView: CalendarView
     private lateinit var groupsRepository: GroupsRepository
     private lateinit var usersAuthRepository: UsersAuthRepository
-    private lateinit var calendarAdapter: calendarAdapter
+    private lateinit var calendarAdapter: CalendarAdapter
+    private lateinit var calendarViewModel: CalendarViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,34 +33,36 @@ class CalendarFragment : Fragment() {
     ): View {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        calendarViewModel =
+            ViewModelProvider(this)[CalendarViewModel::class.java]
+
         calendarView = binding.calendarView
         usersAuthRepository = UsersAuthRepository()
-        val currUser = usersAuthRepository.getCurrentUser()
         groupsRepository = GroupsRepository()
-        calendarAdapter = calendarAdapter(emptyList())
-
-        binding.calendarRecyclerView.adapter = calendarAdapter
-        binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        calendarAdapter = CalendarAdapter(emptyList())
 
         // REFERENCED: https://developer.android.com/reference/android/widget/CalendarView.OnDateChangeListener
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val selectedDay = Calendar.getInstance().apply {
                 set(year, month, dayOfMonth)
-            }.time
-            Log.d("Revs", "selectedDay $selectedDay")
-
-            // Make sure to handle the null case appropriately
-//            groupsRepository.getCalendarForUserAndDate(selectedDay.toString()) { calendarElements ->
-//                // Update the adapter with the new data
-//                calendarAdapter.updateCalendarElements(calendarElements)
-//            }
+            }.timeInMillis
+            calendarAdapter = CalendarAdapter(calendarViewModel.loadEventsForSelectedDay(selectedDay))
+            binding.calendarRecyclerView.adapter = calendarAdapter
+            binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         }
-
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    override fun onCalendarLoaded(calendarList: List<CalendarElement>) {
+        calendarAdapter = CalendarAdapter(calendarList)
+        binding.calendarRecyclerView.adapter = calendarAdapter
+        binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
     }
 }
