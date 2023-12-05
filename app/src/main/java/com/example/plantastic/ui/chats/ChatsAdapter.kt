@@ -3,8 +3,8 @@ package com.example.plantastic.ui.chats
 import android.content.Context
 import android.content.Intent
 import android.text.format.DateFormat
-import android.view.ViewGroup
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.databinding.ChatGroupBinding
@@ -54,7 +54,10 @@ class ChatsAdapter(
         return DateFormat.format("MMM dd, yyyy", calendar).toString()
     }
 
-    inner class GroupChatViewHolder(private val context: Context, private val binding: ChatGroupBinding) :
+    inner class GroupChatViewHolder(
+        private val context: Context,
+        private val binding: ChatGroupBinding
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Groups) {
             binding.chatName.text = item.name
@@ -62,7 +65,9 @@ class ChatsAdapter(
                 binding.lastMsgContent.text = item.latestMessage.content
                 binding.lastMsgTimestamp.text = getDate(item.latestMessage.timestamp!!)
 
-                if (item.latestMessage.senderId!! == userId){
+                if (item.latestMessage.messageType == "AI Message") {
+                    binding.lastMsgSender.text = context.getString(R.string.msg_sender_ai_with_colon)
+                } else if (item.latestMessage.senderId!! == userId) {
                     binding.lastMsgSender.text = context.getString(R.string.you)
                 } else {
                     usersRepository.getUserById(item.latestMessage.senderId) {
@@ -92,13 +97,16 @@ class ChatsAdapter(
         }
     }
 
-    inner class IndividualChatViewHolder(private val context: Context, private val binding: ChatIndividualBinding) :
+    inner class IndividualChatViewHolder(
+        private val context: Context,
+        private val binding: ChatIndividualBinding
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Groups) {
             val participants = item.participants!!.keys.toList()
             val otherParticipantId =
                 if (participants[0] == userId) participants[1] else participants[0]
-            var chatName = "Plantastic"
+            var chatName = context.getString(R.string.app_name)
             usersRepository.getUserById(otherParticipantId) {
                 if (it != null) {
                     chatName = context.getString(
@@ -108,15 +116,21 @@ class ChatsAdapter(
                     )
                     binding.chatName.text = chatName
 
-                    val iconUtil= IconUtil(itemView.context)
+                    val iconUtil = IconUtil(itemView.context)
                     val drawable = iconUtil.getIcon(it.firstName!!, it.lastName!!, it.color!!)
                     binding.messengerImageView.setImageDrawable(drawable)
                 }
-
             }
 
             if (item.latestMessage != null) {
-                binding.lastMsgContent.text = item.latestMessage.content
+                if (item.latestMessage.messageType == "AI Message") {
+                    binding.lastMsgContent.text = context.getString(
+                        R.string.msg_content_sender_ai_placeholder,
+                        item.latestMessage.content
+                    )
+                } else {
+                    binding.lastMsgContent.text = item.latestMessage.content
+                }
                 binding.lastMsgTimestamp.text = getDate(item.latestMessage.timestamp!!)
             } else {
                 binding.lastMsgTimestamp.text = item.timestampGroupCreated?.let { getDate(it) }

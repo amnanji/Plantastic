@@ -1,10 +1,10 @@
 package com.example.plantastic.ui.transactions
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.Transaction
@@ -47,13 +47,13 @@ class TransactionsActivity : AppCompatActivity() {
         val viewBalanceButton = findViewById<Button>(R.id.transactionsViewBalancesButton)
 
         val currUser = usersAuthRepository.getCurrentUser()
-        if(currUser == null){
+        if (currUser == null) {
             finish()
         }
 
         val groupId = intent.getStringExtra(GROUP_ID)
         val numbParticipants = intent.getIntExtra(NUMBER_OF_MEMBERS, -1)
-        if (groupId == null || numbParticipants == -1){
+        if (groupId == null || numbParticipants == -1) {
             finish()
         }
 
@@ -68,9 +68,9 @@ class TransactionsActivity : AppCompatActivity() {
         recyclerView.layoutManager = manager
         adapter.startListening()
 
-        groupsRepository.getGroupById(groupId){ group ->
-            if (group != null){
-                if (group.groupType == "group"){
+        groupsRepository.getGroupById(groupId) { group ->
+            if (group != null) {
+                if (group.groupType == "group") {
                     groupNameTextView.text = group.name
                 } else {
                     val participants = group.participants!!.keys.toList()
@@ -105,12 +105,14 @@ class TransactionsActivity : AppCompatActivity() {
         super.onResume()
         adapter?.startListening()
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 onBackPressedDispatcher.onBackPressed()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }

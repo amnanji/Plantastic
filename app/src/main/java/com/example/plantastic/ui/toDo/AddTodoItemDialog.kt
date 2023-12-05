@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.example.plantastic.R
 import com.example.plantastic.models.Groups
@@ -26,7 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
-import androidx.core.widget.addTextChangedListener
 
 class AddTodoItemDialog : DialogFragment() {
     private lateinit var chatsSpinner: Spinner

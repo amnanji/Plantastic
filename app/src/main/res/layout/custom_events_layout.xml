@@ -65,7 +65,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:contentDescription="Pin Icon"
+                    android:contentDescription="@string/content_desc_location_icon"
                     android:src="@drawable/baseline_pin_drop_24" />
 
                 <TextView
@@ -93,7 +93,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:contentDescription="Calendar Icon"
+                    android:contentDescription="@string/content_desc_calendar_icon"
                     android:src="@drawable/baseline_calendar_month_24" />
 
                 <TextView

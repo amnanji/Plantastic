@@ -5,13 +5,12 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
@@ -20,7 +19,6 @@ import com.example.plantastic.models.Users
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
-import com.firebase.ui.database.FirebaseRecyclerOptions
 
 class NewIndividualChatFragment : Fragment() {
 
@@ -36,7 +34,6 @@ class NewIndividualChatFragment : Fragment() {
     private lateinit var noUsersEditText: TextView
     private lateinit var editTextSearch: EditText
 
-    private lateinit var allFriendsList: ArrayList<Users>
     private lateinit var filteredFriendsList: ArrayList<Users>
 
     override fun onCreateView(
@@ -62,15 +59,26 @@ class NewIndividualChatFragment : Fragment() {
 
         filteredFriendsList = ArrayList()
 
-        adapter = FriendsChatAdapter(filteredFriendsList, currUser!!.uid)
+        adapter = FriendsChatAdapter(filteredFriendsList, currUser.uid)
         recyclerView.adapter = adapter
 
         // Set up TextWatcher to filter data based on search input
         editTextSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
 
             // Help from - https://developer.android.com/reference/android/text/TextWatcher
-            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
                 val searchText = charSequence.toString().trim()
 
                 // Update the query only if the search string is not empty
@@ -78,7 +86,7 @@ class NewIndividualChatFragment : Fragment() {
                     friendsChatViewModel.filterFriendsList(searchText)
                 }
                 // populate list with all friends
-                else{
+                else {
                     friendsChatViewModel.filterFriendsList("")
                 }
             }
@@ -86,15 +94,14 @@ class NewIndividualChatFragment : Fragment() {
             override fun afterTextChanged(editable: Editable?) {}
         })
 
-        friendsChatViewModel.filteredFriendsList.observe(requireActivity()){
-            if (it != null){
+        friendsChatViewModel.filteredFriendsList.observe(requireActivity()) {
+            if (it != null) {
                 filteredFriendsList.clear()
                 filteredFriendsList.addAll(it)
                 adapter.notifyDataSetChanged()
-                if(it.isEmpty()){
+                if (it.isEmpty()) {
                     noUsersEditText.visibility = View.VISIBLE
-                }
-                else{
+                } else {
                     noUsersEditText.visibility = View.GONE
                 }
             }
@@ -103,7 +110,7 @@ class NewIndividualChatFragment : Fragment() {
         val handler = Handler(Looper.getMainLooper())
 
         handler.postDelayed({
-            if(adapter.itemCount == 0){
+            if (adapter.itemCount == 0) {
                 noUsersEditText.visibility = View.VISIBLE
             }
         }, 200)

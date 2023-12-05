@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -89,16 +90,16 @@
             android:id="@+id/btnDueDateTodo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/due_date"
             android:layout_marginEnd="10dp"
-            android:backgroundTint="@color/yellow"/>
+            android:backgroundTint="@color/yellow"
+            android:text="@string/due_date" />
 
         <TextView
             android:id="@+id/textViewDueDateTodo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="2023-12-30"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:text="2023-12-30" />
 
     </LinearLayout>
 

@@ -15,7 +15,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 class TransactionsAdapter(
-    private var options: FirebaseRecyclerOptions<Transaction>,
+    options: FirebaseRecyclerOptions<Transaction>,
     private val userId: String,
     private val numParticipants: Int
 ) :

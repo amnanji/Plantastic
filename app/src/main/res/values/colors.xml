@@ -17,7 +17,7 @@
     <!--  Chat Related Colors  -->
     <color name="curr_user_msg">#F2D5C3</color>
     <color name="other_user_msg">#EDEDED</color>
-    <color name="ai_msg">@color/pastel_red</color>
+    <color name="ai_msg">#FDE2E2</color>
     <color name="text_on_background">#FF000000</color>
     <color name="write_msg_background">#DFDFDF</color>
     

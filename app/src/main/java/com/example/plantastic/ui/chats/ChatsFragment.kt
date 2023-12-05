@@ -2,10 +2,10 @@ package com.example.plantastic.ui.chats
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import com.example.plantastic.MainActivity
@@ -27,15 +27,14 @@ class ChatsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private lateinit var groupsRepository: GroupsRepository
+    private var groupsRepository: GroupsRepository = GroupsRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val chatsViewModel =
-            ViewModelProvider(this).get(ChatsViewModel::class.java)
+        val chatsViewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
 
         _binding = FragmentChatsBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -45,8 +44,6 @@ class ChatsFragment : Fragment() {
         val currUser = UsersAuthRepository().getCurrentUser()
         val userId = currUser!!.uid
         Log.d(TAG, "Curr user id --> $userId")
-
-        groupsRepository = GroupsRepository()
 
         val groupsQuery = groupsRepository.getAllGroupsQueryForUser(userId)
 
@@ -60,19 +57,15 @@ class ChatsFragment : Fragment() {
         binding.chatsRecyclerView.layoutManager = manager
 
         chatsFab.setOnClickListener {
-
             val mainActivity: MainActivity = (requireActivity() as MainActivity)
 
             // Get the nav controller from main activity
             val navController: NavController = mainActivity.navController
-
             val newChatFragmentId: Int = mainActivity.newChatsFragmentId
-
-            if (newChatFragmentId != -1){
+            if (newChatFragmentId != -1) {
                 navController.navigate(newChatFragmentId)
             }
         }
-
         return root
     }
 

@@ -13,7 +13,7 @@ import com.example.plantastic.models.CalendarElement
 import com.example.plantastic.repository.CalendarCallback
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
-import java.util.*
+import java.util.Calendar
 
 class CalendarFragment : Fragment(), CalendarCallback{
 

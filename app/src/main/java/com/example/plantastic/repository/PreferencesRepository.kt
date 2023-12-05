@@ -1,5 +1,6 @@
 package com.example.plantastic.repository
 
+import android.util.Log
 import com.example.plantastic.models.Preferences
 import com.example.plantastic.utilities.FirebaseNodes
 import com.google.firebase.database.DataSnapshot
@@ -7,6 +8,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.runBlocking
 
 class PreferencesRepository {
     private var firebaseDatabase: FirebaseDatabase =  FirebaseDatabase.getInstance()
@@ -38,6 +41,28 @@ class PreferencesRepository {
                 callback(null)
             }
         })
+    }
+
+    fun getPreferencesById(ids: ArrayList<String>): ArrayList<Preferences> {
+        val ret = ArrayList<Preferences>()
+
+        for (id in ids) {
+            val reference = preferencesReference.child(id)
+            val deferred = CompletableDeferred<Preferences?>()
+
+            reference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d("Pln", "Received user --> $snapshot")
+                    deferred.complete(snapshot.getValue(Preferences::class.java))
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    deferred.completeExceptionally(error.toException())
+                }
+            })
+            runBlocking { deferred.await() }?.let { ret.add(it) }
+        }
+        return ret
     }
 
     fun updatePreference(userId: String, foodPreferences: String, dietaryRestrictionIndex: Int,

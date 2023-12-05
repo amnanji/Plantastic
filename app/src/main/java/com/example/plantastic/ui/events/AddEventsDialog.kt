@@ -1,5 +1,6 @@
 package com.example.plantastic.ui.events
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -13,17 +14,16 @@ import android.net.ParseException
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
-import android.Manifest
-import android.util.Log
-import androidx.core.app.ActivityCompat
 import com.example.plantastic.R
 import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
@@ -37,10 +37,8 @@ import kotlinx.coroutines.withContext
 import java.util.Locale
 import java.util.TimeZone
 
-
-class AddEventsDialog: DialogFragment() {
+class AddEventsDialog : DialogFragment() {
     private lateinit var groupsSpinner: Spinner
-
     private lateinit var dateTextView: TextView
     private lateinit var dateBtn: Button
     private lateinit var timeTextView: TextView
@@ -150,7 +148,10 @@ class AddEventsDialog: DialogFragment() {
                     groups[groupsSpinner.selectedItemPosition]?.id,
                     descriptionTextView.text.toString()
                 )
-                groupsRepository.addEventsItem(eventItem,groups[groupsSpinner.selectedItemPosition]?.id,)
+                groupsRepository.addEventsItem(
+                    eventItem,
+                    groups[groupsSpinner.selectedItemPosition]?.id,
+                )
 
 
                 val readCalendarPermission = ContextCompat.checkSelfPermission(
@@ -162,11 +163,9 @@ class AddEventsDialog: DialogFragment() {
                     requireContext(),
                     Manifest.permission.WRITE_CALENDAR
                 ) == PackageManager.PERMISSION_GRANTED
-                if(readCalendarPermission && writeCalendarPermission) {
+                if (readCalendarPermission && writeCalendarPermission) {
                     addEventToCalendar(eventItem)
-                }
-                else
-                {
+                } else {
                     Log.d("Revs", "no permission!!!!!!!!!!!!!!!!")
                     // Request permissions
                     val permissionsToRequest = mutableListOf<String>()
@@ -223,11 +222,13 @@ class AddEventsDialog: DialogFragment() {
         dialog.window?.decorView?.setBackgroundResource(R.drawable.rounded_borders_15dp)
         return dialog
     }
+
     private fun parseDate(): Long {
         // Choosing what data we are parsing based on the dialog we need to create (Date or Time)
         val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.CANADA)
         return sdf.parse(dateTextView.text.toString()).time
     }
+
     private fun parseTime(): Long {
         // Choosing what data we are parsing based on the dialog we need to create (Date or Time)
         val sdf = SimpleDateFormat("HH:mm", Locale.CANADA)
@@ -241,8 +242,8 @@ class AddEventsDialog: DialogFragment() {
         return sdf.parse("$date $time").time
 
 
-
     }
+
     private fun validateData(): Boolean {
         var flag = true
         if (titleTextView.text?.isBlank() == true) {
@@ -259,7 +260,7 @@ class AddEventsDialog: DialogFragment() {
         if (timeTextView.text.isBlank()) {
             flag = false
         }
-        if (locationTextView.text?.isBlank()==true) {
+        if (locationTextView.text?.isBlank() == true) {
             flag = false
         }
 
@@ -292,7 +293,10 @@ class AddEventsDialog: DialogFragment() {
 
         }
 
-        return requireContext().contentResolver.insert(CalendarContract.Events.CONTENT_URI, contentValues)
+        return requireContext().contentResolver.insert(
+            CalendarContract.Events.CONTENT_URI,
+            contentValues
+        )
     }
 
     @SuppressLint("Range")
