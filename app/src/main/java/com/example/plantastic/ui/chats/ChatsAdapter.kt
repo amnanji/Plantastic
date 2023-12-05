@@ -3,8 +3,8 @@ package com.example.plantastic.ui.chats
 import android.content.Context
 import android.content.Intent
 import android.text.format.DateFormat
-import android.view.ViewGroup
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.databinding.ChatGroupBinding
@@ -21,7 +21,6 @@ class ChatsAdapter(
     private val options: FirebaseRecyclerOptions<Groups>,
     private val userId: String
 ) : FirebaseRecyclerAdapter<Groups, RecyclerView.ViewHolder>(options) {
-
     val usersRepository = UsersRepository()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -78,6 +77,8 @@ class ChatsAdapter(
                     }
                 }
             } else {
+                binding.lastMsgSender.text = ""
+                binding.lastMsgContent.text = ""
                 binding.lastMsgTimestamp.text = item.timestampGroupCreated?.let { getDate(it) }
             }
 
@@ -114,13 +115,13 @@ class ChatsAdapter(
                     val drawable = iconUtil.getIcon(it.firstName!!, it.lastName!!, it.color!!)
                     binding.messengerImageView.setImageDrawable(drawable)
                 }
-
             }
 
             if (item.latestMessage != null) {
                 binding.lastMsgContent.text = item.latestMessage.content
                 binding.lastMsgTimestamp.text = getDate(item.latestMessage.timestamp!!)
             } else {
+                binding.lastMsgContent.text = ""
                 binding.lastMsgTimestamp.text = item.timestampGroupCreated?.let { getDate(it) }
             }
 

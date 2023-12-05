@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.example.plantastic.R
 import com.example.plantastic.models.Groups
@@ -26,7 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
-import androidx.core.widget.addTextChangedListener
 
 class AddTodoItemDialog : DialogFragment() {
     private lateinit var groupsSpinner: Spinner
@@ -75,9 +75,21 @@ class AddTodoItemDialog : DialogFragment() {
         }
 
         if (groupId != null) {
-            groupsRepository.getGroupById(groupId!!){
+            groupsRepository.getGroupById(groupId!!) {
                 groups = listOf(it)
-                updateGroupsSpinner()
+                val participants = groups[0]?.participants!!.keys.toList()
+                val otherParticipantId =
+                    if (participants[0] == userId) participants[1] else participants[0]
+                usersRepository.getUserById(otherParticipantId) { user ->
+                    if (user != null) {
+                        groups[0]?.name = view.context.getString(
+                            R.string.name_placeholder,
+                            user.firstName,
+                            user.lastName
+                        )
+                        updateGroupsSpinner()
+                    }
+                }
             }
         } else {
             CoroutineScope(Dispatchers.IO).launch {
@@ -211,7 +223,7 @@ class AddTodoItemDialog : DialogFragment() {
         return flag
     }
 
-    private fun updateGroupsSpinner(){
+    private fun updateGroupsSpinner() {
         CoroutineScope(Dispatchers.Main).launch {
             val groupNames = groups.map { it!!.name }
             val groupsAdapter = ArrayAdapter(
