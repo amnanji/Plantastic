@@ -3,6 +3,7 @@ package com.example.plantastic.ui.transactions
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,7 @@ import com.example.plantastic.repository.TransactionsRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.balancedialog.BalancesDialog
+import com.example.plantastic.utilities.IconUtil
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 
@@ -45,6 +47,8 @@ class TransactionsActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.transactionsRecyclerView)
         val groupNameTextView = findViewById<TextView>(R.id.transactionsGroupNameTextView)
         val viewBalanceButton = findViewById<Button>(R.id.transactionsViewBalancesButton)
+        val imageIcon = findViewById<ImageView>(R.id.transactionsGroupImageView)
+        val iconUtil= IconUtil(this)
 
         val currUser = usersAuthRepository.getCurrentUser()
         if (currUser == null) {
@@ -72,6 +76,9 @@ class TransactionsActivity : AppCompatActivity() {
             if (group != null) {
                 if (group.groupType == "group") {
                     groupNameTextView.text = group.name
+
+                    val drawable = iconUtil.getIcon(group.name!!, "", group.color!!)
+                    imageIcon.setImageDrawable(drawable)
                 } else {
                     val participants = group.participants!!.keys.toList()
                     val otherParticipantId =
@@ -84,6 +91,9 @@ class TransactionsActivity : AppCompatActivity() {
                                 it.lastName
                             )
                             groupNameTextView.text = chatName
+
+                            val drawable = iconUtil.getIcon(it.firstName!!, it.lastName!!, it.color!!)
+                            imageIcon.setImageDrawable(drawable)
                         }
                     }
                 }

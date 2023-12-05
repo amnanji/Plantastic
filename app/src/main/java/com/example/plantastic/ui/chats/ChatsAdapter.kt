@@ -21,7 +21,6 @@ class ChatsAdapter(
     private val options: FirebaseRecyclerOptions<Groups>,
     private val userId: String
 ) : FirebaseRecyclerAdapter<Groups, RecyclerView.ViewHolder>(options) {
-
     val usersRepository = UsersRepository()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -65,22 +64,27 @@ class ChatsAdapter(
                 binding.lastMsgContent.text = item.latestMessage.content
                 binding.lastMsgTimestamp.text = getDate(item.latestMessage.timestamp!!)
 
-                if (item.latestMessage.messageType == "AI Message") {
-                    binding.lastMsgSender.text = context.getString(R.string.msg_sender_ai_with_colon)
-                } else if (item.latestMessage.senderId!! == userId) {
-                    binding.lastMsgSender.text = context.getString(R.string.you)
-                } else {
-                    usersRepository.getUserById(item.latestMessage.senderId) {
-                        if (it != null) {
-                            binding.lastMsgSender.text = context.getString(
-                                R.string.name_placeholder_with_colon,
-                                it.firstName,
-                                it.lastName
-                            )
+                if (item.latestMessage.senderId != null) {
+                    if (item.latestMessage.messageType == "AI Message") {
+                        binding.lastMsgSender.text =
+                            context.getString(R.string.msg_sender_ai_with_colon)
+                    } else if (item.latestMessage.senderId == userId) {
+                        binding.lastMsgSender.text = context.getString(R.string.you)
+                    } else {
+                        usersRepository.getUserById(item.latestMessage.senderId) {
+                            if (it != null) {
+                                binding.lastMsgSender.text = context.getString(
+                                    R.string.name_placeholder_with_colon,
+                                    it.firstName,
+                                    it.lastName
+                                )
+                            }
                         }
                     }
                 }
             } else {
+                binding.lastMsgSender.text = ""
+                binding.lastMsgContent.text = ""
                 binding.lastMsgTimestamp.text = item.timestampGroupCreated?.let { getDate(it) }
             }
 
@@ -133,6 +137,7 @@ class ChatsAdapter(
                 }
                 binding.lastMsgTimestamp.text = getDate(item.latestMessage.timestamp!!)
             } else {
+                binding.lastMsgContent.text = ""
                 binding.lastMsgTimestamp.text = item.timestampGroupCreated?.let { getDate(it) }
             }
 

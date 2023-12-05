@@ -13,17 +13,12 @@ import com.example.plantastic.R
 import com.example.plantastic.models.Message
 import com.example.plantastic.models.Preferences
 import com.example.plantastic.models.Users
-import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.PreferencesRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
-import com.example.plantastic.ui.conversation.ConversationActivity
 import com.example.plantastic.utilities.FirebaseNodes
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import kotlin.time.Duration.Companion.seconds
 
@@ -53,8 +48,8 @@ class ChatGptMessaging(context: Context) {
     }
 
     private fun addUserMessage(message: Message) {
-        usersRepository.getUserById(message.senderId!!){user: Users? ->
-            if (user != null){
+        usersRepository.getUserById(message.senderId!!) { user: Users? ->
+            if (user != null) {
                 messages.add("${user.username}: ${message.content}")
             }
         }
@@ -70,16 +65,19 @@ class ChatGptMessaging(context: Context) {
         return ArrayList(messages)
     }
 
-    private fun intToStringAvailability(context: Context, availabilityArray: MutableList<Int>): String{
+    private fun intToStringAvailability(
+        context: Context,
+        availabilityArray: MutableList<Int>
+    ): String {
         var stringAvailability = ""
         var calendar = Calendar.getInstance()
         var daysOfWeek = context.resources.getStringArray(R.array.days_of_week)
-        for (dayIndex in 0..<DAYS_IN_WEEK){
+        for (dayIndex in 0..<DAYS_IN_WEEK) {
             val dayOfWeek = daysOfWeek[dayIndex]
-            val startTime = availabilityArray[dayIndex*2]
-            val endTime = availabilityArray[dayIndex*2 + 1]
+            val startTime = availabilityArray[dayIndex * 2]
+            val endTime = availabilityArray[dayIndex * 2 + 1]
 
-            stringAvailability += if (startTime != -1){
+            stringAvailability += if (startTime != -1) {
                 val timeFormat = SimpleDateFormat("HH:mm")
                 calendar.set(Calendar.HOUR_OF_DAY, startTime / 60)
                 calendar.set(Calendar.MINUTE, startTime % 60)
@@ -97,7 +95,7 @@ class ChatGptMessaging(context: Context) {
         return stringAvailability
     }
 
-    private fun getDietaryRestriction(context: Context, dietaryRestrictionIndex: Int): String{
+    private fun getDietaryRestriction(context: Context, dietaryRestrictionIndex: Int): String {
         val dietaryRestrictionArray = context.resources.getStringArray(R.array.dietary_options)
         return dietaryRestrictionArray[dietaryRestrictionIndex]
     }
@@ -117,13 +115,19 @@ class ChatGptMessaging(context: Context) {
 
                         // Log user preferences
                         Log.d("User Preferences", "${user.firstName}'s preferences:")
-                        Log.d("Food Preferences", "${user.firstName} likes: ${preferences.foodPreferences}")
+                        Log.d(
+                            "Food Preferences",
+                            "${user.firstName} likes: ${preferences.foodPreferences}"
+                        )
                         Log.d("Dietary Restrictions", "${user.firstName}'s dietary restrictions: ${
                             preferences.dietaryRestrictionIndex?.let { index ->
                                 getDietaryRestriction(context, index)
                             }
                         }")
-                        Log.d("Activity Preferences", "${user.firstName} enjoys: ${preferences.activityPreferences}")
+                        Log.d(
+                            "Activity Preferences",
+                            "${user.firstName} enjoys: ${preferences.activityPreferences}"
+                        )
                         Log.d("Availability", "${user.firstName}'s availability: ${
                             preferences.availability?.let { availability ->
                                 intToStringAvailability(context, availability)
@@ -157,19 +161,23 @@ class ChatGptMessaging(context: Context) {
     }
 
 
-
-    private fun createChatMessage(message: String) : ChatMessage{
+    private fun createChatMessage(message: String): ChatMessage {
         return ChatMessage(role = ChatRole.User, content = message)
     }
 
-    suspend fun getResponse(message: Message, groupID: String){
+    suspend fun getResponse(message: Message, groupID: String) {
         Log.d("step 6", "chatGPT:getResponse")
         var currentMessage = ""
         var optimizedMessageString = getOptimizedMessage(message)
         Log.d("step 10", "chatGPT:getResponse:optimizedMessageString: $optimizedMessageString")
 
-        if (optimizedMessageString != null){
-            var optimizedMessage = Message(message.messageType, message.senderId, optimizedMessageString, message.timestamp)
+        if (optimizedMessageString != null) {
+            var optimizedMessage = Message(
+                message.messageType,
+                message.senderId,
+                optimizedMessageString,
+                message.timestamp
+            )
             addUserMessage(optimizedMessage)
             var chatHistory = getChatHistory()
 
@@ -178,8 +186,8 @@ class ChatGptMessaging(context: Context) {
             }
             Log.d("step 11", "chatGPT:getResponse:currentMessage: $currentMessage")
             chatMessages.add(createChatMessage(optimizedMessageString))
-            for (message in chatMessages){
-                Log.d("step 12","chatGPT:chatMessage in chatMessages: ${message.content}")
+            for (message in chatMessages) {
+                Log.d("step 12", "chatGPT:chatMessage in chatMessages: ${message.content}")
             }
             val chatCompletionRequest = ChatCompletionRequest(
                 model = ModelId("gpt-3.5-turbo"),
@@ -188,15 +196,20 @@ class ChatGptMessaging(context: Context) {
             )
 
             val completion = openAI.chatCompletion(chatCompletionRequest)
-            Log.d("step 13","chatGPT:completion in chatMessages: ${message.content}")
+            Log.d("step 13", "chatGPT:completion in chatMessages: ${message.content}")
             if (completion.choices.first().finishReason.value == "length") {
                 chatMessages = ArrayList<ChatMessage>()
                 val shortenString = "Shorten and summarize this message $currentMessage"
-                val shortenMessage = Message(optimizedMessage.messageType, optimizedMessage.senderId, shortenString, optimizedMessage.timestamp)
+                val shortenMessage = Message(
+                    optimizedMessage.messageType,
+                    optimizedMessage.senderId,
+                    shortenString,
+                    optimizedMessage.timestamp
+                )
                 val newMessageString = getOptimizedMessage(shortenMessage)
-               // Log.d("step 14","chatGPT:newMessageString: $newMessageString")
-                Log.d("revs","is new msg null? ${newMessageString == null}")
-                if(newMessageString!=null) {
+                // Log.d("step 14","chatGPT:newMessageString: $newMessageString")
+                Log.d("revs", "is new msg null? ${newMessageString == null}")
+                if (newMessageString != null) {
                     addChatGPTMessageToDB(newMessageString, groupID)
                 }
                 newMessageString?.let { createChatMessage(it) }?.let { chatMessages.add(it) }
@@ -204,7 +217,7 @@ class ChatGptMessaging(context: Context) {
                 var response = completion.choices.first().message.content
                 if (response != null) {
                     Log.d("step 14", "response: $response")
-                    if(response!=null) {
+                    if (response != null) {
                         addChatGPTMessageToDB(response, groupID)
                     }
                     addModelResponse(response)
@@ -219,7 +232,7 @@ class ChatGptMessaging(context: Context) {
 //        Log.d("chatgpt: User prompt sent", "prompt: $message")
         var arrayList = ArrayList<ChatMessage>()
         arrayList.add(createChatMessage("Optimize this prompt for me: ${message.content}"))
-        arrayList.forEach{
+        arrayList.forEach {
             Log.d("step 8", "chatGPT: ${it.toString()}")
         }
 
@@ -231,7 +244,8 @@ class ChatGptMessaging(context: Context) {
         val response = openAI.chatCompletion(chatCompletionRequest).choices.first().message.content
         if (response != null) {
             Log.d("chatgpt: OptimizedResponse", response)
-            var newMessage = Message(message.messageType, message.senderId, response, message.timestamp)
+            var newMessage =
+                Message(message.messageType, message.senderId, response, message.timestamp)
             addUserMessage(newMessage)
             Log.d("step 9", "chatGPT:optimizedResponse: $response")
 
@@ -240,9 +254,8 @@ class ChatGptMessaging(context: Context) {
         return "$response. suggest a list of things, don't separate by user in Location: Vancouver $preferencesString"
     }
 
-    private fun addChatGPTMessageToDB(message: String, groupID: String)
-    {
-        Log.d("revs","I am in add gpt message to db func")
+    private fun addChatGPTMessageToDB(message: String, groupID: String) {
+        Log.d("revs", "I am in add gpt message to db func")
         val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
         val groupsReference: DatabaseReference =
             firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)

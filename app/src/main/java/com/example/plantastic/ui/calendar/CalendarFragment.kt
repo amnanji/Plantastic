@@ -15,7 +15,7 @@ import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import java.util.Calendar
 
-class CalendarFragment : Fragment(), CalendarCallback{
+class CalendarFragment : Fragment(), CalendarCallback {
 
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
@@ -27,14 +27,11 @@ class CalendarFragment : Fragment(), CalendarCallback{
     private lateinit var calendarViewModel: CalendarViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        calendarViewModel =
-            ViewModelProvider(this)[CalendarViewModel::class.java]
+        calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
         calendarView = binding.calendarView
         usersAuthRepository = UsersAuthRepository()
@@ -46,7 +43,8 @@ class CalendarFragment : Fragment(), CalendarCallback{
             val selectedDay = Calendar.getInstance().apply {
                 set(year, month, dayOfMonth)
             }.timeInMillis
-            calendarAdapter = CalendarAdapter(calendarViewModel.loadEventsForSelectedDay(selectedDay))
+            calendarAdapter =
+                CalendarAdapter(calendarViewModel.loadEventsForSelectedDay(selectedDay))
             binding.calendarRecyclerView.adapter = calendarAdapter
             binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         }
@@ -57,7 +55,6 @@ class CalendarFragment : Fragment(), CalendarCallback{
         super.onDestroyView()
         _binding = null
     }
-
 
     override fun onCalendarLoaded(calendarList: List<CalendarElement>) {
         calendarAdapter = CalendarAdapter(calendarList)

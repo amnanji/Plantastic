@@ -30,9 +30,7 @@ class ChatsFragment : Fragment() {
     private var groupsRepository: GroupsRepository = GroupsRepository()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val chatsViewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
 
