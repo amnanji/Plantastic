@@ -2,7 +2,6 @@ package com.example.plantastic.ui.conversation
 
 import android.app.ActionBar.LayoutParams
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -10,13 +9,17 @@ import android.view.MenuItem
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.PopupWindow
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
+import com.example.plantastic.ai.requests.ChatGptMessaging
 import com.example.plantastic.models.Groups
 import com.example.plantastic.models.Message
+import com.example.plantastic.models.Users
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.events.AddEventsDialog
 import com.example.plantastic.ui.login.LoginActivity
 import com.example.plantastic.ui.toDo.AddTodoItemDialog
@@ -25,6 +28,9 @@ import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class ConversationActivity : AppCompatActivity() {
@@ -36,6 +42,8 @@ class ConversationActivity : AppCompatActivity() {
     private lateinit var messageEditText: EditText
     private lateinit var btnSend: ImageButton
     private lateinit var btnAdd: ImageButton
+    private var usersList: ArrayList<Users> = ArrayList()
+    private var chatGPT: ChatGptMessaging = ChatGptMessaging(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +66,7 @@ class ConversationActivity : AppCompatActivity() {
         val groupsRepository = GroupsRepository()
         val groupsReference: DatabaseReference =
             firebaseDatabase.getReference(FirebaseNodes.GROUPS_NODE)
+        val usersRepository = UsersRepository()
         val messagesReference: DatabaseReference =
             firebaseDatabase.getReference(FirebaseNodes.MESSAGES_NODE)
         val messagesQuery = messagesReference.child(groupId!!)
@@ -86,6 +95,16 @@ class ConversationActivity : AppCompatActivity() {
                     ScrollToBottomObserver(recyclerView, adapter!!, manager)
                 )
 
+                val userIds = ArrayList<String>()
+                for (participantId in group.participants?.keys!!) {
+                    userIds.add(participantId)
+                }
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    Log.d("step 1", "conversationActivity:CoroutineScope")
+                    usersList = usersRepository.getUsersById(userIds)
+                    chatGPT.setPreferences(chatGPT.context, usersList)
+                }
                 adapter?.startListening()
             }
         }
@@ -136,6 +155,13 @@ class ConversationActivity : AppCompatActivity() {
                 messageEditText.text.toString(),
                 Calendar.getInstance().timeInMillis
             )
+            CoroutineScope(Dispatchers.IO).launch {
+                if (msg.content!!.contains("@AI", ignoreCase = true)) {
+                    chatGPT.getResponse(msg, groupId)
+                } else {
+                    Log.d("revs", "AI was not called")
+                }
+            }
             val msgRef = messagesQuery.push()
             msgRef.setValue(msg).addOnSuccessListener {
                 groupsReference.child(groupId).child(FirebaseNodes.GROUPS_LATEST_MESSAGE_NODE)
@@ -187,6 +213,7 @@ class ConversationActivity : AppCompatActivity() {
 
                 dialog.show(supportFragmentManager, AddTodoItemDialog.TAG_ADD_TODO_ITEM)
             }
+
             DIALOG_TYPE_NEW_EVENT -> {
                 val dialog = AddEventsDialog()
                 val bundle = Bundle()

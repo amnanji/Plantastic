@@ -56,21 +56,19 @@ class IconUtil(context: Context) {
     private fun concatenateFirstLetters(firstString: String, secondString: String): String {
 
         // Get the first letter of each string
-        val firstLetterFirstString = if (firstString.isNotEmpty()) firstString[0].toString().uppercase() else ""
+        val firstLetterFirstString =
+            if (firstString.isNotEmpty()) firstString[0].toString().uppercase() else ""
         val firstLetterSecondString =
             if (secondString.isNotEmpty()) secondString[0].toString().uppercase() else ""
 
         return "$firstLetterFirstString$firstLetterSecondString"
     }
 
-    fun getIcon(firstString: String, secondString: String, colourPos: Int): TextDrawable? {
+    fun getIcon(firstString: String, secondString: String, colourPos: Int): TextDrawable {
 
         println("Concatenated Text: ${concatenateFirstLetters(firstString, secondString)}")
-        return TextDrawable.Builder()
-            .setColor(colorList[colourPos])
+        return TextDrawable.Builder().setColor(colorList[colourPos])
             .setShape(TextDrawable.SHAPE_ROUND_RECT)
-            .setText(concatenateFirstLetters(firstString, secondString))
-            .setRadius(100)
-            .build()
+            .setText(concatenateFirstLetters(firstString, secondString)).setRadius(100).build()
     }
 }

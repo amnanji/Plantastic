@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/searchContainer">
+    android:id="@+id/searchContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/profileIconImageView"
@@ -13,6 +12,7 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
+        android:contentDescription="@string/content_desc_user_icon"
         tools:src="@drawable/ic_launcher_foreground" />
 
     <TextView
@@ -20,10 +20,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/profileIconImageView"
-        android:textSize="20sp"
-        android:paddingTop="16dp"
-        android:paddingBottom="8dp"
         android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         tools:text="First Name Last Name" />
 
@@ -33,10 +34,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/searchNameTextView"
         android:layout_toEndOf="@id/profileIconImageView"
-        android:textSize="16sp"
-        android:paddingTop="4dp"
-        android:paddingBottom="10dp"
         android:paddingStart="16dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="10dp"
+        android:textSize="16sp"
         tools:text="Username" />
 
     <ImageView
@@ -46,9 +48,10 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="16dp"
+        android:contentDescription="@string/content_desc_friend_added"
         android:src="@drawable/baseline_check_circle_24"
-        tools:src="@drawable/ic_launcher_foreground"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:src="@drawable/ic_launcher_foreground" />
 
     <ImageView
         android:id="@+id/iconImageViewUser"
@@ -57,9 +60,10 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="16dp"
+        android:contentDescription="@string/content_desc_add_friend"
         android:src="@drawable/baseline_person_add_alt_1_24"
-        tools:src="@drawable/ic_launcher_foreground"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:src="@drawable/ic_launcher_foreground" />
 
     <CheckBox
         android:id="@+id/checkBoxSearchUsers"

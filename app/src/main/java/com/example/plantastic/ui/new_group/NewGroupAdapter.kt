@@ -1,22 +1,17 @@
 package com.example.plantastic.ui.new_group
 
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.Users
-import com.example.plantastic.repository.GroupsRepository
-import com.example.plantastic.ui.conversation.ConversationActivity
 import com.example.plantastic.utilities.IconUtil
 
-class NewGroupAdapter (
+class NewGroupAdapter(
     private var dataList: List<Users>,
     private val userId: String,
     private val newGroupViewModel: NewGroupViewModel
@@ -51,11 +46,10 @@ class NewGroupAdapter (
         val drawable = iconUtil.getIcon(model.firstName!!, model.lastName!!, model.color!!)
         holder.profileIconImageView.setImageDrawable(drawable)
 
-        holder.checkBox.setOnClickListener{
-            if (newGroupViewModel.isUserInMembersList(model)){
+        holder.checkBox.setOnClickListener {
+            if (newGroupViewModel.isUserInMembersList(model)) {
                 newGroupViewModel.removeFromMembersList(model)
-            }
-            else{
+            } else {
                 newGroupViewModel.addToMembersList(model)
             }
         }

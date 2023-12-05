@@ -3,14 +3,12 @@ package com.example.plantastic.ui.toDo
 // ToDoAdapter.kt
 import android.graphics.Paint
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.ToDoItemForDisplay
@@ -29,7 +27,6 @@ class ToDoAdapter(private val todoList: List<ToDoItemForDisplay>) :
         val groupNameTextView: TextView = itemView.findViewById(R.id.toDoGroupName)
         val dueDateTextView: TextView = itemView.findViewById(R.id.toDoDueDate)
         val checkbox: CheckBox = itemView.findViewById(R.id.toDoCheckBox)
-        val cardView: CardView = itemView.findViewById(R.id.toDoCardView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

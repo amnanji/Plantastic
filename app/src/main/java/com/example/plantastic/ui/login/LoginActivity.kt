@@ -1,20 +1,20 @@
 package com.example.plantastic.ui.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.example.plantastic.MainActivity
 import com.example.plantastic.R
-import com.example.plantastic.ui.signup.SignUpActivity
-import android.widget.Toast
 import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.ui.signup.SignUpActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.FirebaseApp
-import androidx.core.widget.addTextChangedListener
-import com.google.android.material.snackbar.Snackbar
 
 
 class LoginActivity : AppCompatActivity() {
