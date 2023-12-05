@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.CalendarElement
 import com.example.plantastic.utilities.DateTimeUtils
+import com.example.plantastic.utilities.IconUtil
 
 
 class CalendarAdapter(private var calendarElementList: List<CalendarElement>) :
@@ -31,17 +32,19 @@ class CalendarAdapter(private var calendarElementList: List<CalendarElement>) :
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
-        val calendar = calendarElementList[position]
-        holder.calType.text = calendar.type
-        if (calendar.type == "Todo") {
+        val calendarElement = calendarElementList[position]
+        holder.calType.text = calendarElement.type
+        if (calendarElement.type == "Todo") {
             holder.timeLayout.visibility = View.GONE
             holder.locationLayout.visibility = View.GONE
         } else {
-            holder.calTime.text = DateTimeUtils.getTimeString(calendar.date!!)
-            holder.calLocation.text = calendar.location
+            holder.calTime.text = DateTimeUtils.getTimeString(calendarElement.date!!)
+            holder.calLocation.text = calendarElement.location
         }
-        holder.calTitle.text = calendar.title
-        holder.calGroupName.text = calendar.groupName
+        holder.calTitle.text = calendarElement.title
+        holder.calGroupName.text = calendarElement.groupName
+
+        holder.calGroupName.setTextColor(IconUtil(holder.itemView.context).colorList[calendarElement.color!!])
     }
 
     override fun getItemCount(): Int {

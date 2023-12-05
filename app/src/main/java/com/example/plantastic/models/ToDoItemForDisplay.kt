@@ -10,11 +10,12 @@ data class ToDoItemForDisplay(
     val dueDate: Long? = null,
     val completed: Boolean? = null,
     val isGroup: Boolean? = null,
-    val groupName: String? = null
+    val groupName: String? = null,
+    val color: Int? = 0
 ) {
     // Constructor that takes a ToDoItem to populate values common between ToDoItem and ToDoItemForDisplay,
     // and also takes the additional pieces of data as parameters
-    constructor(toDoItem: ToDoItem, groupId: String, isGroup: Boolean, groupName: String?) : this(
+    constructor(toDoItem: ToDoItem, groupId: String, isGroup: Boolean, groupName: String?, groupColor: Int?) : this(
         toDoItem.id,
         groupId,
         toDoItem.title,
@@ -22,6 +23,7 @@ data class ToDoItemForDisplay(
         toDoItem.dueDate,
         toDoItem.completed,
         isGroup,
-        groupName
+        groupName,
+        groupColor
     )
 }

@@ -5,7 +5,7 @@ import com.amulyakhare.textdrawable.TextDrawable
 import com.example.plantastic.R
 
 @Suppress("DEPRECATION")
-class IconUtil(private val context: Context) {
+class IconUtil(context: Context) {
 
     val colorList = arrayListOf(
         context.resources.getColor(R.color.pastel_blue_dark),
@@ -41,14 +41,11 @@ class IconUtil(private val context: Context) {
         context.resources.getColor(R.color.pastel_gray_dark),
         context.resources.getColor(R.color.pastel_turquoise_dark),
         context.resources.getColor(R.color.pastel_violet_dark),
-
-
         context.resources.getColor(R.color.pastel_blue),
         context.resources.getColor(R.color.pastel_indigo),
         context.resources.getColor(R.color.pastel_mauve_dark),
         context.resources.getColor(R.color.pastel_olive_dark),
-        context.resources.getColor(R.color.pastel_gray_dark),
-
+        context.resources.getColor(R.color.pastel_gray_dark)
     )
 
     fun getRandomColour(): Int {
@@ -56,7 +53,7 @@ class IconUtil(private val context: Context) {
     }
 
 
-    fun concatenateFirstLetters(firstString: String, secondString: String): String {
+    private fun concatenateFirstLetters(firstString: String, secondString: String): String {
 
         // Get the first letter of each string
         val firstLetterFirstString = if (firstString.isNotEmpty()) firstString[0].toString().uppercase() else ""
@@ -76,5 +73,4 @@ class IconUtil(private val context: Context) {
             .setRadius(100)
             .build()
     }
-
 }
