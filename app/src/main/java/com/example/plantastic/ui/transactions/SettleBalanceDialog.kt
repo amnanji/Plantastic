@@ -214,18 +214,3 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
     }
 
 }
-
-// TODO settle balances in group
-
-// TODO limit amount textbox decimal places
-// TODO insert reimbursement into repository
-// TODO transaction amount cant be 0
-// TODO set transaction desc
-// TODO delete balances dialog
-// TODO colour code transactions activity
-// TODO Disable spinner if theres only 1 person in group
-// TODO disable save button for 0 balance
-// TODO colour code dialog
-// TODO round transactions on insert
-// TODO round transactions on get
-// TODO update transactions activity after dialog box close
