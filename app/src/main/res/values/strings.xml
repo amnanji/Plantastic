@@ -124,4 +124,10 @@
     <string name="forgot_password">Forgot Password</string>
     <string name="password_reset_email">An email with a password reset link has been sent</string>
     <string name="add_new_expense">Add new expense</string>
+    <string name="settle_balance">Settle balance</string>
+    <string name="is_paying_you_transaction">%1$s %2$s is paying you %3$s</string>
+    <string name="you_are_paying_transactions">You are paying %1$s %2$s %3$s</string>
+    <string name="balance_with_this_user_is_already_settled">Balance with this user is already settled</string>
+    <string name="settled_balances_you">%1$s %2$s settled balances you</string>
+    <string name="you_settled_balances_with">You settled balances with %1$s %2$s</string>
 </resources>

@@ -31,6 +31,6 @@ object FirebaseNodes {
     const val TRANSACTIONS_GROUP_NODE = "groupId"
     const val USERS_FRIENDS_NODE = "friends"
     const val USERS_COLOUR_NODE = "color"
-    const val TRATRANSACTIONS_GROUP_EXPENSE = "expense"
-    const val TRATRANSACTIONS_GROUP_REIMBURSEMENT = "reimbursment"
+    const val TRANSACTIONS_GROUP_EXPENSE = "expense"
+    const val TRANSACTIONS_GROUP_REIMBURSEMENT = "reimbursement"
 }

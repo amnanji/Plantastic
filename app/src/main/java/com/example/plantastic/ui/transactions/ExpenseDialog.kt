@@ -1,37 +1,26 @@
 package com.example.plantastic.ui.transactions
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.app.Dialog
-import android.icu.text.SimpleDateFormat
-import android.icu.util.Calendar
-import android.net.ParseException
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.plantastic.R
-import com.example.plantastic.models.Groups
-import com.example.plantastic.models.ToDoItem
 import com.example.plantastic.repository.GroupsRepository
-import com.example.plantastic.repository.ToDoRepository
 import com.example.plantastic.repository.UsersRepository
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.Locale
 import androidx.core.widget.addTextChangedListener
 import com.example.plantastic.repository.TransactionsRepository
 import com.example.plantastic.utilities.FirebaseNodes
-import java.util.TimeZone
 
-class TransactionDialog : DialogFragment() {
+class ExpenseDialog : DialogFragment() {
     private lateinit var participantsSpinner: Spinner
     private lateinit var amountTextView: TextInputEditText
     private lateinit var descriptionTextView: TextInputEditText
@@ -95,10 +84,10 @@ class TransactionDialog : DialogFragment() {
                     descriptionTextView.text.toString(),
                     participants[participantsSpinner.selectedItemPosition],
                     amountTextView.text.toString().toDouble(),
-                    FirebaseNodes.TRATRANSACTIONS_GROUP_EXPENSE
+                    FirebaseNodes.TRANSACTIONS_GROUP_EXPENSE
                 ){
                     if(it != null){
-                        groupsRepository.updateBalanceForTransaction(it)
+                        groupsRepository.updateBalanceForTransaction(it, null)
                     }
                 }
                 dialog?.dismiss()

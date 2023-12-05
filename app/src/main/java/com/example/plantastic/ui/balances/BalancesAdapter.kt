@@ -3,7 +3,6 @@ package com.example.plantastic.ui.balances
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import com.example.plantastic.R
 import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.transactions.TransactionsActivity
-import com.example.plantastic.utilities.CurrencyFormatter
+import com.example.plantastic.utilities.DisplayFormatter
 import com.example.plantastic.utilities.IconUtil
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -78,13 +77,13 @@ class BalancesAdapter(
         holder.balanceOwedByYou.text =
             holder.itemView.context.getString(
                 R.string.balance_placeholder,
-                CurrencyFormatter.format(amountOwedByMe)
+                DisplayFormatter.formatCurrency(amountOwedByMe)
             )
 
         holder.balanceOwedByOthers.text =
             holder.itemView.context.getString(
                 R.string.balance_placeholder,
-                CurrencyFormatter.format(amountOwedByOthers)
+                DisplayFormatter.formatCurrency(amountOwedByOthers)
             )
 
         val amountOwedByMeBigDecimal = BigDecimal.valueOf(amountOwedByMe)

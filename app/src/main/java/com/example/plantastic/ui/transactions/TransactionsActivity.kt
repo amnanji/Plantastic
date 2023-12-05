@@ -12,8 +12,6 @@ import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.TransactionsRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
-import com.example.plantastic.ui.balancedialog.BalancesDialog
-import com.example.plantastic.ui.toDo.AddTodoItemDialog
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -90,24 +88,25 @@ class TransactionsActivity : AppCompatActivity() {
                         }
                     }
                 }
-                val balances = group.balances!![currUser.uid]
+                val balances = group.balances!![currUser.uid]!!
                 viewBalanceButton.setOnClickListener {
-                    val dialog = BalancesDialog(this, balances!!)
-                    dialog.show()
+                    val settleBalancesDialog = SettleBalanceDialog(balances)
+                    val bundle = Bundle()
+                    bundle.putString(SettleBalanceDialog.KEY_USER_ID, currUser.uid)
+                    bundle.putString(SettleBalanceDialog.KEY_GROUP_ID, groupId)
+                    settleBalancesDialog.arguments = bundle
+                    settleBalancesDialog.show(this.supportFragmentManager, SettleBalanceDialog.TAG_SETTLE_BALANCE)
                 }
             }
         }
 
         transactionsFab.setOnClickListener{
-            val currUser = UsersAuthRepository().getCurrentUser()
-            val userId = currUser!!.uid
-
-            val dialog = TransactionDialog()
+            val dialog = ExpenseDialog()
             val bundle = Bundle()
-            bundle.putString(TransactionDialog.KEY_USER_ID, userId)
-            bundle.putString(TransactionDialog.KEY_GROUP_ID, groupId)
+            bundle.putString(ExpenseDialog.KEY_USER_ID, currUser.uid)
+            bundle.putString(ExpenseDialog.KEY_GROUP_ID, groupId)
             dialog.arguments = bundle
-            dialog.show(this.supportFragmentManager, TransactionDialog.TAG_ADD_EXPENSE)
+            dialog.show(this.supportFragmentManager, ExpenseDialog.TAG_ADD_EXPENSE)
         }
     }
 
