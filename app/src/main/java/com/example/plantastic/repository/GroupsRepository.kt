@@ -321,14 +321,37 @@ class GroupsRepository {
                     }
                 }
                 else if (transaction.transactionType == FirebaseNodes.TRANSACTIONS_GROUP_REIMBURSEMENT){
-                    group.balances!![transaction.moneyOwedTo]!![userId!!] = 0.0
-                    group.balances!![userId]!![transaction.moneyOwedTo!!] = 0.0
+                    if(transaction.moneyOwedTo == userId){
+                        group.balances!![transaction.moneyPaidTo]!![userId!!] = 0.0
+                        group.balances!![userId]!![transaction.moneyPaidTo!!] = 0.0
+                    }
+                    else{
+                        group.balances!![transaction.moneyOwedTo]!![userId!!] = 0.0
+                        group.balances!![userId]!![transaction.moneyOwedTo!!] = 0.0
+                    }
+
                 }
                 groupsReference.child(transaction.groupId!!).child(FirebaseNodes.GROUPS_BALANCES).setValue(group.balances)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Handle error
+            }
+        })
+    }
+
+    fun getGroupByIdCont(id: String, callback: (Groups?) -> Unit) {
+        val reference = groupsReference.child(id)
+
+        reference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val group = dataSnapshot.getValue(Groups::class.java)
+                callback(group)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle error
+                callback(null)
             }
         })
     }

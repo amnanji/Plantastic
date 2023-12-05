@@ -16,7 +16,8 @@ import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class TransactionsActivity : AppCompatActivity() {
+class TransactionsActivity : AppCompatActivity()
+{
 
     companion object {
         const val GROUP_ID = "GROUP_ID"
@@ -29,6 +30,8 @@ class TransactionsActivity : AppCompatActivity() {
     private lateinit var usersAuthRepository: UsersAuthRepository
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: TransactionsAdapter
+    private lateinit var groupNameTextView: TextView
+    private lateinit var viewBalanceButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,14 +46,16 @@ class TransactionsActivity : AppCompatActivity() {
         usersRepository = UsersRepository()
 
         recyclerView = findViewById(R.id.transactionsRecyclerView)
-        val groupNameTextView = findViewById<TextView>(R.id.transactionsGroupNameTextView)
-        val viewBalanceButton = findViewById<Button>(R.id.transactionsViewBalancesButton)
+        groupNameTextView = findViewById(R.id.transactionsGroupNameTextView)
+        viewBalanceButton = findViewById(R.id.transactionsViewBalancesButton)
         val transactionsFab: FloatingActionButton = findViewById(R.id.addTransactionFab)
 
         val currUser = usersAuthRepository.getCurrentUser()
         if(currUser == null){
             finish()
         }
+
+        updateNonRecyclerViewUI()
 
         val groupId = intent.getStringExtra(GROUP_ID)
         val numbParticipants = intent.getIntExtra(NUMBER_OF_MEMBERS, -1)
@@ -68,37 +73,6 @@ class TransactionsActivity : AppCompatActivity() {
         val manager = WrapContentLinearLayoutManager(this)
         recyclerView.layoutManager = manager
         adapter.startListening()
-
-        groupsRepository.getGroupById(groupId){ group ->
-            if (group != null){
-                if (group.groupType == "group"){
-                    groupNameTextView.text = group.name
-                } else {
-                    val participants = group.participants!!.keys.toList()
-                    val otherParticipantId =
-                        if (participants[0] == currUser.uid) participants[1] else participants[0]
-                    usersRepository.getUserById(otherParticipantId) {
-                        if (it != null) {
-                            val chatName = getString(
-                                R.string.name_placeholder,
-                                it.firstName,
-                                it.lastName
-                            )
-                            groupNameTextView.text = chatName
-                        }
-                    }
-                }
-                val balances = group.balances!![currUser.uid]!!
-                viewBalanceButton.setOnClickListener {
-                    val settleBalancesDialog = SettleBalanceDialog(balances)
-                    val bundle = Bundle()
-                    bundle.putString(SettleBalanceDialog.KEY_USER_ID, currUser.uid)
-                    bundle.putString(SettleBalanceDialog.KEY_GROUP_ID, groupId)
-                    settleBalancesDialog.arguments = bundle
-                    settleBalancesDialog.show(this.supportFragmentManager, SettleBalanceDialog.TAG_SETTLE_BALANCE)
-                }
-            }
-        }
 
         transactionsFab.setOnClickListener{
             val dialog = ExpenseDialog()
@@ -129,4 +103,38 @@ class TransactionsActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateNonRecyclerViewUI(){
+        val groupId = intent.getStringExtra(GROUP_ID)
+        val currUser = usersAuthRepository.getCurrentUser()
+        groupsRepository.getGroupByIdCont(groupId!!){ group ->
+            if (group != null){
+                if (group.groupType == "group"){
+                    groupNameTextView.text = group.name
+                } else {
+                    val participants = group.participants!!.keys.toList()
+                    val otherParticipantId =
+                        if (participants[0] == currUser!!.uid) participants[1] else participants[0]
+                    usersRepository.getUserById(otherParticipantId) {
+                        if (it != null) {
+                            val chatName = getString(
+                                R.string.name_placeholder,
+                                it.firstName,
+                                it.lastName
+                            )
+                            groupNameTextView.text = chatName
+                        }
+                    }
+                }
+                val balances = group.balances!![currUser!!.uid]!!
+                viewBalanceButton.setOnClickListener {
+                    val settleBalancesDialog = SettleBalanceDialog(balances)
+                    val bundle = Bundle()
+                    bundle.putString(SettleBalanceDialog.KEY_USER_ID, currUser.uid)
+                    bundle.putString(SettleBalanceDialog.KEY_GROUP_ID, groupId)
+                    settleBalancesDialog.arguments = bundle
+                    settleBalancesDialog.show(this.supportFragmentManager, SettleBalanceDialog.TAG_SETTLE_BALANCE)
+                }
+            }
+        }
+    }
 }

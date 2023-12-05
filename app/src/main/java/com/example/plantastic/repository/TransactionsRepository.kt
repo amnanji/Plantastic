@@ -2,6 +2,7 @@ package com.example.plantastic.repository
 
 import android.icu.util.Calendar
 import com.example.plantastic.models.Transaction
+import com.example.plantastic.utilities.DisplayFormatter
 import com.example.plantastic.utilities.FirebaseNodes
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -21,6 +22,7 @@ class TransactionsRepository {
             userId: String,
             amount: Double,
             type: String,
+            currUser: String?,
             callback: (Transaction?) -> Unit
     ) {
         val reference: DatabaseReference = transactionsReference.push()
@@ -32,8 +34,9 @@ class TransactionsRepository {
             Calendar.getInstance().timeInMillis,
             description,
             userId,
-            amount,
-            type
+            DisplayFormatter.roundToTwoDecimalPlaces(amount),
+            type,
+            currUser
         )
 
         reference.setValue(transaction)

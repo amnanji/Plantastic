@@ -2,6 +2,7 @@ package com.example.plantastic.ui.transactions
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -84,7 +85,8 @@ class ExpenseDialog : DialogFragment() {
                     descriptionTextView.text.toString(),
                     participants[participantsSpinner.selectedItemPosition],
                     amountTextView.text.toString().toDouble(),
-                    FirebaseNodes.TRANSACTIONS_GROUP_EXPENSE
+                    FirebaseNodes.TRANSACTIONS_GROUP_EXPENSE,
+                    null
                 ){
                     if(it != null){
                         groupsRepository.updateBalanceForTransaction(it, null)
@@ -99,6 +101,16 @@ class ExpenseDialog : DialogFragment() {
         }
 
         amountTextView.addTextChangedListener {
+            val input = it.toString()
+
+            if (input.isNotEmpty() && input != ".") {
+                val decimalIndex = input.indexOf(".")
+
+                if (decimalIndex != -1 && input.length - decimalIndex - 1 > 2) {
+                    // Remove extra decimal places
+                    it?.delete(decimalIndex + 1 + 2, it.length)
+                }
+            }
             validateData()
         }
 
@@ -117,12 +129,17 @@ class ExpenseDialog : DialogFragment() {
 
     private fun validateData(): Boolean {
         var flag = true
-        if (amountTextView.text?.isBlank() == true) {
+        if (amountTextView.text.isNullOrBlank()) {
             flag = false
         }
 
-        if (descriptionTextView.text?.isBlank() == true) {
+        if (descriptionTextView.text.isNullOrBlank()) {
             flag = false
+        }
+
+        if (flag && amountTextView.text.toString().toDouble() == 0.0) {
+            flag = false
+            amountTextView.error = getString(R.string.amount_cannot_be_zero)
         }
 
         btnSave.isEnabled = flag

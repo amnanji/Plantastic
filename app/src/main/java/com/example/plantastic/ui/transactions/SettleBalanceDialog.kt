@@ -2,6 +2,8 @@ package com.example.plantastic.ui.transactions
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -18,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.example.plantastic.repository.TransactionsRepository
+import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.utilities.DisplayFormatter
 import com.example.plantastic.utilities.FirebaseNodes
 import kotlin.properties.Delegates
@@ -33,9 +36,14 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
     private val usersRepository = UsersRepository()
     private val groupsRepository = GroupsRepository()
     private val transactionsRepository = TransactionsRepository()
+    private val usersAuthRepository = UsersAuthRepository()
     private var userId: String? = null
     private var groupId: String? = null
     private var participants: List<String> = ArrayList()
+
+    private val default_color = R.color.default_text_color
+    private val pos_bal_color = R.color.i_am_owed_green
+    private val neg_bal_color = Color.RED
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Referenced from: https://stackoverflow.com/questions/27965662/how-can-i-change-default-dialog-button-text-color-in-android-5
@@ -48,10 +56,7 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
         btnCancel = view.findViewById(R.id.cancelButtonTodo)
         btnSave = view.findViewById(R.id.saveButtonTodo)
 
-        btnSave.isEnabled = true
-        val textColor =
-            requireContext().resources.getColor(R.color.dialog_positive_button_disabled_state)
-        btnSave.setTextColor(textColor)
+        updateButtonUI(false)
 
         val bundle = arguments
         userId = bundle?.getString(KEY_USER_ID)
@@ -101,9 +106,10 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
                                                 it.firstName,
                                                 it.lastName
                                             )
+                                            balanceTextView.setTextColor(requireContext().getColor(pos_bal_color))
                                             amount = thisBalance
                                         }
-                                        btnSave.isEnabled = true
+                                        updateButtonUI(true)
                                     }
                                 }
                                 else if (thisBalance < 0){
@@ -120,21 +126,23 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
                                                 it.firstName,
                                                 it.lastName
                                             )
-                                            amount = thisBalance * -1
+                                            balanceTextView.setTextColor(neg_bal_color)
+                                            amount = thisBalance
                                         }
-                                        btnSave.isEnabled = true
+                                        updateButtonUI(true)
                                     }
                                 }
                                 else{
                                     balanceTextView.text =
                                         getString(R.string.balance_with_this_user_is_already_settled)
-                                    btnSave.isEnabled = false
+                                    updateButtonUI(false)
+                                    balanceTextView.setTextColor(requireContext().getColor(default_color))
                                 }
                             }
 
                             override fun onNothingSelected(p0: AdapterView<*>?) {
                                 balanceTextView.text = ""
-                                btnSave.isEnabled = false
+                                updateButtonUI(false)
                             }
                         }
                     }
@@ -144,15 +152,32 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
 
 
         btnSave.setOnClickListener {
-            transactionsRepository.addTransaction(
-                groupId!!,
-                description,
-                participants[participantsSpinner.selectedItemPosition],
-                amount,
-                FirebaseNodes.TRANSACTIONS_GROUP_REIMBURSEMENT
-            ){
-                if(it != null){
-                    groupsRepository.updateBalanceForTransaction(it, userId)
+            if (amount > 0){
+                transactionsRepository.addTransaction(
+                    groupId!!,
+                    description,
+                    participants[participantsSpinner.selectedItemPosition], //other
+                    DisplayFormatter.roundToTwoDecimalPlaces(amount),
+                    FirebaseNodes.TRANSACTIONS_GROUP_REIMBURSEMENT,
+                    usersAuthRepository.getCurrentUser()!!.uid // this
+                ){
+                    if(it != null){
+                        groupsRepository.updateBalanceForTransaction(it, userId)
+                    }
+                }
+            }
+            else {
+                transactionsRepository.addTransaction(
+                    groupId!!,
+                    description,
+                    usersAuthRepository.getCurrentUser()!!.uid, //other
+                    DisplayFormatter.roundToTwoDecimalPlaces(amount * -1.0),
+                    FirebaseNodes.TRANSACTIONS_GROUP_REIMBURSEMENT,
+                    participants[participantsSpinner.selectedItemPosition] // this
+                ){
+                    if(it != null){
+                        groupsRepository.updateBalanceForTransaction(it, userId)
+                    }
                 }
             }
             dialog?.dismiss()
@@ -171,26 +196,36 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
         return dialog
     }
 
+    private fun updateButtonUI(isEnabled: Boolean){
+        val textColor = if (isEnabled) {
+            requireContext().resources.getColor(R.color.pastel_red)
+        } else {
+            requireContext().resources.getColor(R.color.dialog_positive_button_disabled_state)
+        }
+        btnSave.isEnabled = isEnabled
+        btnSave.setTextColor(textColor)
+    }
+
     companion object {
         private const val TAG = "Pln ToDoDialog"
         const val KEY_USER_ID = "KEY_USER_ID"
         const val KEY_GROUP_ID = "KEY_GROUP_ID"
         const val TAG_SETTLE_BALANCE = "TAG_SETTLE_BALANCE"
     }
+
 }
 
-// TODO round transactions on insert
-// TODO round transactions on get
-// TODO disable save button for 0 balance
-// TODO colour code transactions activity
-// TODO colour code dialog
-// TODO limit amount textbox decimal places
 // TODO settle balances in group
-// TODO Disable spinner if theres only 1 person in group
-// TODO transactions update while displaying transactions
-// TODO update transactions activity after dialog box
 
-
+// TODO limit amount textbox decimal places
 // TODO insert reimbursement into repository
+// TODO transaction amount cant be 0
 // TODO set transaction desc
 // TODO delete balances dialog
+// TODO colour code transactions activity
+// TODO Disable spinner if theres only 1 person in group
+// TODO disable save button for 0 balance
+// TODO colour code dialog
+// TODO round transactions on insert
+// TODO round transactions on get
+// TODO update transactions activity after dialog box close
