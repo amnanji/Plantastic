@@ -23,6 +23,7 @@ import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.events.AddEventsDialog
 import com.example.plantastic.ui.login.LoginActivity
 import com.example.plantastic.ui.toDo.AddTodoItemDialog
+import com.example.plantastic.ui.transactions.ExpenseDialog
 import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -220,6 +221,15 @@ class ConversationActivity : AppCompatActivity() {
                 bundle.putString(AddEventsDialog.KEY_GROUP_ID, group.id)
                 dialog.arguments = bundle
                 dialog.show(supportFragmentManager, AddEventsDialog.TAG_ADD_EVENT)
+            }
+
+            DIALOG_TYPE_NEW_EXPENSE -> {
+                val dialog = ExpenseDialog()
+                val bundle = Bundle()
+                bundle.putString(ExpenseDialog.KEY_USER_ID, userId)
+                bundle.putString(ExpenseDialog.KEY_GROUP_ID, group.id)
+                dialog.arguments = bundle
+                dialog.show(supportFragmentManager, ExpenseDialog.TAG_ADD_EXPENSE)
             }
         }
     }
