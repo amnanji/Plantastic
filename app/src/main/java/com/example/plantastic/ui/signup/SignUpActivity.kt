@@ -1,6 +1,5 @@
 package com.example.plantastic.ui.signup
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +7,6 @@ import androidx.core.widget.addTextChangedListener
 import com.example.plantastic.R
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
-import com.example.plantastic.ui.login.LoginActivity
 import com.example.plantastic.utilities.FirebaseNodes
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -219,8 +217,9 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun navigateToLoginActivity() {
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
+//        val intent = Intent(this, LoginActivity::class.java)
+//        startActivity(intent)
+        usersAuthRepository.logOutUser()
         finish()
     }
 

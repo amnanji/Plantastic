@@ -139,10 +139,10 @@ class GroupsRepository {
     }
 
     fun getAllGroupsByUserWithChatNames(userId: String, callback: (List<Groups>?) -> Unit) {
-        val groups = ArrayList<Groups>()
-
         getAllGroupsQueryForUser(userId).addValueEventListener (object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                val groups = ArrayList<Groups>()
+
                 // Create a list to hold deferred tasks for user retrieval
                 val deferredList = mutableListOf<Deferred<Unit>>()
 

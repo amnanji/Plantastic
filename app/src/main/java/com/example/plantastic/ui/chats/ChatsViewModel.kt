@@ -20,16 +20,26 @@ class ChatsViewModel : ViewModel() {
     init {
         val currUser = UsersAuthRepository().getCurrentUser()
         val userId = currUser!!.uid
-        val groupsQuery = groupsRepository.getAllGroupsQueryForUser(userId)
 
         CoroutineScope(Dispatchers.IO).launch {
             groupsRepository.getAllGroupsByUserWithChatNames(userId) { newGroupsList ->
                 if (newGroupsList != null) {
-                    _groups.value =
-                        ArrayList(newGroupsList.filterNot { it.groupType == "Individual" && it.latestMessage == null }
-                            .sortedWith(compareBy {
-                                it.latestMessage?.timestamp ?: Long.MAX_VALUE
-                            }))
+                    CoroutineScope(Dispatchers.Main).launch {
+                        _groups.value?.clear()
+                        _groups.value =
+                                // Filtering out "Individual" group types that have no recent messages
+                                // Sorting by latest message
+                            ArrayList(newGroupsList
+                                .filterNot { it.groupType == "individual" && it.latestMessage == null }
+                                .sortedWith(compareByDescending {
+                                    if (it.latestMessage != null) {
+                                        it.latestMessage.timestamp ?: Long.MIN_VALUE
+                                    } else {
+                                        it.timestampGroupCreated ?: Long.MIN_VALUE
+                                    }
+                                })
+                            )
+                    }
                 }
             }
         }
