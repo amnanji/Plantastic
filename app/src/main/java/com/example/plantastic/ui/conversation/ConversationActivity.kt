@@ -94,7 +94,7 @@ class ConversationActivity : AppCompatActivity() {
                 recyclerView.layoutManager = manager
 
                 adapter?.registerAdapterDataObserver(
-                    ScrollToBottomObserver(recyclerView, adapter!!, manager)
+                    ConversationScrollToBottomObserver(recyclerView, adapter!!, manager)
                 )
 
                 val userIds = ArrayList<String>()

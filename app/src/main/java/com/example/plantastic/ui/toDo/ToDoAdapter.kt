@@ -19,6 +19,7 @@ import java.util.Calendar
 
 class ToDoAdapter(private val todoList: List<ToDoItemForDisplay>) :
     RecyclerView.Adapter<ToDoAdapter.ViewHolder>() {
+
     private val toDoRepository = ToDoRepository()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

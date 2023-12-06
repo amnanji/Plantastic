@@ -65,7 +65,6 @@ class IconUtil(context: Context) {
     }
 
     fun getIcon(firstString: String, secondString: String, colourPos: Int): TextDrawable {
-
         return TextDrawable.Builder()
             .setColor(colorList[colourPos])
             .setShape(TextDrawable.SHAPE_ROUND_RECT)
