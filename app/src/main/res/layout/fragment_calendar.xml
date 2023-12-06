@@ -12,6 +12,7 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:outlineSpotShadowColor="@color/pastel_red"
         app:mcv_showOtherDates="other_months" />
 
     <androidx.recyclerview.widget.RecyclerView
