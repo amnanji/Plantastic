@@ -150,6 +150,7 @@ class AddEventsDialog : DialogFragment() {
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DATE)
             )
+            datePickerDialog.datePicker.minDate = Calendar.getInstance().timeInMillis - 1000
             datePickerDialog.show()
         }
         timeBtn.setOnClickListener {
