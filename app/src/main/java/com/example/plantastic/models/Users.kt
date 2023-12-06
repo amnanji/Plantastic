@@ -10,6 +10,6 @@ data class Users(
     val username: String? = null,
     val email: String? = null,
     val friends: HashMap<String, Boolean>? = hashMapOf(),
-    val color: Int? = 0,
+    val color: Int ?= null,
     val isEmailVerified: Boolean? = false
 )

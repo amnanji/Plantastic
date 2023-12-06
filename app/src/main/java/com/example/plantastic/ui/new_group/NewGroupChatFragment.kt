@@ -174,7 +174,7 @@ class NewGroupChatFragment : Fragment() {
                 groupMembers.forEach {
                     it.id?.let { it1 -> userIdForGroup.add(it1) }
                 }
-                groupsRepository.createGroupForUsers(userIdForGroup, groupName){
+                groupsRepository.createGroupForUsers(requireContext(), userIdForGroup, groupName){
                     if(it != null){
                         navigateToConversationsActivity(it.toString(), groupName)
                     }
