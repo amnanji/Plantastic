@@ -57,7 +57,7 @@ class TransactionsAdapter(
         if (model.transactionType == FirebaseNodes.TRANSACTIONS_GROUP_EXPENSE) {
             if (model.moneyOwedTo == userId) {
 
-                "You lent $${roundedAmountDue * (numParticipants - 1)}".also {
+                holder.itemView.context.getString(R.string.you_lent, (roundedAmountDue * (numParticipants - 1)).toString()).also {
                     holder.transactionSentence.text = it
                 }
                 val color = holder.itemView.context.getColor(posBalColor)
@@ -65,7 +65,11 @@ class TransactionsAdapter(
             } else {
                 usersRepository.getUserById(model.moneyOwedTo!!) { user ->
                     if (user != null) {
-                        "You borrowed $$roundedAmountDue from ${user.username}".also {
+                        holder.itemView.context.getString(
+                            R.string.you_borrowed_from,
+                            roundedAmountDue.toString(),
+                            user.username
+                        ).also {
                             holder.transactionSentence.text = it
                         }
                         holder.transactionSentence.setTextColor(negBalColor)
@@ -79,9 +83,12 @@ class TransactionsAdapter(
                     if (user1 != null) {
                         usersRepository.getUserById(model.moneyPaidTo!!) { user2 ->
                             if (user2 != null) {
-                                val st = "${user1.username} paid ${user2.username} ${
+                                val st = holder.itemView.context.getString(
+                                    R.string.paid,
+                                    user1.username,
+                                    user2.username,
                                     DisplayFormatter.formatCurrency(model.totalAmount!!)
-                                }"
+                                )
                                 holder.transactionSentence.text = st
                                 val color = holder.itemView.context.getColor(defaultColor)
                                 holder.transactionSentence.setTextColor(color)
@@ -95,7 +102,11 @@ class TransactionsAdapter(
                 usersRepository.getUserById(model.moneyOwedTo!!) { user ->
                     if (user != null) {
                         val st =
-                            "${user.username} paid you ${DisplayFormatter.formatCurrency(model.totalAmount!!)}"
+                            holder.itemView.context.getString(
+                                R.string.paid_you,
+                                user.username,
+                                DisplayFormatter.formatCurrency(model.totalAmount!!)
+                            )
                         holder.transactionSentence.text = st
                         val color = holder.itemView.context.getColor(defaultColor)
                         holder.transactionSentence.setTextColor(color)
@@ -103,11 +114,15 @@ class TransactionsAdapter(
                 }
             }
 
-            else if (model.moneyOwedTo  == userId){
+            else {
                 usersRepository.getUserById(model.moneyPaidTo!!) { user ->
                     if (user != null) {
                         val st =
-                            "You paid ${user.username} $${DisplayFormatter.formatCurrency(model.totalAmount!!)}"
+                            holder.itemView.context.getString(
+                                R.string.you_paid,
+                                user.username,
+                                DisplayFormatter.formatCurrency(model.totalAmount!!)
+                            )
                         holder.transactionSentence.text = st
                         val color = holder.itemView.context.getColor(defaultColor)
                         holder.transactionSentence.setTextColor(color)

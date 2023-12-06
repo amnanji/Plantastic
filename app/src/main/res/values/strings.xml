@@ -154,4 +154,9 @@
     <string name="amount">Amount</string>
     <string name="paid_by">Paid by:</string>
     <string name="settle_with">Settle with:</string>
+    <string name="you_lent">You lent $%1$s</string>
+    <string name="you_borrowed_from">You borrowed $%1$s from %2$s</string>
+    <string name="paid">%1$s paid %2$s %3$s</string>
+    <string name="paid_you">%1$s paid you %2$s</string>
+    <string name="you_paid">You paid %1$s $%2$s</string>
 </resources>
