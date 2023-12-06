@@ -18,3 +18,12 @@ private val API_KEY = "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"
 Change the API_KEY to the one in the key.txt file.
 
 Then run/build the app as you would like.
+
+### To test the app with some prepopulated data, use the credentials below
+#### User 1
+**Email:** nanjialimudabir@gmail.com <br />
+**Password:** 123456
+
+#### User 2
+**Email:** sahilmodak271@gmail.com <br />
+**Password:** 123456
