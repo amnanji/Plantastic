@@ -34,7 +34,6 @@ class TransactionsActivity : AppCompatActivity() {
     private lateinit var groupNameTextView: TextView
     private lateinit var viewBalanceButton: Button
     private lateinit var imageIcon: ImageView
-
     private lateinit var iconUtil: IconUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,24 +56,20 @@ class TransactionsActivity : AppCompatActivity() {
         val transactionsFab: FloatingActionButton = findViewById(R.id.addTransactionFab)
 
         val currUser = usersAuthRepository.getCurrentUser()
-        if (currUser == null) {
-            finish()
-        }
-
-        updateNonRecyclerViewUI()
-
         val groupId = intent.getStringExtra(GROUP_ID)
         val numbParticipants = intent.getIntExtra(NUMBER_OF_MEMBERS, -1)
-        if (groupId == null || numbParticipants == -1) {
+        if (currUser == null || groupId == null || numbParticipants == -1) {
             finish()
         }
+
+        updateNonRecyclerViewUI(currUser!!.uid, groupId)
 
         val transactionQuery = transactionsRepository.getTransactionsForGroup(groupId!!)
 
         val options = FirebaseRecyclerOptions.Builder<Transaction>()
             .setQuery(transactionQuery, Transaction::class.java).build()
 
-        adapter = TransactionsAdapter(options, currUser!!.uid, numbParticipants)
+        adapter = TransactionsAdapter(options, currUser.uid, numbParticipants)
         recyclerView.adapter = adapter
         val manager = WrapContentLinearLayoutManager(this)
         recyclerView.layoutManager = manager
@@ -111,48 +106,48 @@ class TransactionsActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateNonRecyclerViewUI() {
-        val groupId = intent.getStringExtra(GROUP_ID)
-        val currUser = usersAuthRepository.getCurrentUser()
+    private fun updateNonRecyclerViewUI(userId: String?, groupId: String?) {
         groupsRepository.getGroupByIdCont(groupId!!) { group ->
-            if (group != null) {
-                if (group.groupType == "group") {
-                    groupNameTextView.text = group.name
+            if (group == null) {
+                return@getGroupByIdCont
+            }
 
-                    val drawable = iconUtil.getIcon(group.name!!, "", group.color!!)
-                    imageIcon.setImageDrawable(drawable)
-                } else {
-                    val participants = group.participants!!.keys.toList()
-                    val otherParticipantId =
-                        if (participants[0] == currUser!!.uid) participants[1] else participants[0]
-                    usersRepository.getUserById(otherParticipantId) {
-                        if (it != null) {
-                            val chatName = getString(
-                                R.string.name_placeholder,
-                                it.firstName,
-                                it.lastName
-                            )
-                            groupNameTextView.text = chatName
+            if (group.groupType == "group") {
+                groupNameTextView.text = group.name
 
-                            val drawable =
-                                iconUtil.getIcon(it.firstName!!, it.lastName!!, it.color!!)
-                            imageIcon.setImageDrawable(drawable)
-                        }
+                val drawable = iconUtil.getIcon(group.name!!, "", group.color!!)
+                imageIcon.setImageDrawable(drawable)
+            } else {
+                val participants = group.participants!!.keys.toList()
+                val otherParticipantId =
+                    if (participants[0] == userId) participants[1] else participants[0]
+                usersRepository.getUserById(otherParticipantId) {
+                    if (it != null) {
+                        val chatName = getString(
+                            R.string.name_placeholder,
+                            it.firstName,
+                            it.lastName
+                        )
+                        groupNameTextView.text = chatName
+
+                        val drawable =
+                            iconUtil.getIcon(it.firstName!!, it.lastName!!, it.color!!)
+                        imageIcon.setImageDrawable(drawable)
                     }
                 }
-                val balances = group.balances!![currUser!!.uid]!!
-                viewBalanceButton.setOnClickListener {
-                    val settleBalancesDialog = SettleBalanceDialog(balances)
-                    val bundle = Bundle()
-                    bundle.putString(SettleBalanceDialog.KEY_USER_ID, currUser.uid)
-                    bundle.putString(SettleBalanceDialog.KEY_GROUP_ID, groupId)
-                    settleBalancesDialog.arguments = bundle
-                    settleBalancesDialog.show(
-                        this.supportFragmentManager,
-                        SettleBalanceDialog.TAG_SETTLE_BALANCE
-                    )
-                }
             }
+        }
+
+        viewBalanceButton.setOnClickListener {
+            val settleBalancesDialog = SettleBalanceDialog()
+            val bundle = Bundle()
+            bundle.putString(SettleBalanceDialog.KEY_USER_ID, userId)
+            bundle.putString(SettleBalanceDialog.KEY_GROUP_ID, groupId)
+            settleBalancesDialog.arguments = bundle
+            settleBalancesDialog.show(
+                supportFragmentManager,
+                SettleBalanceDialog.TAG_SETTLE_BALANCE
+            )
         }
     }
 }

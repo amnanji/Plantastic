@@ -71,28 +71,16 @@ class BalancesAdapter(
         }
 
         val epsilon = 1 - 1e-6
-
-        holder.balanceOwedByYou.text =
-            holder.itemView.context.getString(
-                R.string.balance_placeholder,
-                DisplayFormatter.formatCurrency(amountOwedByMe)
-            )
-
-        holder.balanceOwedByOthers.text =
-            holder.itemView.context.getString(
-                R.string.balance_placeholder,
-                DisplayFormatter.formatCurrency(amountOwedByOthers)
-            )
+        holder.balanceOwedByYou.text = DisplayFormatter.formatCurrency(amountOwedByMe)
+        holder.balanceOwedByOthers.text = DisplayFormatter.formatCurrency(amountOwedByOthers)
 
         val amountOwedByMeBigDecimal = BigDecimal.valueOf(amountOwedByMe)
         val amountOwedByOthersBigDecimal = BigDecimal.valueOf(amountOwedByOthers)
 
         val defaultColor = holder.itemView.context.getColor(R.color.default_text_color)
-
         if (amountOwedByMeBigDecimal.abs() > BigDecimal.valueOf(epsilon)) {
             holder.balanceOwedByYou.setTextColor(Color.RED)
-        }
-        else{
+        } else {
             holder.balanceOwedByYou.setTextColor(defaultColor)
         }
 

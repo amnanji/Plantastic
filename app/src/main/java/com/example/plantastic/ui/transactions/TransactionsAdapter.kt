@@ -50,7 +50,8 @@ class TransactionsAdapter(
             model.totalAmount!!
         }
         holder.transactionDescription.text = model.description
-        val roundedAmountDue = BigDecimal(amountDue.toString()).setScale(2, RoundingMode.HALF_EVEN).toDouble()
+        val roundedAmountDue =
+            BigDecimal(amountDue.toString()).setScale(2, RoundingMode.HALF_EVEN).toDouble()
         holder.transactionDate.text = DateTimeUtils.getDateString(model.timestamp!!)
 
         if (model.transactionType == FirebaseNodes.TRANSACTIONS_GROUP_EXPENSE) {
@@ -61,9 +62,7 @@ class TransactionsAdapter(
                 }
                 val color = holder.itemView.context.getColor(posBalColor)
                 holder.transactionSentence.setTextColor(color)
-            }
-
-            else {
+            } else {
                 usersRepository.getUserById(model.moneyOwedTo!!) { user ->
                     if (user != null) {
                         "You borrowed $$roundedAmountDue from ${user.username}".also {
@@ -73,15 +72,16 @@ class TransactionsAdapter(
                     }
                 }
             }
-        }
-        else if (model.transactionType == FirebaseNodes.TRANSACTIONS_GROUP_REIMBURSEMENT){
+        } else if (model.transactionType == FirebaseNodes.TRANSACTIONS_GROUP_REIMBURSEMENT) {
 
-            if(model.moneyOwedTo != userId && model.moneyPaidTo!! != userId) {
+            if (model.moneyOwedTo != userId && model.moneyPaidTo!! != userId) {
                 usersRepository.getUserById(model.moneyOwedTo!!) { user1 ->
                     if (user1 != null) {
-                        usersRepository.getUserById(model.moneyPaidTo!!){ user2 ->
-                            if(user2!= null){
-                                val st = "${user1.username} paid ${user2.username} $${DisplayFormatter.formatCurrency(model.totalAmount!!)}"
+                        usersRepository.getUserById(model.moneyPaidTo!!) { user2 ->
+                            if (user2 != null) {
+                                val st = "${user1.username} paid ${user2.username} ${
+                                    DisplayFormatter.formatCurrency(model.totalAmount!!)
+                                }"
                                 holder.transactionSentence.text = st
                                 val color = holder.itemView.context.getColor(defaultColor)
                                 holder.transactionSentence.setTextColor(color)
@@ -94,7 +94,8 @@ class TransactionsAdapter(
             else if (model.moneyPaidTo == userId){
                 usersRepository.getUserById(model.moneyOwedTo!!) { user ->
                     if (user != null) {
-                        val st = "${user.username} paid you $${DisplayFormatter.formatCurrency(model.totalAmount!!)}"
+                        val st =
+                            "${user.username} paid you ${DisplayFormatter.formatCurrency(model.totalAmount!!)}"
                         holder.transactionSentence.text = st
                         val color = holder.itemView.context.getColor(defaultColor)
                         holder.transactionSentence.setTextColor(color)
@@ -105,7 +106,8 @@ class TransactionsAdapter(
             else if (model.moneyOwedTo  == userId){
                 usersRepository.getUserById(model.moneyPaidTo!!) { user ->
                     if (user != null) {
-                        val st = "You paid ${user.username} $${DisplayFormatter.formatCurrency(model.totalAmount!!)}"
+                        val st =
+                            "You paid ${user.username} $${DisplayFormatter.formatCurrency(model.totalAmount!!)}"
                         holder.transactionSentence.text = st
                         val color = holder.itemView.context.getColor(defaultColor)
                         holder.transactionSentence.setTextColor(color)

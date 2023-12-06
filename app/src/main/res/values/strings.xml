@@ -121,7 +121,6 @@
     <string name="name_placeholder_with_colon">"%1$s %2$s: "</string>
     <string name="name_placeholder">%1$s %2$s</string>
     <string name="individual_group_name_placeholder">Chat with %1$s %2$s</string>
-    <string name="balance_placeholder">$%1$s</string>
     <string name="you_are_owed">You are owed:</string>
     <string name="you_owe_with_colon">You owe:</string>
     <string name="date">Date</string>

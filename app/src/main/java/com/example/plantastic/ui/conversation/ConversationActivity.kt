@@ -24,6 +24,7 @@ import com.example.plantastic.ui.events.AddEventsDialog
 import com.example.plantastic.ui.login.LoginActivity
 import com.example.plantastic.ui.toDo.AddTodoItemDialog
 import com.example.plantastic.ui.transactions.ExpenseDialog
+import com.example.plantastic.ui.transactions.SettleBalanceDialog
 import com.example.plantastic.utilities.FirebaseNodes
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -230,6 +231,18 @@ class ConversationActivity : AppCompatActivity() {
                 bundle.putString(ExpenseDialog.KEY_GROUP_ID, group.id)
                 dialog.arguments = bundle
                 dialog.show(supportFragmentManager, ExpenseDialog.TAG_ADD_EXPENSE)
+            }
+
+            DIALOG_TYPE_NEW_SETTLE_UP -> {
+                val settleBalancesDialog = SettleBalanceDialog()
+                val bundle = Bundle()
+                bundle.putString(SettleBalanceDialog.KEY_USER_ID, userId)
+                bundle.putString(SettleBalanceDialog.KEY_GROUP_ID, group.id)
+                settleBalancesDialog.arguments = bundle
+                settleBalancesDialog.show(
+                    supportFragmentManager,
+                    SettleBalanceDialog.TAG_SETTLE_BALANCE
+                )
             }
         }
     }
