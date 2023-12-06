@@ -1,14 +1,16 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="Language preference">
+    <PreferenceCategory app:title="@string/language_preference">
 
         <ListPreference
             app:defaultValue="@string/current_language"
             app:entries="@array/reply_entries"
             app:entryValues="@array/reply_values"
             app:key="reply"
-            app:title="Select Language"
-            app:useSimpleSummaryProvider="true" />
+            app:title="@string/select_language"
+            app:useSimpleSummaryProvider="true"
+            android:defaultValue="English"/>
 
     </PreferenceCategory>
 </PreferenceScreen>

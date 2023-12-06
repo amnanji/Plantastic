@@ -145,4 +145,6 @@
     <string name="msg_sender_ai">"Plantastic Bot"</string>
     <string name="msg_content_sender_ai_placeholder">Plantastic Bot:&#160; %1$s</string>
     <string name="current_language">Current Language</string>
+    <string name="select_language">Select Language</string>
+    <string name="language_preference">Language preference</string>
 </resources>

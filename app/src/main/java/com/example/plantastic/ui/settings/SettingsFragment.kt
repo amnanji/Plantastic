@@ -4,23 +4,28 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.plantastic.R
 import java.util.Locale
 
-object LocaleHelper {
+class LocaleHelper {
+    companion object {
+        fun setLocale(context: Context, language: String): Context {
+            val locale = Locale(language)
+            Locale.setDefault(locale)
 
-    fun setLocale(context: Context, language: String): Context {
-        val locale = Locale(language)
-        Locale.setDefault(locale)
+            val resources: Resources = context.resources
+            val configuration: Configuration = resources.configuration
+            configuration.setLocale(locale)
 
-        val resources: Resources = context.resources
-        val configuration: Configuration = resources.configuration
-        configuration.setLocale(locale)
-
-        return context.createConfigurationContext(configuration)
+            return context.createConfigurationContext(configuration)
+        }
     }
 }
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -34,6 +39,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             switchLanguage(newValue.toString())
             true
         }
+
     }
 
     private fun switchLanguage(language: String) {
@@ -41,8 +47,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val context = activity?.applicationContext
         if (context != null) {
             val newContext = LocaleHelper.setLocale(context, language)
-
-            // Update the activity to reflect the language change
             activity?.resources?.updateConfiguration(
                 newContext.resources.configuration,
                 newContext.resources.displayMetrics

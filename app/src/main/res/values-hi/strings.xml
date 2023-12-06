@@ -22,7 +22,7 @@
     <string name="chats">चैट्स</string>
     <string name="events">घटनाएं</string>
     <string name="to_do">करने के लिए</string>
-    <string name="balances">शेष</string>
+    <string name="balances">हिसाब</string>
     <string name="home">होम</string>
     <string name="calendar">कैलेंडर</string>
     <string name="settings">सेटिंग्स</string>
@@ -68,6 +68,11 @@
     <string name="content_desc_location_icon">स्थान आइकन</string>
     <string name="content_desc_individual_icon">व्यक्तिगत आइकन</string>
     <string name="content_desc_calendar_icon">कैलेंडर आइकन</string>
+    <string name="content_desc_add_new_event">नई घटना जोड़ें</string>
+    <string name="content_desc_add_new_todo_item">नई कार्रवाई जोड़ें</string>
+    <string name="content_desc_add_new_expenses">नए खर्च जोड़ें</string>
+    <string name="content_desc_settle_balances">शेष राशि सेट करें</string>
+
 
     <!--  All Other Strings  -->
     <string name="message_hint">संदेश…</string>
@@ -139,5 +144,9 @@
     <string name="msg_sender_ai">"प्लांटास्टिक बॉट"</string>
     <string name="msg_content_sender_ai_placeholder">प्लांटास्टिक बॉट:&#160; %1$s</string>
     <string name="current_language">वर्तमान भाषा</string>
+    <string name="individual_group_name_placeholder">%1$s %2$s के साथ चैट करें</string>
+    <string name="your_availability">आपकी उपलब्धता:</string>
+    <string name="select_language">भाषा चुनें</string>
+    <string name="language_preference">भाषा प्राथमिकता</string>
 
 </resources>
