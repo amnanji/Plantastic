@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.plantastic.models.Users
 import com.example.plantastic.repository.UsersRepository
 
-class FriendsChatViewModel() : ViewModel() {
+class FriendsChatViewModel: ViewModel() {
 
     private val usersRepository = UsersRepository()
 

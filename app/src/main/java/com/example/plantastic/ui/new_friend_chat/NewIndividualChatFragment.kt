@@ -1,5 +1,6 @@
 package com.example.plantastic.ui.new_friend_chat
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -36,6 +37,7 @@ class NewIndividualChatFragment : Fragment() {
 
     private lateinit var filteredFriendsList: ArrayList<Users>
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,7 +57,7 @@ class NewIndividualChatFragment : Fragment() {
         recyclerView = root.findViewById(R.id.addFriendsChatRecyclerView)
         recyclerView.layoutManager = WrapContentLinearLayoutManager(requireContext())
         noUsersEditText = root.findViewById(R.id.noFriendsFoundTextView)
-        editTextSearch = root.findViewById<EditText>(R.id.editTextSearchFriends)
+        editTextSearch = root.findViewById(R.id.editTextSearchFriends)
 
         filteredFriendsList = ArrayList()
 

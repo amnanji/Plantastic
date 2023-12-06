@@ -121,7 +121,6 @@
     <string name="name_placeholder_with_colon">"%1$s %2$s: "</string>
     <string name="name_placeholder">%1$s %2$s</string>
     <string name="individual_group_name_placeholder">Chat with %1$s %2$s</string>
-    <string name="balance_placeholder">$ %1$s</string>
     <string name="you_are_owed">You are owed:</string>
     <string name="you_owe_with_colon">You owe:</string>
     <string name="date">Date</string>
@@ -144,4 +143,20 @@
     <string name="msg_sender_ai_with_colon">"Plantastic Bot: "</string>
     <string name="msg_sender_ai">"Plantastic Bot"</string>
     <string name="msg_content_sender_ai_placeholder">Plantastic Bot:&#160; %1$s</string>
+    <string name="add_new_group_expense">Add New Group Expense</string>
+    <string name="settle_balance">Settle Balance</string>
+    <string name="is_paying_you_transaction">%1$s %2$s is paying you %3$s</string>
+    <string name="you_are_paying_transactions">You are paying %1$s %2$s %3$s</string>
+    <string name="balance_with_this_user_is_already_settled">Balance with this user is already settled</string>
+    <string name="settled_balances_you">%1$s %2$s settled balances with you</string>
+    <string name="you_settled_balances_with">You settled balances with %1$s %2$s</string>
+    <string name="amount_cannot_be_zero">Amount cannot be zero</string>
+    <string name="amount">Amount</string>
+    <string name="paid_by">Paid by:</string>
+    <string name="settle_with">Settle with:</string>
+    <string name="you_lent">You lent $%1$s</string>
+    <string name="you_borrowed_from">You borrowed $%1$s from %2$s</string>
+    <string name="paid">%1$s paid %2$s %3$s</string>
+    <string name="paid_you">%1$s paid you %2$s</string>
+    <string name="you_paid">You paid %1$s $%2$s</string>
 </resources>

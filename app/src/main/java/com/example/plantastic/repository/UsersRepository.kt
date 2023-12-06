@@ -38,7 +38,8 @@ class UsersRepository {
             username,
             email,
             HashMap(),
-            iconUtil.getRandomColour()
+            iconUtil.getRandomColour(),
+            false
         )
         usersReference.child(userId).setValue(user)
             .addOnSuccessListener {

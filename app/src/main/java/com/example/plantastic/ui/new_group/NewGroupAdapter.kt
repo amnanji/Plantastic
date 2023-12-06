@@ -13,7 +13,6 @@ import com.example.plantastic.utilities.IconUtil
 
 class NewGroupAdapter(
     private var dataList: List<Users>,
-    private val userId: String,
     private val newGroupViewModel: NewGroupViewModel
 ) :
     RecyclerView.Adapter<NewGroupAdapter.NewGroupViewHolder>() {
