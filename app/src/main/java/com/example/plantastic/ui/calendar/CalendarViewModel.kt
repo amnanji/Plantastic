@@ -1,5 +1,6 @@
 package com.example.plantastic.ui.calendar
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.plantastic.models.CalendarElement
@@ -14,6 +15,7 @@ import java.util.Calendar
 class CalendarViewModel() : ViewModel() {
 
     private val _calendarEvents = MutableLiveData<List<CalendarElement>>()
+    val calEvents: LiveData<List<CalendarElement>> = _calendarEvents
     private var groupsList: List<Groups?> = ArrayList()
 
     init {
@@ -70,7 +72,7 @@ class CalendarViewModel() : ViewModel() {
     }
 
     // load events for the selected day
-    fun loadEventsForSelectedDay(selectedDay: Long): List<CalendarElement> {
+    fun loadEventsForSelectedDay(selectedDay:Long): List<CalendarElement> {
         val events = _calendarEvents.value ?: emptyList()
         return events.filter { isSameDate(it.date, selectedDay) }
     }

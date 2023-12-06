@@ -69,15 +69,6 @@ class EventsFragment : Fragment(), EventsCallback {
         requireActivity().finish()
     }
 
-//    override fun onStart() {
-//        super.onStart()
-//        binding.eventsRecyclerView.adapter = eventsAdapter
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        binding.eventsRecyclerView.adapter = null
-//    }
 
     override fun onEventsLoaded(events: List<Events>) {
 
