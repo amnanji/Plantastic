@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">प्लांटास्टिक</string>
+    <string name="navigation_drawer_open">नेविगेशन ड्रॉयर खोलें</string>
+    <string name="navigation_drawer_close">नेविगेशन ड्रॉयर बंद करें</string>
+    <string name="nav_header_title">एंड्रॉइड स्टूडियो</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">नेविगेशन हेडर</string>
+    <string name="action_settings">सेटिंग्स</string>
+
+    <string name="menu_home">होम</string>
+    <string name="menu_gallery">गैलरी</string>
+    <string name="menu_slideshow">स्लाइड शो</string>
+    <string name="error_blank">क्षेत्र रिक्त नहीं हो सकता</string>
+    <string name="error_email_invalid">ईमेल अमान्य है</string>
+    <string name="error_password_mismatch">पासवर्ड मेल नहीं खाते</string>
+    <string name="error_password_length">पासवर्ड कम से कम 6 अक्षरों का होना चाहिए</string>
+    <string name="error_duplicate_email">ईमेल पहले से ही उपयोग में है</string>
+    <string name="error_duplicate_username">उपयोगकर्ता नाम पहले से ही उपयोग में है</string>
+    <string name="error_unexpected">एक अप्रत्याशित त्रुटि हुई है। बाद में पुनः प्रयास करें!</string>
+    <string name="error_incorrect_email_password">गलत ईमेल या पासवर्ड</string>
+    <string name="chats">चैट्स</string>
+    <string name="events">घटनाएं</string>
+    <string name="to_do">करने के लिए</string>
+    <string name="balances">हिसाब</string>
+    <string name="home">होम</string>
+    <string name="calendar">कैलेंडर</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="hello_chat_fragment">नमस्ते चैट फ़्रेगमेंट</string>
+    <string name="email_address">ईमेल पता</string>
+    <string name="password">पासवर्ड</string>
+    <string name="submit">प्रस्तुत</string>
+    <string name="sign_up">साइन अप</string>
+    <string name="username">उपयोगकर्ता नाम</string>
+    <string name="email">ईमेल</string>
+    <string name="confirm_password">पासवर्ड की पुष्टि करें</string>
+    <string name="your_current_food_preferences">आपकी वर्तमान खाद्य प्राथमिकताएँ:</string>
+    <string name="food_preference_hint">प्रत्येक प्राथमिकता को एक कमा से अलग करें</string>
+    <string name="your_current_dietary_restrictions">आपकी वर्तमान आहारिक प्रतिबंधाएँ:</string>
+    <string name="your_current_activity_preferences">आपकी वर्तमान गतिविधि प्राथमिकताएँ:</string>
+
+    <string name="hello_blank_fragment">नमस्ते रिक्त फ़्रेगमेंट</string>
+    <string name="nav_profile">प्रोफ़ाइल</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">संदेश</string>
+    <string name="sync_header">सिंक</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">आपकी साइनेचर</string>
+    <string name="reply_title">डिफ़ॉल्ट उत्तर क्रिया</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">सिंक ईमेल नियमित रूप से</string>
+    <string name="attachment_title">आने वाले अटैचमेंट डाउनलोड करें</string>
+    <string name="attachment_summary_on">आने वाले ईमेल के लिए स्वचालित रूप से अटैचमेंट डाउनलोड करें</string>
+    <string name="attachment_summary_off">केवल जब मैन्युअल रूप से अटैचमेंट डाउनलोड करें</string>
+
+    <!--  Random Content Descriptions  -->
+    <string name="content_desc_hi_welcome">नमस्ते! स्वागत है</string>
+    <string name="content_desc_user_icon">उपयोगकर्ता आइकन</string>
+    <string name="content_desc_friend_added">मित्र जोड़ा गया</string>
+    <string name="content_desc_add_friend">मित्र जोड़ें</string>
+    <string name="content_desc_group_icon">समूह आइकन</string>
+    <string name="content_desc_plus_button">प्लस बटन</string>
+    <string name="content_desc_send_button">भेजें बटन</string>
+    <string name="content_desc_time_icon">समय आइकन</string>
+    <string name="content_desc_location_icon">स्थान आइकन</string>
+    <string name="content_desc_individual_icon">व्यक्तिगत आइकन</string>
+    <string name="content_desc_calendar_icon">कैलेंडर आइकन</string>
+    <string name="content_desc_add_new_event">नई घटना जोड़ें</string>
+    <string name="content_desc_add_new_todo_item">नई कार्रवाई जोड़ें</string>
+    <string name="content_desc_add_new_expenses">नए खर्च जोड़ें</string>
+    <string name="content_desc_settle_balances">शेष राशि सेट करें</string>
+
+
+    <!--  All Other Strings  -->
+    <string name="message_hint">संदेश…</string>
+    <string name="save">सहेजें</string>
+    <string name="transactions">लेन-देन</string>
+    <string name="start_button_text">शुरू</string>
+    <string name="end_button_text">समाप्त</string>
+    <string name="busy_button_text">व्यस्त</string>
+    <string name="available_from_string">उपलब्ध है: %1$s से %2$s</string>
+    <string name="invalid_days_message">"निम्नलिखित दिनों में उपलब्धता के लिए अवैध मूल्य हैं: "</string>
+    <string name="please_correct_availability_message">। कृपया प्राथमिकताओं को सहेजने के लिए कृपया उपलब्धता को सही करें</string>
+    <string name="your_username">आपका उपयोगकर्ता नाम:</string>
+    <string name="enter_a_username">एक उपयोगकर्ता नाम दर्ज करें</string>
+    <string name="use_different_username_message">उपयोगकर्ता नाम %1$s पहले से ही दूसरे उपयोगकर्ता के द्वारा लिया गया है। कृपया कोई अन्य उपयोगकर्ता नाम चुनें।</string>
+    <string name="preferences_and_availability_updated_successfully">प्राथमिकताएँ और उपलब्धता सफलतापूर्वक अपडेट की गईं हैं!</string>
+    <string name="username_updated_successfully">उपयोगकर्ता नाम सफलतापूर्वक अपडेट किया गया है!</string>
+    <string name="busy_text_textview">व्यस्त</string>
+    <string name="username_availability_and_preferences_updated_successfully">उपयोगकर्ता नाम, उपलब्धता और प्राथमिकताएँ सफलतापूर्वक अपडेट की गईं हैं!</string>
+    <string name="todo_list_individual_group_title">%1$s %2$s के साथ चैट से</string>
+    <string name="title">शीर्षक</string>
+    <string name="description">विवरण</string>
+    <string name="group">समूह</string>
+    <string name="assign_to">सौंपें:</string>
+    <string name="due_date">नियत तिथि</string>
+    <string name="add_new_todo_item">नया कार्य जोड़ें</string>
+    <string name="date_placeholder">%d/%d/%d</string>
+    <string name="time_placeholder">%1$d:%2$02d</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="nav_add_friends">मित्र जोड़ें</string>
+    <string name="log_out">लॉग आउट</string>
+    <string name="add_friends">मित्र जोड़ें</string>
+    <string name="search_users">खोजें</string>
+    <string name="ok">ठीक है</string>
+    <string name="owes_you">%1$s आपको %2$s देता है</string>
+    <string name="you_owe">%1$s को आपको %2$s देना है</string>
+    <string name="no_users_found">कोई उपयोगकर्ता नहीं मिला</string>
+    <string name="calendar_icon">कैलेंडर आइकन</string>
+    <string name="group_icon">समूह आइकन</string>
+    <string name="nav_new_chat">नई चैट</string>
+    <string name="nav_new_individual_chat">नई व्यक्तिगत चैट</string>
+    <string name="nav_new_group">नया समूह</string>
+    <string name="fab">FAB</string>
+    <string name="first_name">पहला नाम</string>
+    <string name="last_name">अंतिम नाम</string>
+    <string name="you">"आप: "</string>
+    <string name="name_placeholder_with_colon">"%1$s %2$s: "</string>
+    <string name="name_placeholder">%1$s %2$s</string>
+    <string name="balance_placeholder">$ %1$s</string>
+    <string name="you_are_owed">आपको उधार है:</string>
+    <string name="you_owe_with_colon">आपका कर्ज है:</string>
+    <string name="date">तारीख</string>
+    <string name="time">समय</string>
+    <string name="location">स्थान</string>
+    <string name="friends">मित्र</string>
+    <string name="no_friends_found">कोई मित्र नहीं मिला</string>
+    <string name="group_members">समूह के सदस्य</string>
+    <string name="group_name">समूह का नाम</string>
+    <string name="group_name_colon">समूह का नाम:</string>
+    <string name="create_group">समूह बनाएं</string>
+    <string name="group_name_cannot_be_empty">समूह का नाम रिक्त नहीं हो सकता</string>
+    <string name="group_participants_error">कृपया समूह में कम से कम 2 मित्र जोड़ें</string>
+    <string name="view_balance">शेष देखें</string>
+    <string name="verify_email">कृपया आगे बढ़ने से पहले अपने ईमेल को सत्यापित करें</string>
+    <string name="resend_verification_email">ईमेल पुनः भेजें</string>
+    <string name="a_verification_email_has_been_sent_please_verify_your_email">एक सत्यापन ईमेल आपके ईमेल पर भेजा गया है। कृपया आगे बढ़ने से पहले अपना खाता सत्यापित करें।</string>
+    <string name="forgot_password">पासवर्ड भूल गए</string>
+    <string name="password_reset_email">एक पासवर्ड रीसेट लिंक के साथ एक ईमेल भेजा गया है</string>
+    <string name="msg_sender_ai_with_colon">"प्लांटास्टिक बॉट: "</string>
+    <string name="msg_sender_ai">"प्लांटास्टिक बॉट"</string>
+    <string name="msg_content_sender_ai_placeholder">प्लांटास्टिक बॉट:&#160; %1$s</string>
+    <string name="current_language">वर्तमान भाषा</string>
+    <string name="individual_group_name_placeholder">%1$s %2$s के साथ चैट करें</string>
+    <string name="your_availability">आपकी उपलब्धता:</string>
+    <string name="select_language">भाषा चुनें</string>
+    <string name="language_preference">भाषा प्राथमिकता</string>
+    <string name="add_new_group_expense">नया समूह खर्च जोड़ें</string>
+    <string name="settle_balance">सेटल बैलेंस</string>
+    <string name="is_paying_you_transaction">%1$s %2$s आपको %3$s भुगतान कर रहा है</string>
+    <string name="you_are_paying_transactions">आप %1$s %2$s %3$s भुगतान कर रहे हैं</string>
+    <string name="balance_with_this_user_is_already_settled">इस उपयोगकर्ता के साथ शेष राशि पहले से ही सेटल हो गई है</string>
+    <string name="settled_balances_you">%1$s %2$s ने आपके साथ शेष राशियों को सेटल किया</string>
+    <string name="you_settled_balances_with">%1$s %2$s ने आपके साथ शेष राशियों को सेटल किया</string>
+    <string name="amount_cannot_be_zero">राशि शून्य नहीं हो सकती</string>
+    <string name="amount">राशि</string>
+    <string name="paid_by">द्वारा भुगतान किया गया:</string>
+    <string name="settle_with">सेटल करें:</string>
+    <string name="you_lent">आपने $%1$s उधार दिया</string>
+    <string name="you_borrowed_from">आपने %2$s से $%1$s उधार लिया</string>
+    <string name="paid">%1$s ने %2$s को %3$s भुगतान किया</string>
+    <string name="paid_you">%1$s ने आपको %2$s भुगतान किया</string>
+    <string name="you_paid">आपने %1$s को $%2$s भुगतान किया</string>
+</resources>
