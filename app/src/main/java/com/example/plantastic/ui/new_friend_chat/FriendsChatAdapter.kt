@@ -52,7 +52,7 @@ class FriendsChatAdapter(
         holder.searchContainer.setOnClickListener {
             groupsRepository.getGroupIdForUsers(userId, model.id!!){
                 if (it == null){
-                    groupsRepository.createGroupForUsers(arrayListOf(userId, model.id), null){ groupId ->
+                    groupsRepository.createGroupForUsers(holder.itemView.context, arrayListOf(userId, model.id), null){ groupId ->
                         if (groupId != null){
                             navigateToConversationsActivity(holder.itemView.context, groupId, model.username!!)
                         }

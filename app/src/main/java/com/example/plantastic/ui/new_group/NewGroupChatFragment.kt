@@ -84,7 +84,7 @@ class NewGroupChatFragment : Fragment() {
         filteredFriendsList = ArrayList()
         groupMembers = ArrayList()
 
-        adapter = NewGroupAdapter(filteredFriendsList, currUser.uid, newGroupViewModel)
+        adapter = NewGroupAdapter(filteredFriendsList, newGroupViewModel)
         recyclerView.adapter = adapter
 
         val submitButton = root.findViewById<Button>(R.id.createGroupButton)
@@ -174,7 +174,7 @@ class NewGroupChatFragment : Fragment() {
                 groupMembers.forEach {
                     it.id?.let { it1 -> userIdForGroup.add(it1) }
                 }
-                groupsRepository.createGroupForUsers(userIdForGroup, groupName){
+                groupsRepository.createGroupForUsers(requireContext(), userIdForGroup, groupName){
                     if(it != null){
                         navigateToConversationsActivity(it.toString(), groupName)
                     }

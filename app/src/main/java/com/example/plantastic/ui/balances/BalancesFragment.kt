@@ -1,7 +1,6 @@
 package com.example.plantastic.ui.balances
 
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,7 +15,6 @@ import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 class BalancesFragment : Fragment(){
     private var _binding: FragmentBalancesBinding? = null
-    private lateinit var balancesViewModel: BalancesViewModel
 
     private val binding get() = _binding!!
 
@@ -31,9 +29,6 @@ class BalancesFragment : Fragment(){
     ): View {
         _binding = FragmentBalancesBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        balancesViewModel =
-            ViewModelProvider(this)[BalancesViewModel::class.java]
 
         usersAuthRepository = UsersAuthRepository()
         val currUser = usersAuthRepository.getCurrentUser()
