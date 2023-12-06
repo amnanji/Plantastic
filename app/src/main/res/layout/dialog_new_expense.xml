@@ -28,9 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/card_background"
+            android:digits="0123456789."
             android:hint="@string/amount"
-            android:inputType="numberDecimal"
-            android:digits="0123456789."/>
+            android:inputType="numberDecimal" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -50,13 +51,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/assign_to"
+                android:text="@string/paid_by"
                 android:textSize="16sp" />
 
             <Spinner
                 android:id="@+id/spinnerAssignToTransaction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="48dp"
                 android:popupBackground="@color/card_background" />
         </LinearLayout>
     </LinearLayout>

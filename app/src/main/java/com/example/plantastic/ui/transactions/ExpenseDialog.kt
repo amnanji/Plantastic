@@ -2,24 +2,23 @@ package com.example.plantastic.ui.transactions
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.example.plantastic.R
 import com.example.plantastic.repository.GroupsRepository
+import com.example.plantastic.repository.TransactionsRepository
 import com.example.plantastic.repository.UsersRepository
+import com.example.plantastic.utilities.FirebaseNodes
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.core.widget.addTextChangedListener
-import com.example.plantastic.repository.TransactionsRepository
-import com.example.plantastic.utilities.FirebaseNodes
 
 class ExpenseDialog : DialogFragment() {
     private lateinit var participantsSpinner: Spinner
@@ -62,7 +61,7 @@ class ExpenseDialog : DialogFragment() {
 
         groupsRepository.getGroupById(groupId!!){ group ->
             if (group != null){
-                participants = group!!.participants!!.map { it.key }
+                participants = group.participants!!.map { it.key }
                 CoroutineScope(Dispatchers.IO).launch {
                     val users = usersRepository.getUsersById(participants)
                     val participantNames = users.map { "${it.firstName} ${it.lastName}" }
@@ -119,7 +118,7 @@ class ExpenseDialog : DialogFragment() {
         }
 
         builder.setView(view)
-        builder.setTitle(getString(R.string.add_new_expense))
+        builder.setTitle(getString(R.string.add_new_group_expense))
 
         val dialog = builder.create()
         // Referenced from: https://stackoverflow.com/questions/18346920/change-the-background-color-of-a-pop-up-dialog

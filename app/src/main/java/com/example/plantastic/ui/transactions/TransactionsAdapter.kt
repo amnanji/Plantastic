@@ -35,18 +35,18 @@ class TransactionsAdapter(
         return TransactionViewHolder(view)
     }
 
-    private val default_color = R.color.default_text_color
-    private val pos_bal_color = R.color.i_am_owed_green
-    private val neg_bal_color = Color.RED
+    private val defaultColor = R.color.default_text_color
+    private val posBalColor = R.color.i_am_owed_green
+    private val negBalColor = Color.RED
 
     override fun onBindViewHolder(
         holder: TransactionViewHolder,
         position: Int,
         model: Transaction
     ) {
-        val amountDue = if(model.transactionType == FirebaseNodes.TRANSACTIONS_GROUP_EXPENSE){
+        val amountDue = if (model.transactionType == FirebaseNodes.TRANSACTIONS_GROUP_EXPENSE) {
             model.totalAmount!! / numParticipants
-        } else{
+        } else {
             model.totalAmount!!
         }
         holder.transactionDescription.text = model.description
@@ -59,7 +59,7 @@ class TransactionsAdapter(
                 "You lent $${roundedAmountDue * (numParticipants - 1)}".also {
                     holder.transactionSentence.text = it
                 }
-                val color = holder.itemView.context.getColor(pos_bal_color)
+                val color = holder.itemView.context.getColor(posBalColor)
                 holder.transactionSentence.setTextColor(color)
             }
 
@@ -69,7 +69,7 @@ class TransactionsAdapter(
                         "You borrowed $$roundedAmountDue from ${user.username}".also {
                             holder.transactionSentence.text = it
                         }
-                        holder.transactionSentence.setTextColor(neg_bal_color)
+                        holder.transactionSentence.setTextColor(negBalColor)
                     }
                 }
             }
@@ -83,7 +83,7 @@ class TransactionsAdapter(
                             if(user2!= null){
                                 val st = "${user1.username} paid ${user2.username} $${DisplayFormatter.formatCurrency(model.totalAmount!!)}"
                                 holder.transactionSentence.text = st
-                                val color = holder.itemView.context.getColor(default_color)
+                                val color = holder.itemView.context.getColor(defaultColor)
                                 holder.transactionSentence.setTextColor(color)
                             }
                         }
@@ -96,7 +96,7 @@ class TransactionsAdapter(
                     if (user != null) {
                         val st = "${user.username} paid you $${DisplayFormatter.formatCurrency(model.totalAmount!!)}"
                         holder.transactionSentence.text = st
-                        val color = holder.itemView.context.getColor(default_color)
+                        val color = holder.itemView.context.getColor(defaultColor)
                         holder.transactionSentence.setTextColor(color)
                     }
                 }
@@ -107,7 +107,7 @@ class TransactionsAdapter(
                     if (user != null) {
                         val st = "You paid ${user.username} $${DisplayFormatter.formatCurrency(model.totalAmount!!)}"
                         holder.transactionSentence.text = st
-                        val color = holder.itemView.context.getColor(default_color)
+                        val color = holder.itemView.context.getColor(defaultColor)
                         holder.transactionSentence.setTextColor(color)
                     }
                 }

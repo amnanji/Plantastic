@@ -52,7 +52,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/view_balance"
+            android:text="@string/settle_balance"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/transactionsGroupImageView"
             app:layout_constraintTop_toBottomOf="@id/transactionsGroupNameTextView" />

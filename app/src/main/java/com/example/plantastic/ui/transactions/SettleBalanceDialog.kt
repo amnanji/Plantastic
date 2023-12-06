@@ -2,7 +2,6 @@ package com.example.plantastic.ui.transactions
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -14,18 +13,18 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.plantastic.R
 import com.example.plantastic.repository.GroupsRepository
+import com.example.plantastic.repository.TransactionsRepository
+import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
+import com.example.plantastic.utilities.DisplayFormatter
+import com.example.plantastic.utilities.FirebaseNodes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.example.plantastic.repository.TransactionsRepository
-import com.example.plantastic.repository.UsersAuthRepository
-import com.example.plantastic.utilities.DisplayFormatter
-import com.example.plantastic.utilities.FirebaseNodes
 import kotlin.properties.Delegates
 
-class SettleBalanceDialog (private val balances: HashMap<String, Double>) : DialogFragment() {
+class SettleBalanceDialog(private val balances: HashMap<String, Double>) : DialogFragment() {
     private lateinit var participantsSpinner: Spinner
     private lateinit var balanceTextView: TextView
     private lateinit var btnSave: Button
@@ -41,9 +40,9 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
     private var groupId: String? = null
     private var participants: List<String> = ArrayList()
 
-    private val default_color = R.color.default_text_color
-    private val pos_bal_color = R.color.i_am_owed_green
-    private val neg_bal_color = Color.RED
+    private val defaultColor = R.color.default_text_color
+    private val posBalColor = R.color.i_am_owed_green
+    private val negBalColor = Color.RED
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Referenced from: https://stackoverflow.com/questions/27965662/how-can-i-change-default-dialog-button-text-color-in-android-5
@@ -65,8 +64,8 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
             dismiss()
         }
 
-        groupsRepository.getGroupById(groupId!!){ group ->
-            if (group != null){
+        groupsRepository.getGroupById(groupId!!) { group ->
+            if (group != null) {
                 participants = group.participants!!.filterNot { it.key == userId }.keys.toList()
                 CoroutineScope(Dispatchers.IO).launch {
                     val users = usersRepository.getUsersById(participants)
@@ -79,72 +78,79 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
                         )
                         participantsSpinner.adapter = participantsAdapter
 
-                        if (participants.size <= 1){
+                        if (participants.size <= 1) {
                             participantsSpinner.setSelection(0)
                             participantsSpinner.isEnabled = false
                         }
 
-                        participantsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                            override fun onItemSelected(
-                                parent: AdapterView<*>?,
-                                view: View?,
-                                position: Int,
-                                id: Long
-                            ) {
-                                val thisBalance = balances[participants[position]]!!
-                                if (thisBalance > 0){
-                                    usersRepository.getUserById(participants[position]){
-                                        if (it != null){
-                                            balanceTextView.text = getString(
-                                                R.string.is_paying_you_transaction,
-                                                it.firstName,
-                                                it.lastName,
-                                                DisplayFormatter.formatCurrency(thisBalance)
-                                            )
-                                            description = getString(
-                                                R.string.settled_balances_you,
-                                                it.firstName,
-                                                it.lastName
-                                            )
-                                            balanceTextView.setTextColor(requireContext().getColor(pos_bal_color))
-                                            amount = thisBalance
+                        participantsSpinner.onItemSelectedListener =
+                            object : AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(
+                                    parent: AdapterView<*>?,
+                                    view: View?,
+                                    position: Int,
+                                    id: Long
+                                ) {
+                                    val thisBalance = balances[participants[position]]!!
+                                    if (thisBalance > 0) {
+                                        usersRepository.getUserById(participants[position]) {
+                                            if (it != null) {
+                                                balanceTextView.text = getString(
+                                                    R.string.is_paying_you_transaction,
+                                                    it.firstName,
+                                                    it.lastName,
+                                                    DisplayFormatter.formatCurrency(thisBalance)
+                                                )
+                                                description = getString(
+                                                    R.string.settled_balances_you,
+                                                    it.firstName,
+                                                    it.lastName
+                                                )
+                                                balanceTextView.setTextColor(
+                                                    requireContext().getColor(
+                                                        posBalColor
+                                                    )
+                                                )
+                                                amount = thisBalance
+                                            }
+                                            updateButtonUI(true)
                                         }
-                                        updateButtonUI(true)
+                                    } else if (thisBalance < 0) {
+                                        usersRepository.getUserById(participants[position]) {
+                                            if (it != null) {
+                                                balanceTextView.text = getString(
+                                                    R.string.you_are_paying_transactions,
+                                                    it.firstName,
+                                                    it.lastName,
+                                                    DisplayFormatter.formatCurrency(thisBalance * -1.0)
+                                                )
+                                                description = getString(
+                                                    R.string.you_settled_balances_with,
+                                                    it.firstName,
+                                                    it.lastName
+                                                )
+                                                balanceTextView.setTextColor(negBalColor)
+                                                amount = thisBalance * -1
+                                            }
+                                            updateButtonUI(true)
+                                        }
+                                    } else {
+                                        balanceTextView.text =
+                                            getString(R.string.balance_with_this_user_is_already_settled)
+                                        updateButtonUI(false)
+                                        balanceTextView.setTextColor(
+                                            requireContext().getColor(
+                                                defaultColor
+                                            )
+                                        )
                                     }
                                 }
-                                else if (thisBalance < 0){
-                                    usersRepository.getUserById(participants[position]){
-                                        if (it != null){
-                                            balanceTextView.text = getString(
-                                                R.string.you_are_paying_transactions,
-                                                it.firstName,
-                                                it.lastName,
-                                                DisplayFormatter.formatCurrency(thisBalance * -1.0)
-                                            )
-                                            description = getString(
-                                                R.string.you_settled_balances_with,
-                                                it.firstName,
-                                                it.lastName
-                                            )
-                                            balanceTextView.setTextColor(neg_bal_color)
-                                            amount = thisBalance * -1
-                                        }
-                                        updateButtonUI(true)
-                                    }
-                                }
-                                else{
-                                    balanceTextView.text =
-                                        getString(R.string.balance_with_this_user_is_already_settled)
-                                    updateButtonUI(false)
-                                    balanceTextView.setTextColor(requireContext().getColor(default_color))
-                                }
-                            }
 
-                            override fun onNothingSelected(p0: AdapterView<*>?) {
-                                balanceTextView.text = ""
-                                updateButtonUI(false)
+                                override fun onNothingSelected(p0: AdapterView<*>?) {
+                                    balanceTextView.text = ""
+                                    updateButtonUI(false)
+                                }
                             }
-                        }
                     }
                 }
             }
@@ -152,7 +158,7 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
 
 
         btnSave.setOnClickListener {
-            if (amount > 0){
+            if (amount > 0) {
                 transactionsRepository.addTransaction(
                     groupId!!,
                     description,
@@ -160,13 +166,12 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
                     DisplayFormatter.roundToTwoDecimalPlaces(amount),
                     FirebaseNodes.TRANSACTIONS_GROUP_REIMBURSEMENT,
                     usersAuthRepository.getCurrentUser()!!.uid // this
-                ){
-                    if(it != null){
+                ) {
+                    if (it != null) {
                         groupsRepository.updateBalanceForTransaction(it, userId)
                     }
                 }
-            }
-            else {
+            } else {
                 transactionsRepository.addTransaction(
                     groupId!!,
                     description,
@@ -174,8 +179,8 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
                     DisplayFormatter.roundToTwoDecimalPlaces(amount * -1.0),
                     FirebaseNodes.TRANSACTIONS_GROUP_REIMBURSEMENT,
                     participants[participantsSpinner.selectedItemPosition] // this
-                ){
-                    if(it != null){
+                ) {
+                    if (it != null) {
                         groupsRepository.updateBalanceForTransaction(it, userId)
                     }
                 }
@@ -196,7 +201,7 @@ class SettleBalanceDialog (private val balances: HashMap<String, Double>) : Dial
         return dialog
     }
 
-    private fun updateButtonUI(isEnabled: Boolean){
+    private fun updateButtonUI(isEnabled: Boolean) {
         val textColor = if (isEnabled) {
             requireContext().resources.getColor(R.color.pastel_red)
         } else {
