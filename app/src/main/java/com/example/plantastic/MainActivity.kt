@@ -1,5 +1,6 @@
 package com.example.plantastic
 
+import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -8,11 +9,12 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
-import androidx.navigation.NavController
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -23,9 +25,6 @@ import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.login.LoginActivity
 import com.example.plantastic.utilities.IconUtil
-
-import android.Manifest
-import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -48,12 +47,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val currUser = usersAuthRepository.getCurrentUser()
-        if (currUser == null){
+        if (currUser == null) {
             navigateToLoginActivity()
         }
 
-        if(!currUser!!.isEmailVerified){
-            Toast.makeText(this, getString(R.string.a_verification_email_has_been_sent_please_verify_your_email), Toast.LENGTH_SHORT).show()
+        if (!currUser!!.isEmailVerified) {
+            Toast.makeText(
+                this,
+                getString(R.string.a_verification_email_has_been_sent_please_verify_your_email),
+                Toast.LENGTH_SHORT
+            ).show()
             usersAuthRepository.logOutUser()
             navigateToLoginActivity()
             finish()
@@ -103,7 +106,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(
+            if (
                 destination.id == R.id.nav_calendar ||
                 destination.id == R.id.nav_settings ||
                 destination.id == R.id.nav_profile ||
@@ -131,10 +134,10 @@ class MainActivity : AppCompatActivity() {
 
                     val iconUtils = IconUtil(context)
                     val color: Int
-                    if (it.color == null){
+                    if (it.color == null) {
                         color = iconUtils.getRandomColour()
                         usersRepository.setColor(currUser.uid, color)
-                    }else{
+                    } else {
                         color = it.color
                     }
                     val icon = iconUtils.getIcon(it.firstName!!, it.lastName!!, color)
@@ -143,7 +146,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        navHeaderLinearLayout.setOnClickListener{
+        navHeaderLinearLayout.setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.START)
             navController.navigate(R.id.nav_profile)
         }
@@ -163,6 +166,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
     private fun areCalendarPermissionsGranted(): Boolean {
         return ContextCompat.checkSelfPermission(
             this,

@@ -27,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginTop="5dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/eventName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +66,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:contentDescription="Pin Icon"
+                    android:contentDescription="@string/content_desc_location_icon"
                     android:src="@drawable/baseline_pin_drop_24" />
 
                 <TextView
@@ -93,7 +94,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:contentDescription="Calendar Icon"
+                    android:contentDescription="@string/content_desc_calendar_icon"
                     android:src="@drawable/baseline_calendar_month_24" />
 
                 <TextView

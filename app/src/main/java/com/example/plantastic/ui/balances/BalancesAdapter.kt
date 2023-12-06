@@ -27,7 +27,7 @@ class BalancesAdapter(
 
     private var usersRepository = UsersRepository()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):  BalancesViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BalancesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.custom_balances_layout, parent, false)
         return BalancesViewHolder(view)
@@ -39,10 +39,9 @@ class BalancesAdapter(
         //money you'll get
         var amountOwedByOthers = 0.0
         model.balances?.get(userId)?.forEach { (_, value) ->
-            if (value < 0){
+            if (value < 0) {
                 amountOwedByMe += value
-            }
-            else{
+            } else {
                 amountOwedByOthers += value
             }
         }
@@ -50,11 +49,11 @@ class BalancesAdapter(
         val iconUtil = IconUtil(holder.itemView.context)
 
         amountOwedByMe = kotlin.math.abs(amountOwedByMe)
-        if(model.groupType == "individual"){
+        if (model.groupType == "individual") {
             val participants = model.participants
             participants?.forEach { (key, _) ->
-                if (key != userId){
-                    usersRepository.getUserById(key){
+                if (key != userId) {
+                    usersRepository.getUserById(key) {
                         holder.groupName.text = it?.username
                         val drawable = iconUtil.getIcon(
                             it!!.firstName!!,
@@ -65,8 +64,7 @@ class BalancesAdapter(
                     }
                 }
             }
-        }
-        else{
+        } else {
             holder.groupName.text = model.name
             val drawable = iconUtil.getIcon(model.name!!, "", model.color!!)
             holder.imageViewHolder.setImageDrawable(drawable)
@@ -89,26 +87,29 @@ class BalancesAdapter(
         val amountOwedByMeBigDecimal = BigDecimal.valueOf(amountOwedByMe)
         val amountOwedByOthersBigDecimal = BigDecimal.valueOf(amountOwedByOthers)
 
-        val default_color = holder.itemView.context.getColor(R.color.default_text_color)
+        val defaultColor = holder.itemView.context.getColor(R.color.default_text_color)
 
         if (amountOwedByMeBigDecimal.abs() > BigDecimal.valueOf(epsilon)) {
             holder.balanceOwedByYou.setTextColor(Color.RED)
         }
         else{
-            holder.balanceOwedByYou.setTextColor(default_color)
+            holder.balanceOwedByYou.setTextColor(defaultColor)
         }
 
         if (amountOwedByOthersBigDecimal.abs() > BigDecimal.valueOf(epsilon)) {
             val color = holder.itemView.context.getColor(R.color.i_am_owed_green)
             holder.balanceOwedByOthers.setTextColor(color)
-        }
-        else{
-            holder.balanceOwedByOthers.setTextColor(default_color)
+        } else {
+            holder.balanceOwedByOthers.setTextColor(defaultColor)
         }
 
 
-        holder.itemView.setOnClickListener{
-            navigateToTransactionsActivity(holder.itemView.context, model.id!!, model.participants!!.size)
+        holder.itemView.setOnClickListener {
+            navigateToTransactionsActivity(
+                holder.itemView.context,
+                model.id!!,
+                model.participants!!.size
+            )
         }
     }
 
@@ -119,7 +120,7 @@ class BalancesAdapter(
         val imageViewHolder: ImageView = itemView.findViewById(R.id.balancesImageView)
     }
 
-    private fun navigateToTransactionsActivity(context: Context, id: String, numParticipants: Int){
+    private fun navigateToTransactionsActivity(context: Context, id: String, numParticipants: Int) {
         val intent = Intent(context, TransactionsActivity::class.java)
         intent.putExtra(TransactionsActivity.GROUP_ID, id)
         intent.putExtra(TransactionsActivity.NUMBER_OF_MEMBERS, numParticipants)

@@ -3,31 +3,23 @@ package com.example.plantastic.ui.toDo
 // ToDoAdapter.kt
 import android.graphics.Paint
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.R
 import com.example.plantastic.models.ToDoItemForDisplay
 import com.example.plantastic.repository.ToDoRepository
+import com.example.plantastic.utilities.IconUtil
 import java.util.Calendar
 
 
 class ToDoAdapter(private val todoList: List<ToDoItemForDisplay>) :
     RecyclerView.Adapter<ToDoAdapter.ViewHolder>() {
     private val toDoRepository = ToDoRepository()
-    private val cardBackgroundColors = ArrayList(
-        listOf(
-            R.color.todo_list_item_color_1
-//            R.color.todo_list_item_color_2,
-//            R.color.todo_list_item_color_3
-        )
-    )
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView: TextView = itemView.findViewById(R.id.toDoTitle)
@@ -35,7 +27,6 @@ class ToDoAdapter(private val todoList: List<ToDoItemForDisplay>) :
         val groupNameTextView: TextView = itemView.findViewById(R.id.toDoGroupName)
         val dueDateTextView: TextView = itemView.findViewById(R.id.toDoDueDate)
         val checkbox: CheckBox = itemView.findViewById(R.id.toDoCheckBox)
-        val cardView: CardView = itemView.findViewById(R.id.toDoCardView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -51,10 +42,7 @@ class ToDoAdapter(private val todoList: List<ToDoItemForDisplay>) :
         holder.groupNameTextView.text = todoItem.groupName
         holder.dueDateTextView.text = todoItem.dueDate?.let { getDate(it) }
 
-        // Setting the background color of the card from one of colors defined in the list above
-        val backgroundColor =
-            holder.itemView.context.resources.getColor(cardBackgroundColors[position % cardBackgroundColors.size])
-        holder.cardView.setCardBackgroundColor(backgroundColor)
+        holder.groupNameTextView.setTextColor(IconUtil(holder.itemView.context).colorList[todoItem.color!!])
 
         if (todoItem.completed != null) {
             // Setting setOnCheckedChangeListener to null to avoid triggering the OnCheckedChangeListener

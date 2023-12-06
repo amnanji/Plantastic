@@ -5,15 +5,15 @@ import com.example.plantastic.models.CalendarElement
 import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
 import com.example.plantastic.models.Transaction
-import com.example.plantastic.utilities.DisplayFormatter
 import com.example.plantastic.utilities.DateTimeUtils
+import com.example.plantastic.utilities.DisplayFormatter
 import com.example.plantastic.utilities.FirebaseNodes
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.Query
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope

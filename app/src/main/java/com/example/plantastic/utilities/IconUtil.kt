@@ -7,7 +7,7 @@ import com.example.plantastic.R
 @Suppress("DEPRECATION")
 class IconUtil(context: Context) {
 
-    private val colorList = arrayListOf(
+    val colorList = arrayListOf(
         context.resources.getColor(R.color.pastel_blue_dark),
         context.resources.getColor(R.color.pastel_red_var),
         context.resources.getColor(R.color.pastel_hot_pink),
@@ -41,14 +41,11 @@ class IconUtil(context: Context) {
         context.resources.getColor(R.color.pastel_gray_dark),
         context.resources.getColor(R.color.pastel_turquoise_dark),
         context.resources.getColor(R.color.pastel_violet_dark),
-
-
         context.resources.getColor(R.color.pastel_blue),
         context.resources.getColor(R.color.pastel_indigo),
         context.resources.getColor(R.color.pastel_mauve_dark),
         context.resources.getColor(R.color.pastel_olive_dark),
-        context.resources.getColor(R.color.pastel_gray_dark),
-
+        context.resources.getColor(R.color.pastel_gray_dark)
     )
 
     fun getRandomColour(): Int {
@@ -59,14 +56,15 @@ class IconUtil(context: Context) {
     private fun concatenateFirstLetters(firstString: String, secondString: String): String {
 
         // Get the first letter of each string
-        val firstLetterFirstString = if (firstString.isNotEmpty()) firstString[0].toString().uppercase() else ""
+        val firstLetterFirstString =
+            if (firstString.isNotEmpty()) firstString[0].toString().uppercase() else ""
         val firstLetterSecondString =
             if (secondString.isNotEmpty()) secondString[0].toString().uppercase() else ""
 
         return "$firstLetterFirstString$firstLetterSecondString"
     }
 
-    fun getIcon(firstString: String, secondString: String, colourPos: Int): TextDrawable? {
+    fun getIcon(firstString: String, secondString: String, colourPos: Int): TextDrawable {
 
         return TextDrawable.Builder()
             .setColor(colorList[colourPos])
@@ -75,5 +73,4 @@ class IconUtil(context: Context) {
             .setRadius(100)
             .build()
     }
-
 }

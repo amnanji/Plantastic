@@ -1,6 +1,5 @@
 package com.example.plantastic.ui.toDo
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,6 +32,7 @@ class ToDoViewModel : ViewModel() {
                     if (!groupsHashmap.containsKey(groupId)) continue
                     val groupName = groupsHashmap[groupId]?.name
                     val isGroup = groupsHashmap[groupId]?.groupType == "group"
+                    val groupColor = groupsHashmap[groupId]?.color
 
                     for (toDoItem in toDoItems) {
                         if (toDoItem.id != null) {
@@ -40,7 +40,8 @@ class ToDoViewModel : ViewModel() {
                                 toDoItem,
                                 groupId,
                                 isGroup,
-                                groupName
+                                groupName,
+                                groupColor
                             )
                             data.add(toDoItemForDisplay)
                         }

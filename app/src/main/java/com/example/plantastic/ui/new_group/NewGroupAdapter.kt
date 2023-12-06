@@ -11,7 +11,7 @@ import com.example.plantastic.R
 import com.example.plantastic.models.Users
 import com.example.plantastic.utilities.IconUtil
 
-class NewGroupAdapter (
+class NewGroupAdapter(
     private var dataList: List<Users>,
     private val newGroupViewModel: NewGroupViewModel
 ) :
@@ -45,11 +45,10 @@ class NewGroupAdapter (
         val drawable = iconUtil.getIcon(model.firstName!!, model.lastName!!, model.color!!)
         holder.profileIconImageView.setImageDrawable(drawable)
 
-        holder.checkBox.setOnClickListener{
-            if (newGroupViewModel.isUserInMembersList(model)){
+        holder.checkBox.setOnClickListener {
+            if (newGroupViewModel.isUserInMembersList(model)) {
                 newGroupViewModel.removeFromMembersList(model)
-            }
-            else{
+            } else {
                 newGroupViewModel.addToMembersList(model)
             }
         }

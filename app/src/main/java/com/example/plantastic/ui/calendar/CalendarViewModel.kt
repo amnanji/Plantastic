@@ -9,7 +9,7 @@ import com.example.plantastic.repository.UsersAuthRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Calendar
 
 class CalendarViewModel() : ViewModel() {
 
@@ -29,6 +29,7 @@ class CalendarViewModel() : ViewModel() {
                 for ((groupId, toDoItems) in todoListsHashmap) {
                     if (!groupsHashmap.containsKey(groupId)) continue
                     val groupName = groupsHashmap[groupId]?.name
+                    val groupColor = groupsHashmap[groupId]?.color
 
                     val events = groupsHashmap[groupId]?.events ?: emptyMap()
 
@@ -39,7 +40,8 @@ class CalendarViewModel() : ViewModel() {
                                 date = event.date,
                                 GID = event.GID,
                                 groupName = groupName,
-                                location = event.location
+                                location = event.location,
+                                color = groupColor
                             )
                             data.add(calendarEvent)
                     }
@@ -51,7 +53,8 @@ class CalendarViewModel() : ViewModel() {
                                 type = "Todo", // will switch up in TO-DO
                                 date = toDoItem.dueDate,
                                 GID = groupId,
-                                groupName = groupName
+                                groupName = groupName,
+                                color = groupColor
                             )
                             data.add(calendarEvent)
                         }

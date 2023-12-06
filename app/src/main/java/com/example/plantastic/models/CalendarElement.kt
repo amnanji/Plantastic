@@ -9,5 +9,6 @@ data class CalendarElement(
     val date: Long? = null,
     var GID: String? = null,
     var groupName: String? = null,
-    var location: String? = null
+    var location: String? = null,
+    var color: Int? = 0
 )

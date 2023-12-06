@@ -188,7 +188,7 @@ class ProfileFragment : Fragment() {
         // Collect which day textViews have incorrect values so they can be input into the AlertDialog
         daysWithInvalidAvailability = daysWithInvalidAvailability.dropLast(2)
         daysWithInvalidAvailability += getString(R.string.please_correct_availability_message)
-        Log.d("Alert", daysWithInvalidAvailability)
+//        Log.d("Alert", daysWithInvalidAvailability)
         if (!isValid){
             alertDialog.showAlertDialog("Invalid availability entries", daysWithInvalidAvailability)
         }

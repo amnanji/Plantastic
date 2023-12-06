@@ -18,12 +18,12 @@ class AddFriendsAdapter(
     private val userId: String
 ) :
     FirebaseRecyclerAdapter<Users, AddFriendsAdapter.SearchUsersViewHolder>(options) {
-
     private var usersRepository = UsersRepository()
 
     inner class SearchUsersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val usernameTextView: TextView = itemView.findViewById(R.id.searchUsernameTextView)
         val nameTextView: TextView = itemView.findViewById(R.id.searchNameTextView)
+
         // the two image views overlap and are hidden by default
         val iconImageViewFriend: ImageView = itemView.findViewById(R.id.iconImageViewFriend)
         val iconImageViewUser: ImageView = itemView.findViewById(R.id.iconImageViewUser)
@@ -45,24 +45,24 @@ class AddFriendsAdapter(
         holder.profileIconImageView.setImageDrawable(drawable)
 
         // checking if the user at this position is the current user
-        if(model.id == userId){
+        if (model.id == userId) {
             holder.iconImageViewFriend.visibility = View.GONE
             holder.iconImageViewUser.visibility = View.GONE
-            holder.iconImageViewUser.setOnClickListener{
+            holder.iconImageViewUser.setOnClickListener {
                 usersRepository.addFriends(userId, model.id)
             }
         }
         // if the friends object is null, user has no friends
-        else if (model.friends == null){
+        else if (model.friends == null) {
             setUpAddFriendButton(holder, model)
         }
         // the current user is already a friend of the user at this position
-        else if(model.friends.containsKey(userId) && model.friends[userId]!!){
+        else if (model.friends.containsKey(userId) && model.friends[userId]!!) {
             holder.iconImageViewFriend.visibility = View.VISIBLE
             holder.iconImageViewUser.visibility = View.GONE
         }
         // the current user has friends but the user at this position is not one of them
-        else{
+        else {
             setUpAddFriendButton(holder, model)
         }
     }
@@ -71,10 +71,10 @@ class AddFriendsAdapter(
         return snapshots.size
     }
 
-    private fun setUpAddFriendButton(holder: SearchUsersViewHolder, model: Users){
+    private fun setUpAddFriendButton(holder: SearchUsersViewHolder, model: Users) {
         holder.iconImageViewUser.visibility = View.VISIBLE
         holder.iconImageViewFriend.visibility = View.GONE
-        holder.iconImageViewUser.setOnClickListener{
+        holder.iconImageViewUser.setOnClickListener {
             usersRepository.addFriends(userId, model.id!!)
         }
     }

@@ -1,6 +1,7 @@
 package com.example.plantastic.ui.conversation
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +27,7 @@ class ConversationAdapter(
             val view = inflater.inflate(R.layout.message_curr_user, parent, false)
             val binding = MessageCurrUserBinding.bind(view)
             CurrUserMessageViewHolder(binding)
-        } else if (isGroup) {
+        } else if (isGroup || viewType == VIEW_TYPE_AI) {
             val view = inflater.inflate(R.layout.message_group, parent, false)
             val binding = MessageGroupBinding.bind(view)
             GroupChatMessagesViewHolder(view.context, binding)
@@ -40,27 +41,32 @@ class ConversationAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, model: Message) {
         if (model.senderId == userId) {
             (holder as CurrUserMessageViewHolder).bind(model)
-        } else if (isGroup) {
+        } else if (isGroup || model.messageType == "AI Message") {
             (holder as GroupChatMessagesViewHolder).bind(model)
         } else {
             (holder as IndividualChatMessagesViewHolder).bind(model)
         }
     }
 
-    inner class GroupChatMessagesViewHolder(private val context: Context, private val binding: MessageGroupBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class GroupChatMessagesViewHolder(
+        private val context: Context, private val binding: MessageGroupBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
-            usersRepository.getUserById(item.senderId!!) {
-                if (it != null) {
-                    binding.messageSender.text = context.getString(
-                        R.string.name_placeholder_with_colon,
-                        it.firstName,
-                        it.lastName
-                    )
+            if (item.messageType == "AI Message") {
+                binding.messageSender.text = context.getString(R.string.msg_sender_ai_with_colon)
+                binding.root.backgroundTintList =
+                    ColorStateList.valueOf(context.getColor(R.color.ai_msg))
+            } else {
+                usersRepository.getUserById(item.senderId!!) {
+                    if (it != null) {
+                        binding.messageSender.text = context.getString(
+                            R.string.name_placeholder_with_colon, it.firstName, it.lastName
+                        )
+                    }
                 }
             }
             binding.messageText.text = item.content
-            binding.messageTimestamp.text = DateTimeUtils.getDateString(item.timestamp!!)
+            binding.messageTimestamp.text = item.timestamp?.let { DateTimeUtils.getDateString(it) }
         }
     }
 
@@ -68,7 +74,7 @@ class ConversationAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
             binding.messageText.text = item.content
-            binding.messageTimestamp.text = DateTimeUtils.getDateString(item.timestamp!!)
+            binding.messageTimestamp.text = item.timestamp?.let { DateTimeUtils.getDateString(it) }
         }
     }
 
@@ -76,17 +82,24 @@ class ConversationAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
             binding.messageText.text = item.content
-            binding.messageTimestamp.text = DateTimeUtils.getDateString(item.timestamp!!)
+            binding.messageTimestamp.text = item.timestamp?.let { DateTimeUtils.getDateString(it) }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (options.snapshots[position].senderId == userId) VIEW_TYPE_CURR_USER else VIEW_TYPE_NOT_CURR_USER
+        return if (options.snapshots[position].messageType == "AI Message") {
+            VIEW_TYPE_AI
+        } else if (options.snapshots[position].senderId == userId) {
+            VIEW_TYPE_CURR_USER
+        } else {
+            VIEW_TYPE_NOT_CURR_USER
+        }
     }
 
     companion object {
         private const val TAG = "Pln MessagesAdapter"
         private const val VIEW_TYPE_CURR_USER = 1
         private const val VIEW_TYPE_NOT_CURR_USER = 0
+        private const val VIEW_TYPE_AI = 2
     }
 }

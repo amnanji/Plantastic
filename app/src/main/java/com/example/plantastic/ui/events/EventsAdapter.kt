@@ -10,6 +10,7 @@ import com.example.plantastic.models.Events
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.utilities.DateTimeUtils
+import com.example.plantastic.utilities.IconUtil
 
 class EventsAdapter(private val eventsList: List<Events>, private val userID: String) : RecyclerView.Adapter<EventsAdapter.EventsViewHolder>() {
 
@@ -42,10 +43,9 @@ class EventsAdapter(private val eventsList: List<Events>, private val userID: St
                             holder.groupName.text = chatName
                         }
                     }
-
                 }
+                holder.groupName.setTextColor(IconUtil(holder.itemView.context).colorList[groups.color!!])
             }
-
         }
     }
     override fun getItemCount(): Int {

@@ -1,5 +1,6 @@
 package com.example.plantastic.ui.events
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -13,35 +14,34 @@ import android.net.ParseException
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
+import android.util.Log
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
-import android.Manifest
-import android.util.Log
-import androidx.core.app.ActivityCompat
 import com.example.plantastic.R
 import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
+import com.example.plantastic.repository.UsersRepository
+import com.example.plantastic.ui.toDo.AddTodoItemDialog
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.Locale
 import java.util.TimeZone
 
-
 @Suppress("DEPRECATION")
-class AddEventsDialog: DialogFragment() {
+class AddEventsDialog : DialogFragment() {
     private lateinit var groupsSpinner: Spinner
-
     private lateinit var dateTextView: TextView
     private lateinit var dateBtn: Button
     private lateinit var timeTextView: TextView
@@ -52,11 +52,14 @@ class AddEventsDialog: DialogFragment() {
     private lateinit var btnSave: Button
     private lateinit var btnCancel: Button
 
+    private var groupId: String? = null
     private val groupsRepository = GroupsRepository()
+    private val usersRepository = UsersRepository()
     private var groups: List<Groups?> = ArrayList()
 
     companion object {
-        const val TAG_ADD_TODO_ITEM = "ADD_EVENTS_ITEM"
+        const val TAG_ADD_EVENT = "ADD_EVENTS_ITEM"
+        const val KEY_GROUP_ID = "KEY_GROUP_ID"
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -65,10 +68,10 @@ class AddEventsDialog: DialogFragment() {
         val view: View =
             requireActivity().layoutInflater.inflate(R.layout.dialog_add_new_event, null)
 
+        val bundle = arguments
+        groupId = bundle?.getString(AddTodoItemDialog.KEY_GROUP_ID)
 
         groupsSpinner = view.findViewById(R.id.eventSpinnerGroup)
-
-
         dateTextView = view.findViewById(R.id.eventsViewDate)
         dateBtn = view.findViewById(R.id.eventsBtnDate)
         titleTextView = view.findViewById(R.id.eventsAddTitle)
@@ -81,16 +84,48 @@ class AddEventsDialog: DialogFragment() {
 
         val currUser = UsersAuthRepository().getCurrentUser()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            groups = groupsRepository.getAllGroupsByUserWithChatNamesAsync(currUser!!.uid)
-            withContext(Dispatchers.Main) {
-                val groupNames = groups.map { it!!.name }
-                val groupsAdapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_spinner_item,
-                    groupNames
-                )
-                groupsSpinner.adapter = groupsAdapter
+        if (groupId != null) {
+            groupsRepository.getGroupById(groupId!!) {
+                groups = listOf(it)
+                if (groups[0]?.groupType == "group") {
+                    updateGroupsSpinner()
+                } else {
+                    val participants = groups[0]?.participants!!.keys.toList()
+                    val otherParticipantId =
+                        if (participants[0] == currUser!!.uid) participants[1] else participants[0]
+                    usersRepository.getUserById(otherParticipantId) { user ->
+                        if (user != null) {
+                            groups[0]?.name = view.context.getString(
+                                R.string.individual_group_name_placeholder,
+                                user.firstName,
+                                user.lastName
+                            )
+                            updateGroupsSpinner()
+                        }
+                    }
+                }
+            }
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+                groups = groupsRepository.getAllGroupsByUserWithChatNamesAsync(currUser!!.uid)
+                updateGroupsSpinner()
+            }
+        }
+
+        groupsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (groups.size < 2) {
+                    groupsSpinner.isEnabled = false
+                }
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+                // Do nothing
             }
         }
 
@@ -151,8 +186,10 @@ class AddEventsDialog: DialogFragment() {
                     groups[groupsSpinner.selectedItemPosition]?.id,
                     descriptionTextView.text.toString()
                 )
-                groupsRepository.addEventsItem(eventItem,groups[groupsSpinner.selectedItemPosition]?.id)
-
+                groupsRepository.addEventsItem(
+                    eventItem,
+                    groups[groupsSpinner.selectedItemPosition]?.id
+                )
 
                 val readCalendarPermission = ContextCompat.checkSelfPermission(
                     requireContext(),
@@ -163,11 +200,9 @@ class AddEventsDialog: DialogFragment() {
                     requireContext(),
                     Manifest.permission.WRITE_CALENDAR
                 ) == PackageManager.PERMISSION_GRANTED
-                if(readCalendarPermission && writeCalendarPermission) {
+                if (readCalendarPermission && writeCalendarPermission) {
                     addEventToCalendar(eventItem)
-                }
-                else
-                {
+                } else {
                     Log.d("Revs", "no permission!!!!!!!!!!!!!!!!")
                     // Request permissions
                     val permissionsToRequest = mutableListOf<String>()
@@ -186,9 +221,6 @@ class AddEventsDialog: DialogFragment() {
                         123
                     )
                 }
-
-
-
                 dialog?.dismiss()
             }
         }
@@ -224,11 +256,13 @@ class AddEventsDialog: DialogFragment() {
         dialog.window?.decorView?.setBackgroundResource(R.drawable.rounded_borders_15dp)
         return dialog
     }
+
     private fun parseDate(): Long {
         // Choosing what data we are parsing based on the dialog we need to create (Date or Time)
         val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.CANADA)
         return sdf.parse(dateTextView.text.toString()).time
     }
+
     private fun parseTime(): Long {
         // Choosing what data we are parsing based on the dialog we need to create (Date or Time)
         val sdf = SimpleDateFormat("HH:mm", Locale.CANADA)
@@ -240,27 +274,23 @@ class AddEventsDialog: DialogFragment() {
         val time = timeTextView.text.toString()
         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.CANADA)
         return sdf.parse("$date $time").time
-
-
-
     }
+
     private fun validateData(): Boolean {
         var flag = true
         if (titleTextView.text?.isBlank() == true) {
             flag = false
         }
-
         if (descriptionTextView.text?.isBlank() == true) {
             flag = false
         }
-
         if (dateTextView.text.isBlank()) {
             flag = false
         }
         if (timeTextView.text.isBlank()) {
             flag = false
         }
-        if (locationTextView.text?.isBlank()==true) {
+        if (locationTextView.text?.isBlank() == true) {
             flag = false
         }
 
@@ -289,11 +319,12 @@ class AddEventsDialog: DialogFragment() {
             put(CalendarContract.Events.DTEND, endMillis)
             put(CalendarContract.Events.DESCRIPTION, event.description)
             put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
-
-
         }
 
-        return requireContext().contentResolver.insert(CalendarContract.Events.CONTENT_URI, contentValues)
+        return requireContext().contentResolver.insert(
+            CalendarContract.Events.CONTENT_URI,
+            contentValues
+        )
     }
 
     @SuppressLint("Range")
@@ -319,8 +350,19 @@ class AddEventsDialog: DialogFragment() {
                 return it.getLong(it.getColumnIndex(CalendarContract.Calendars._ID))
             }
         }
-
         return null
+    }
+
+    private fun updateGroupsSpinner() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val groupNames = groups.map { it!!.name }
+            val groupsAdapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                groupNames
+            )
+            groupsSpinner.adapter = groupsAdapter
+        }
     }
 
 }

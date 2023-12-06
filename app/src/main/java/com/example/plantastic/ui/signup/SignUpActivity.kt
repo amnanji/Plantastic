@@ -1,21 +1,21 @@
 package com.example.plantastic.ui.signup
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import com.example.plantastic.R
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
+import com.example.plantastic.ui.login.LoginActivity
+import com.example.plantastic.utilities.FirebaseNodes
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.example.plantastic.utilities.FirebaseNodes
-import com.example.plantastic.R
-import com.example.plantastic.ui.login.LoginActivity
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 
 class SignUpActivity : AppCompatActivity() {
 

@@ -16,11 +16,9 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import java.math.BigDecimal
 import java.math.RoundingMode
-import kotlin.math.abs
-import kotlin.Double as Double
 
 class TransactionsAdapter(
-    private var options: FirebaseRecyclerOptions<Transaction>,
+    options: FirebaseRecyclerOptions<Transaction>,
     private val userId: String,
     private val numParticipants: Int
 ) :

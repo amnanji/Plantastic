@@ -17,7 +17,7 @@
     <!--  Chat Related Colors  -->
     <color name="curr_user_msg">#F2D5C3</color>
     <color name="other_user_msg">#EDEDED</color>
-    <color name="ai_msg">@color/pastel_red</color>
+    <color name="ai_msg">#FDE2E2</color>
     <color name="text_on_background">#FF000000</color>
     <color name="write_msg_background">#DFDFDF</color>
     
@@ -31,9 +31,9 @@
     <color name="pastel_orange">#F9E2C4</color>
     <color name="pastel_lime_green">#CCE29C</color>
     <color name="pastel_blue">#D2E5F6</color>
-    <color name="pastel_indigo">#D5DEFD</color>
+    <color name="pastel_indigo">#9AB1FF</color>
     <color name="pastel_purple">#E6D9F0</color>
-    <color name="pastel_lilac">#E7CCF1</color>
+    <color name="pastel_lilac">#DD9DF4</color>
     <color name="pastel_salmon">#FBB4A7</color>
     <color name="pastel_mint">#B6DFBF</color>
     <color name="pastel_coral">#F9B7B2</color>

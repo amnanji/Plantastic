@@ -20,18 +20,17 @@ class NewGroupViewModel : ViewModel() {
 
     fun getFriendsList(id: String) {
         usersRepository.getFriendsList(id) {
-            if (it != null){
+            if (it != null) {
                 _friendsList.value = it
                 _filteredFriendsList.value = it
             }
         }
     }
 
-    fun filterFriendsList(search: String){
-        if (search.isEmpty()){
+    fun filterFriendsList(search: String) {
+        if (search.isEmpty()) {
             _filteredFriendsList.value = _friendsList.value
-        }
-        else{
+        } else {
             val filteredList = _friendsList.value?.filter { user ->
                 user.username!!.startsWith(search, ignoreCase = true)
             }
@@ -39,7 +38,7 @@ class NewGroupViewModel : ViewModel() {
         }
     }
 
-    fun addToMembersList(user: Users){
+    fun addToMembersList(user: Users) {
         val currentMembersList = _groupMembersList.value?.toMutableList() ?: mutableListOf()
         currentMembersList.add(user)
         _groupMembersList.value = currentMembersList

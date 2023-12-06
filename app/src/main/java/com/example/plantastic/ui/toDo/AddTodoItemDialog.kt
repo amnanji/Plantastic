@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.example.plantastic.R
 import com.example.plantastic.models.Groups
@@ -26,10 +27,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
-import androidx.core.widget.addTextChangedListener
 
 class AddTodoItemDialog : DialogFragment() {
-    private lateinit var chatsSpinner: Spinner
+    private lateinit var groupsSpinner: Spinner
     private lateinit var participantsSpinner: Spinner
     private lateinit var dueDateTextView: TextView
     private lateinit var dueDateBtn: Button
@@ -52,7 +52,7 @@ class AddTodoItemDialog : DialogFragment() {
         val view: View =
             requireActivity().layoutInflater.inflate(R.layout.dialog_add_new_todo_item, null)
 
-        chatsSpinner = view.findViewById(R.id.spinnerGroupTodo)
+        groupsSpinner = view.findViewById(R.id.spinnerGroupTodo)
         participantsSpinner = view.findViewById(R.id.spinnerAssignToTodo)
         dueDateTextView = view.findViewById(R.id.textViewDueDateTodo)
         dueDateBtn = view.findViewById(R.id.btnDueDateTodo)
@@ -74,20 +74,35 @@ class AddTodoItemDialog : DialogFragment() {
             dismiss()
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            groups = groupsRepository.getAllGroupsByUserWithChatNamesAsync(userId!!)
-            withContext(Dispatchers.Main) {
-                val groupNames = groups.map { it!!.name }
-                val groupsAdapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_spinner_item,
-                    groupNames
-                )
-                chatsSpinner.adapter = groupsAdapter
+        if (groupId != null) {
+            groupsRepository.getGroupById(groupId!!) {
+                groups = listOf(it)
+                if (groups[0]?.groupType == "group") {
+                    updateGroupsSpinner()
+                } else {
+                    val participants = groups[0]?.participants!!.keys.toList()
+                    val otherParticipantId =
+                        if (participants[0] == userId) participants[1] else participants[0]
+                    usersRepository.getUserById(otherParticipantId) { user ->
+                        if (user != null) {
+                            groups[0]?.name = view.context.getString(
+                                R.string.individual_group_name_placeholder,
+                                user.firstName,
+                                user.lastName
+                            )
+                            updateGroupsSpinner()
+                        }
+                    }
+                }
+            }
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+                groups = groupsRepository.getAllGroupsByUserWithChatNamesAsync(userId!!)
+                updateGroupsSpinner()
             }
         }
 
-        chatsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        groupsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?,
                 selectedItemView: View?,
@@ -95,6 +110,9 @@ class AddTodoItemDialog : DialogFragment() {
                 id: Long
             ) {
                 val selectedGroup = groups[position]
+                if (groups.size < 2) {
+                    groupsSpinner.isEnabled = false
+                }
 
                 participants = selectedGroup!!.participants!!.map { it.key }
                 CoroutineScope(Dispatchers.IO).launch {
@@ -154,7 +172,7 @@ class AddTodoItemDialog : DialogFragment() {
                 )
                 toDoRepository.addTodoListItem(
                     todoItem,
-                    groups[chatsSpinner.selectedItemPosition]?.id
+                    groups[groupsSpinner.selectedItemPosition]?.id
                 )
                 dialog?.dismiss()
             }
@@ -207,6 +225,18 @@ class AddTodoItemDialog : DialogFragment() {
         }
         btnSave.setTextColor(textColor)
         return flag
+    }
+
+    private fun updateGroupsSpinner() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val groupNames = groups.map { it!!.name }
+            val groupsAdapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                groupNames
+            )
+            groupsSpinner.adapter = groupsAdapter
+        }
     }
 
     private fun parseDate(): Long {
