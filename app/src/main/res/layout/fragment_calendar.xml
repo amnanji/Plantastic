@@ -12,8 +12,15 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:outlineSpotShadowColor="@color/pastel_red"
-        app:mcv_showOtherDates="other_months" />
+        app:mcv_showOtherDates="other_months"
+        app:mcv_selectionColor="@color/ai_msg"
+        app:mcv_headerTextAppearance="@color/ai_msg"
+        app:mcv_leftArrow="@drawable/arrow_left"
+        app:mcv_rightArrow="@drawable/arrow_right"
+        app:mcv_dateTextAppearance="@color/text_on_background"
+        app:mcv_weekDayTextAppearance="@color/text_on_background"
+        app:mcv_weekDayLabels="@color/text_on_background"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"

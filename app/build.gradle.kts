@@ -66,7 +66,4 @@ dependencies {
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
     implementation ("com.github.alvinhkh:TextDrawable:c1c2b5b")
     implementation ("com.github.prolificinteractive:material-calendarview:2.0.1")
-
-
-
 }

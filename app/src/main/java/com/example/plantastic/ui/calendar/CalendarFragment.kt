@@ -37,15 +37,18 @@ class CalendarFragment : Fragment(), CalendarCallback {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
         calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
-        calendarView= root.findViewById(R.id.calendarView) as MaterialCalendarView
-        calendarViewModel.calEvents.observe(requireActivity()){
-            for(calendarelem in it)
-            {
+        calendarView = root.findViewById(R.id.calendarView) as MaterialCalendarView
+        calendarViewModel.calEvents.observe(requireActivity()) {
+            for (calendarelem in it) {
                 //Referenced from https://github.com/prolificinteractive/material-calendarview/wiki/Decorators
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = calendarelem.date!!
-                val myDate= CalendarDay.from(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DAY_OF_MONTH))
-                calendarView.addDecorators(CurrentDayDecorator( myDate))
+                val myDate = CalendarDay.from(
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH) + 1,
+                    calendar.get(Calendar.DAY_OF_MONTH)
+                )
+                calendarView.addDecorators(CurrentDayDecorator(myDate))
             }
         }
         usersAuthRepository = UsersAuthRepository()
@@ -59,6 +62,7 @@ class CalendarFragment : Fragment(), CalendarCallback {
         }
         return root
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -69,9 +73,10 @@ class CalendarFragment : Fragment(), CalendarCallback {
         binding.calendarRecyclerView.adapter = calendarAdapter
         binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
-    private fun parseDate(date:CalendarDay): Long {
+
+    private fun parseDate(date: CalendarDay): Long {
         val stringDate = getString(R.string.date_placeholder, date.year, (date.month), date.day)
-        Log.d("revs","date $stringDate")
+        Log.d("revs", "date $stringDate")
         val sdf = SimpleDateFormat("yyyy/MM/dd", Locale.CANADA)
         return sdf.parse(stringDate).time
 
