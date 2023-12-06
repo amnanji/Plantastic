@@ -1,5 +1,6 @@
 package com.example.plantastic.repository
 
+import android.content.Context
 import android.util.Log
 import com.example.plantastic.models.CalendarElement
 import com.example.plantastic.models.Events
@@ -8,6 +9,7 @@ import com.example.plantastic.models.Transaction
 import com.example.plantastic.utilities.DateTimeUtils
 import com.example.plantastic.utilities.DisplayFormatter
 import com.example.plantastic.utilities.FirebaseNodes
+import com.example.plantastic.utilities.IconUtil
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -260,7 +262,7 @@ class GroupsRepository {
     }
 
 
-    fun createGroupForUsers(userList: ArrayList<String>, groupName: String?, callback: (String?) -> Unit) {
+    fun createGroupForUsers(context: Context, userList: ArrayList<String>, groupName: String?, callback: (String?) -> Unit) {
         val participants: HashMap<String, Boolean> = HashMap()
         val timestampGroupCreated: Long = DateTimeUtils.getCurrentTimeStamp()
         val balances: HashMap<String, HashMap<String, Double>> = HashMap()
@@ -284,6 +286,8 @@ class GroupsRepository {
             "group"
         }
 
+        val iconUtils = IconUtil(context)
+
         val reference: DatabaseReference = groupsReference.push()
         val groupId: String? = reference.key
 
@@ -295,7 +299,8 @@ class GroupsRepository {
             null,
             balances,
             timestampGroupCreated,
-            null
+            null,
+            iconUtils.getRandomColour()
         )
 
         reference.setValue(group)
