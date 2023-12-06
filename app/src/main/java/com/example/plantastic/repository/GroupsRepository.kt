@@ -172,7 +172,7 @@ class GroupsRepository {
 
                     usersRepository.getUserById(otherParticipantId) { user ->
                         if (user != null) {
-                            currGroup.name = "Chat with ${user.firstName} ${user.lastName}"
+                            currGroup.name = "${user.firstName} ${user.lastName}"
                         }
                         // Mark inner deferred task as completed
                         innerDeferred.complete(Unit)

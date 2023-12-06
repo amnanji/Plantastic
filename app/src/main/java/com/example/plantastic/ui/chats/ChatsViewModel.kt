@@ -3,27 +3,35 @@ package com.example.plantastic.ui.chats
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.plantastic.models.Users
+import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
-import com.example.plantastic.repository.UsersRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ChatsViewModel : ViewModel() {
 
+    private val _groups = MutableLiveData<ArrayList<Groups>>()
+    val groups: LiveData<ArrayList<Groups>> = _groups
+
     private var groupsRepository: GroupsRepository = GroupsRepository()
-    private var usersRepository: UsersRepository = UsersRepository()
-    private var usersAuthRepository: UsersAuthRepository = UsersAuthRepository()
 
-    private var id = usersAuthRepository.getCurrentUser()!!.uid
-    private var user = null
+    init {
+        val currUser = UsersAuthRepository().getCurrentUser()
+        val userId = currUser!!.uid
+        val groupsQuery = groupsRepository.getAllGroupsQueryForUser(userId)
 
-    private var _user = MutableLiveData<Users>().apply {
-
-        value = null
+        CoroutineScope(Dispatchers.IO).launch {
+            groupsRepository.getAllGroupsByUserWithChatNames(userId) { newGroupsList ->
+                if (newGroupsList != null) {
+                    _groups.value =
+                        ArrayList(newGroupsList.filterNot { it.groupType == "Individual" && it.latestMessage == null }
+                            .sortedWith(compareBy {
+                                it.latestMessage?.timestamp ?: Long.MAX_VALUE
+                            }))
+                }
+            }
+        }
     }
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is chats Fragment"
-    }
-    val text: LiveData<String> = _text
 }

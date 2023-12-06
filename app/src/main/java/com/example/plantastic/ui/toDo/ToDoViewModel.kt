@@ -30,9 +30,10 @@ class ToDoViewModel : ViewModel() {
                 groupsList = groupsHashmap.values.toList()
                 for ((groupId, toDoItems) in todoListsHashmap) {
                     if (!groupsHashmap.containsKey(groupId)) continue
-                    val groupName = groupsHashmap[groupId]?.name
                     val isGroup = groupsHashmap[groupId]?.groupType == "group"
                     val groupColor = groupsHashmap[groupId]?.color
+                    val currGroupName = groupsHashmap[groupId]?.name
+                    val groupName = if (isGroup) currGroupName else "Chat with $currGroupName"
 
                     for (toDoItem in toDoItems) {
                         if (toDoItem.id != null) {

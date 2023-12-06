@@ -32,7 +32,7 @@ class ChatsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val chatsViewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
+        val chatsViewModel = ViewModelProvider(this)[ChatsViewModel::class.java]
 
         _binding = FragmentChatsBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -49,7 +49,7 @@ class ChatsFragment : Fragment() {
             FirebaseRecyclerOptions.Builder<Groups>().setQuery(groupsQuery, Groups::class.java)
                 .build()
 
-        adapter = ChatsAdapter(options, userId)
+        adapter = ChatsAdapter(userId)
         binding.chatsRecyclerView.adapter = adapter
         val manager = WrapContentLinearLayoutManager(requireContext())
         binding.chatsRecyclerView.layoutManager = manager
