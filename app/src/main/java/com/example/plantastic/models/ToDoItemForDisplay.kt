@@ -15,7 +15,13 @@ data class ToDoItemForDisplay(
 ) {
     // Constructor that takes a ToDoItem to populate values common between ToDoItem and ToDoItemForDisplay,
     // and also takes the additional pieces of data as parameters
-    constructor(toDoItem: ToDoItem, groupId: String, isGroup: Boolean, groupName: String?, groupColor: Int?) : this(
+    constructor(
+        toDoItem: ToDoItem,
+        groupId: String,
+        isGroup: Boolean,
+        groupName: String?,
+        groupColor: Int?
+    ) : this(
         toDoItem.id,
         groupId,
         toDoItem.title,

@@ -148,4 +148,20 @@
     <string name="your_availability">आपकी उपलब्धता:</string>
     <string name="select_language">भाषा चुनें</string>
     <string name="language_preference">भाषा प्राथमिकता</string>
+    <string name="add_new_group_expense">नया समूह खर्च जोड़ें</string>
+    <string name="settle_balance">सेटल बैलेंस</string>
+    <string name="is_paying_you_transaction">%1$s %2$s आपको %3$s भुगतान कर रहा है</string>
+    <string name="you_are_paying_transactions">आप %1$s %2$s %3$s भुगतान कर रहे हैं</string>
+    <string name="balance_with_this_user_is_already_settled">इस उपयोगकर्ता के साथ शेष राशि पहले से ही सेटल हो गई है</string>
+    <string name="settled_balances_you">%1$s %2$s ने आपके साथ शेष राशियों को सेटल किया</string>
+    <string name="you_settled_balances_with">%1$s %2$s ने आपके साथ शेष राशियों को सेटल किया</string>
+    <string name="amount_cannot_be_zero">राशि शून्य नहीं हो सकती</string>
+    <string name="amount">राशि</string>
+    <string name="paid_by">द्वारा भुगतान किया गया:</string>
+    <string name="settle_with">सेटल करें:</string>
+    <string name="you_lent">आपने $%1$s उधार दिया</string>
+    <string name="you_borrowed_from">आपने %2$s से $%1$s उधार लिया</string>
+    <string name="paid">%1$s ने %2$s को %3$s भुगतान किया</string>
+    <string name="paid_you">%1$s ने आपको %2$s भुगतान किया</string>
+    <string name="you_paid">आपने %1$s को $%2$s भुगतान किया</string>
 </resources>

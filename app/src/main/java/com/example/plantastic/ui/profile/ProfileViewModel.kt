@@ -38,17 +38,15 @@ class ProfileViewModel : ViewModel() {
                     val foodPreferences = "None"
                     val dietaryRestrictionIndex = 0
                     val activityPreferences = "None"
-                    var availability = mutableListOf(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1)
-                    if (dietaryRestrictionIndex != null) {
-                        preferencesRepository.createNewPreference(
-                            currUserUid, foodPreferences, dietaryRestrictionIndex,
-                            activityPreferences, availability
-                        ) { creationSuccessful ->
-                            if (creationSuccessful) {
-                                preferencesRepository.getPreferenceById(currUserUid) { preferences ->
-                                    if (preferences != null) {
-                                        value = preferences
-                                    }
+                    val availability = mutableListOf(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1)
+                    preferencesRepository.createNewPreference(
+                        currUserUid, foodPreferences, dietaryRestrictionIndex,
+                        activityPreferences, availability
+                    ) { creationSuccessful ->
+                        if (creationSuccessful) {
+                            preferencesRepository.getPreferenceById(currUserUid) { preferences ->
+                                if (preferences != null) {
+                                    value = preferences
                                 }
                             }
                         }

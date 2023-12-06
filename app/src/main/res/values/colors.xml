@@ -80,7 +80,7 @@
     <color name="todo_list_item_checkbox_color">@color/yellow</color>
     <color name="card_title_color">@color/yellow_var</color>
 
-    <color name="dialog_positive_button_disabled_state">#E87E7C</color>
+    <color name="dialog_positive_button_disabled_state">#F4A1A0</color>
 
     <!--  Colors for balances fragment  -->
     <color name="i_am_owed_green">#00BD07</color>
@@ -88,4 +88,5 @@
     <!--  Colors for new chat fragment  -->
     <color name="tab_layout_background">@color/pastel_marigold</color>
 
+    <color name="default_text_color">#75706A</color>
 </resources>

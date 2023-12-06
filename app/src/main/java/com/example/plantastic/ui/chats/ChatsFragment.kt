@@ -8,18 +8,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.plantastic.MainActivity
 import com.example.plantastic.R
 import com.example.plantastic.databinding.FragmentChatsBinding
 import com.example.plantastic.models.Groups
-import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.UsersAuthRepository
-import com.example.plantastic.utilities.WrapContentLinearLayoutManager
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ChatsFragment : Fragment() {
     private lateinit var adapter: ChatsAdapter
+    private lateinit var chatsViewModel: ChatsViewModel
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var groupsList: ArrayList<Groups>
 
     private var _binding: FragmentChatsBinding? = null
 
@@ -27,12 +30,10 @@ class ChatsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private var groupsRepository: GroupsRepository = GroupsRepository()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val chatsViewModel = ViewModelProvider(this).get(ChatsViewModel::class.java)
+        chatsViewModel = ViewModelProvider(this)[ChatsViewModel::class.java]
 
         _binding = FragmentChatsBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -43,16 +44,34 @@ class ChatsFragment : Fragment() {
         val userId = currUser!!.uid
         Log.d(TAG, "Curr user id --> $userId")
 
-        val groupsQuery = groupsRepository.getAllGroupsQueryForUser(userId)
+        groupsList = ArrayList()
+        adapter = ChatsAdapter(groupsList, userId)
+        recyclerView = binding.chatsRecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
 
-        val options =
-            FirebaseRecyclerOptions.Builder<Groups>().setQuery(groupsQuery, Groups::class.java)
-                .build()
+        chatsViewModel.groups.observe(requireActivity()){
+            // DiffUtil calculates the difference between the 2 lists and updates the adapter accordingly
+            // Referenced from Chat GPT. It suggested this solution instead of updating all views
+            val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+                override fun getOldListSize(): Int = groupsList.size
+                override fun getNewListSize(): Int = it.size
 
-        adapter = ChatsAdapter(options, userId)
-        binding.chatsRecyclerView.adapter = adapter
-        val manager = WrapContentLinearLayoutManager(requireContext())
-        binding.chatsRecyclerView.layoutManager = manager
+                override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                    return groupsList[oldItemPosition].id == it[newItemPosition].id
+                }
+
+                override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                    return groupsList[oldItemPosition] == it[newItemPosition]
+                }
+            })
+
+            groupsList.clear()
+            groupsList.addAll(it)
+
+            // Updating the adapter with the results of the differences calculated by the DiffUtil
+            diffResult.dispatchUpdatesTo(adapter)
+        }
 
         chatsFab.setOnClickListener {
             val mainActivity: MainActivity = (requireActivity() as MainActivity)
@@ -73,13 +92,11 @@ class ChatsFragment : Fragment() {
     }
 
     override fun onPause() {
-        adapter.stopListening()
         super.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        adapter.startListening()
     }
 
     companion object {

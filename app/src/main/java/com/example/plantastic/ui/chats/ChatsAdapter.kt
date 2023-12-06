@@ -13,14 +13,12 @@ import com.example.plantastic.models.Groups
 import com.example.plantastic.repository.UsersRepository
 import com.example.plantastic.ui.conversation.ConversationActivity
 import com.example.plantastic.utilities.IconUtil
-import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import java.util.Calendar
 
 class ChatsAdapter(
-    private val options: FirebaseRecyclerOptions<Groups>,
+    private val groups: List<Groups>,
     private val userId: String
-) : FirebaseRecyclerAdapter<Groups, RecyclerView.ViewHolder>(options) {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val usersRepository = UsersRepository()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -35,16 +33,21 @@ class ChatsAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, model: Groups) {
-        if (model.groupType == "individual") {
-            (holder as IndividualChatViewHolder).bind(model)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val group = groups[position]
+        if (group.groupType == "individual") {
+            (holder as IndividualChatViewHolder).bind(group)
         } else {
-            (holder as GroupChatViewHolder).bind(model)
+            (holder as GroupChatViewHolder).bind(group)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (options.snapshots[position].groupType == "group") VIEW_TYPE_GROUP else VIEW_TYPE_INDIVIDUAL
+        return if (groups[position].groupType == "group") VIEW_TYPE_GROUP else VIEW_TYPE_INDIVIDUAL
+    }
+
+    override fun getItemCount(): Int {
+        return groups.size
     }
 
     private fun getDate(timestamp: Long): String {
