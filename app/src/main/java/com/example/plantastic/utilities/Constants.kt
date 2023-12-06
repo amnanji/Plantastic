@@ -12,13 +12,13 @@ object FirebaseNodes {
 
     // Users Child Nodes
     const val EMAIL_NODE = "email"
-    const val COLORS_NODE = "colors"
     const val VERIFIED_NODE = "isEmailVerified"
 
     // Group Child Nodes
     const val GROUPS_PARTICIPANTS_NODE = "participants"
     const val GROUPS_LATEST_MESSAGE_NODE = "latestMessage"
     const val EVENTS_NODE = "events"
+    const val GROUPS_BALANCES = "balances"
 
     // Messages Child Nodes
     const val MESSAGES_TIMESTAMP_NODE = "timestamp"
@@ -31,5 +31,6 @@ object FirebaseNodes {
     const val TRANSACTIONS_GROUP_NODE = "groupId"
     const val USERS_FRIENDS_NODE = "friends"
     const val USERS_COLOUR_NODE = "color"
-
+    const val TRANSACTIONS_GROUP_EXPENSE = "expense"
+    const val TRANSACTIONS_GROUP_REIMBURSEMENT = "reimbursement"
 }

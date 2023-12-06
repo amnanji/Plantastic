@@ -4,7 +4,9 @@ import android.util.Log
 import com.example.plantastic.models.CalendarElement
 import com.example.plantastic.models.Events
 import com.example.plantastic.models.Groups
+import com.example.plantastic.models.Transaction
 import com.example.plantastic.utilities.DateTimeUtils
+import com.example.plantastic.utilities.DisplayFormatter
 import com.example.plantastic.utilities.FirebaseNodes
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -303,6 +305,55 @@ class GroupsRepository {
             .addOnFailureListener {
                 callback(null)
             }
+    }
+
+    fun updateBalanceForTransaction(transaction: Transaction, userId: String?) {
+        groupsReference.child(transaction.groupId!!).addListenerForSingleValueEvent(
+            object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val group = dataSnapshot.getValue(Groups::class.java)
+                val numParticipants = group!!.participants!!.size
+                if(transaction.transactionType == FirebaseNodes.TRANSACTIONS_GROUP_EXPENSE){
+                    val expenseUpdate = DisplayFormatter.roundToTwoDecimalPlaces(transaction.totalAmount!!/numParticipants)
+                    group.balances!![transaction.moneyOwedTo]!!.keys.forEach{
+                        group.balances!![transaction.moneyOwedTo]!![it] = DisplayFormatter.roundToTwoDecimalPlaces(group.balances!![transaction.moneyOwedTo]!![it]!! + expenseUpdate)
+                        group.balances!![it]!![transaction.moneyOwedTo!!] = DisplayFormatter.roundToTwoDecimalPlaces(group.balances!![it]!![transaction.moneyOwedTo]!! - expenseUpdate)
+                    }
+                }
+                else if (transaction.transactionType == FirebaseNodes.TRANSACTIONS_GROUP_REIMBURSEMENT){
+                    if(transaction.moneyOwedTo == userId){
+                        group.balances!![transaction.moneyPaidTo]!![userId!!] = 0.0
+                        group.balances!![userId]!![transaction.moneyPaidTo!!] = 0.0
+                    }
+                    else{
+                        group.balances!![transaction.moneyOwedTo]!![userId!!] = 0.0
+                        group.balances!![userId]!![transaction.moneyOwedTo!!] = 0.0
+                    }
+
+                }
+                groupsReference.child(transaction.groupId!!).child(FirebaseNodes.GROUPS_BALANCES).setValue(group.balances)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle error
+            }
+        })
+    }
+
+    fun getGroupByIdCont(id: String, callback: (Groups?) -> Unit) {
+        val reference = groupsReference.child(id)
+
+        reference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val group = dataSnapshot.getValue(Groups::class.java)
+                callback(group)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle error
+                callback(null)
+            }
+        })
     }
 
     companion object {

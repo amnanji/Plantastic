@@ -10,5 +10,6 @@ data class Transaction(
     var description: String? = null,
     var moneyOwedTo: String? = null,
     var totalAmount: Double? = null,
-    var transactionType: String? = null
+    var transactionType: String? = null,
+    var moneyPaidTo: String? = null
 )

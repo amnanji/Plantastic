@@ -13,10 +13,10 @@ import com.example.plantastic.repository.GroupsRepository
 import com.example.plantastic.repository.TransactionsRepository
 import com.example.plantastic.repository.UsersAuthRepository
 import com.example.plantastic.repository.UsersRepository
-import com.example.plantastic.ui.balancedialog.BalancesDialog
 import com.example.plantastic.utilities.IconUtil
 import com.example.plantastic.utilities.WrapContentLinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TransactionsActivity : AppCompatActivity() {
 
@@ -31,6 +31,10 @@ class TransactionsActivity : AppCompatActivity() {
     private lateinit var usersAuthRepository: UsersAuthRepository
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: TransactionsAdapter
+    private lateinit var groupNameTextView: TextView
+    private lateinit var viewBalanceButton: Button
+    private lateinit var imageIcon: ImageView
+    private lateinit var iconUtil: IconUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,77 +47,52 @@ class TransactionsActivity : AppCompatActivity() {
         usersAuthRepository = UsersAuthRepository()
         groupsRepository = GroupsRepository()
         usersRepository = UsersRepository()
+        iconUtil = IconUtil(this)
 
         recyclerView = findViewById(R.id.transactionsRecyclerView)
-        val groupNameTextView = findViewById<TextView>(R.id.transactionsGroupNameTextView)
-        val viewBalanceButton = findViewById<Button>(R.id.transactionsViewBalancesButton)
-        val imageIcon = findViewById<ImageView>(R.id.transactionsGroupImageView)
-        val iconUtil= IconUtil(this)
+        groupNameTextView = findViewById(R.id.transactionsGroupNameTextView)
+        viewBalanceButton = findViewById(R.id.transactionsViewBalancesButton)
+        imageIcon = findViewById(R.id.transactionsGroupImageView)
+        val transactionsFab: FloatingActionButton = findViewById(R.id.addTransactionFab)
 
         val currUser = usersAuthRepository.getCurrentUser()
-        if (currUser == null) {
+        val groupId = intent.getStringExtra(GROUP_ID)
+        val numbParticipants = intent.getIntExtra(NUMBER_OF_MEMBERS, -1)
+        if (currUser == null || groupId == null || numbParticipants == -1) {
             finish()
         }
 
-        val groupId = intent.getStringExtra(GROUP_ID)
-        val numbParticipants = intent.getIntExtra(NUMBER_OF_MEMBERS, -1)
-        if (groupId == null || numbParticipants == -1) {
-            finish()
-        }
+        updateNonRecyclerViewUI(currUser!!.uid, groupId)
 
         val transactionQuery = transactionsRepository.getTransactionsForGroup(groupId!!)
 
         val options = FirebaseRecyclerOptions.Builder<Transaction>()
             .setQuery(transactionQuery, Transaction::class.java).build()
 
-        adapter = TransactionsAdapter(options, currUser!!.uid, numbParticipants)
+        adapter = TransactionsAdapter(options, currUser.uid, numbParticipants)
         recyclerView.adapter = adapter
         val manager = WrapContentLinearLayoutManager(this)
         recyclerView.layoutManager = manager
         adapter.startListening()
 
-        groupsRepository.getGroupById(groupId) { group ->
-            if (group != null) {
-                if (group.groupType == "group") {
-                    groupNameTextView.text = group.name
-
-                    val drawable = iconUtil.getIcon(group.name!!, "", group.color!!)
-                    imageIcon.setImageDrawable(drawable)
-                } else {
-                    val participants = group.participants!!.keys.toList()
-                    val otherParticipantId =
-                        if (participants[0] == currUser.uid) participants[1] else participants[0]
-                    usersRepository.getUserById(otherParticipantId) {
-                        if (it != null) {
-                            val chatName = getString(
-                                R.string.name_placeholder,
-                                it.firstName,
-                                it.lastName
-                            )
-                            groupNameTextView.text = chatName
-
-                            val drawable = iconUtil.getIcon(it.firstName!!, it.lastName!!, it.color!!)
-                            imageIcon.setImageDrawable(drawable)
-                        }
-                    }
-                }
-                val balances = group.balances!![currUser.uid]
-                viewBalanceButton.setOnClickListener {
-                    val dialog = BalancesDialog(this, currUser.uid, balances!!)
-                    dialog.show()
-                }
-            }
+        transactionsFab.setOnClickListener {
+            val dialog = ExpenseDialog()
+            val bundle = Bundle()
+            bundle.putString(ExpenseDialog.KEY_USER_ID, currUser.uid)
+            bundle.putString(ExpenseDialog.KEY_GROUP_ID, groupId)
+            dialog.arguments = bundle
+            dialog.show(this.supportFragmentManager, ExpenseDialog.TAG_ADD_EXPENSE)
         }
     }
 
     override fun onPause() {
         super.onPause()
-        adapter?.stopListening()
+        adapter.stopListening()
     }
 
     override fun onResume() {
         super.onResume()
-        adapter?.startListening()
+        adapter.startListening()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -127,4 +106,48 @@ class TransactionsActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateNonRecyclerViewUI(userId: String?, groupId: String?) {
+        groupsRepository.getGroupByIdCont(groupId!!) { group ->
+            if (group == null) {
+                return@getGroupByIdCont
+            }
+
+            if (group.groupType == "group") {
+                groupNameTextView.text = group.name
+
+                val drawable = iconUtil.getIcon(group.name!!, "", group.color!!)
+                imageIcon.setImageDrawable(drawable)
+            } else {
+                val participants = group.participants!!.keys.toList()
+                val otherParticipantId =
+                    if (participants[0] == userId) participants[1] else participants[0]
+                usersRepository.getUserById(otherParticipantId) {
+                    if (it != null) {
+                        val chatName = getString(
+                            R.string.name_placeholder,
+                            it.firstName,
+                            it.lastName
+                        )
+                        groupNameTextView.text = chatName
+
+                        val drawable =
+                            iconUtil.getIcon(it.firstName!!, it.lastName!!, it.color!!)
+                        imageIcon.setImageDrawable(drawable)
+                    }
+                }
+            }
+        }
+
+        viewBalanceButton.setOnClickListener {
+            val settleBalancesDialog = SettleBalanceDialog()
+            val bundle = Bundle()
+            bundle.putString(SettleBalanceDialog.KEY_USER_ID, userId)
+            bundle.putString(SettleBalanceDialog.KEY_GROUP_ID, groupId)
+            settleBalancesDialog.arguments = bundle
+            settleBalancesDialog.show(
+                supportFragmentManager,
+                SettleBalanceDialog.TAG_SETTLE_BALANCE
+            )
+        }
+    }
 }

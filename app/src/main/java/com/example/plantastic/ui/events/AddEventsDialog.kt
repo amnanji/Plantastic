@@ -39,6 +39,7 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 import java.util.TimeZone
 
+@Suppress("DEPRECATION")
 class AddEventsDialog : DialogFragment() {
     private lateinit var groupsSpinner: Spinner
     private lateinit var dateTextView: TextView
@@ -52,7 +53,6 @@ class AddEventsDialog : DialogFragment() {
     private lateinit var btnCancel: Button
 
     private var groupId: String? = null
-
     private val groupsRepository = GroupsRepository()
     private val usersRepository = UsersRepository()
     private var groups: List<Groups?> = ArrayList()
@@ -189,7 +189,7 @@ class AddEventsDialog : DialogFragment() {
                 )
                 groupsRepository.addEventsItem(
                     eventItem,
-                    groups[groupsSpinner.selectedItemPosition]?.id,
+                    groups[groupsSpinner.selectedItemPosition]?.id
                 )
 
                 val readCalendarPermission = ContextCompat.checkSelfPermission(
