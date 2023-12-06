@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -52,11 +51,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (!currUser!!.isEmailVerified) {
-            Toast.makeText(
-                this,
-                getString(R.string.a_verification_email_has_been_sent_please_verify_your_email),
-                Toast.LENGTH_SHORT
-            ).show()
             usersAuthRepository.logOutUser()
             navigateToLoginActivity()
             finish()
