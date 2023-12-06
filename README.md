@@ -1,4 +1,4 @@
-"# Plantastic" 
+# Plantastic
 
 ## Before running the code perform the following steps
 
